@@ -493,7 +493,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             fill="white"
                           />
                         </svg>
-                        Đơn hàng
+                        Users
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                             open && 'rotate-180'
@@ -521,35 +521,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to="/order/waiting"
+                              to="/user/teacher"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
                               }
                             >
-                              Đang chờ
+                              Giáo viên
                             </NavLink>
                           </li>
                           <li>
                             <NavLink
-                              to="/order/processing"
+                              to="/user/student"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
                               }
                             >
-                              Đang thực hiện
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/order/completed"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Đang hoàn tất
+                              Học sinh
                             </NavLink>
                           </li>
                         </ul>

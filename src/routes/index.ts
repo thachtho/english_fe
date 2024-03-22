@@ -9,9 +9,8 @@ const Settings = lazy(() => import('../pages/Settings'));
 const Tables = lazy(() => import('../pages/Tables'));
 const Alerts = lazy(() => import('../components/UiElements/Alerts'));
 const Buttons = lazy(() => import('../components/UiElements/Buttons'));
-const OrderWaiting = lazy(() => import('../pages/Order/OrderWaiting'));
-const OrderProcessing = lazy(() => import('../pages/Order/OrderProcessing'));
-const OrderCompleted = lazy(() => import('../pages/Order/OrderCompleted'));
+const Teacher = lazy(() => import('../pages/Users/Teacher'));
+const Student = lazy(() => import('../pages/Users/Student'));
 
 
 const coreRoutes = [
@@ -61,20 +60,15 @@ const coreRoutes = [
     component: Buttons,
   },
   {
-    path: '/order/waiting',
-    title: 'Đơn hàng',
-    component: OrderWaiting,
+    path: '/user/teacher',
+    title: 'Teacher',
+    component: Teacher,
   },
   {
-    path: '/order/processing',
-    title: 'Đơn hàng đang thực hiện',
-    component: OrderProcessing,
-  },
-  {
-    path: '/order/completed',
-    title: 'Đơn hàng đã hoàn tất',
-    component: OrderCompleted,
-  },
+    path: '/user/student',
+    title: 'Student',
+    component: Student,
+  }
 ];
 
 const routes = [...coreRoutes];

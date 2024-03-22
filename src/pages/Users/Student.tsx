@@ -13,7 +13,7 @@ const staff = [
     { id: 2, name: 'Thanh',  }
 ]
 
-function OrderWaiting() {
+function Student() {
     const [orders, setOrders] = useState(data)
     const socket = Socket
   
@@ -33,7 +33,7 @@ function OrderWaiting() {
 
   return (
     <>
-      <Breadcrumb pageName="Đơn hàng đang chờ" />
+      <Breadcrumb pageName="Danh sách học sinh" />
 
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -191,4 +191,4 @@ function OrderWaiting() {
   )
 }
 
-export default OrderWaiting
+export default Student
