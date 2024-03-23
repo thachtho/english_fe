@@ -1,20 +1,22 @@
 import { Modal } from 'antd';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import useValidator from '../../../hooks/validator';
-import toast from 'react-hot-toast';
 import { useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { creatUser } from '../../../api/user/user.api';
+import useValidator from '../../../hooks/validator';
+import { ROLE } from '../../../shared/enums/role';
 
 interface IAddTeacher {
     setIsModalOpen: (isShow: boolean) => void,
-    isModalOpen: boolean
+    isModalOpen: boolean,
+    getDataTeacher: () => void
 }
 
 interface IAdd {
     fullname: string
 }
 
-const AddTeacher = ({ setIsModalOpen, isModalOpen }: IAddTeacher) => {
+const AddTeacher = ({ setIsModalOpen, isModalOpen, getDataTeacher }: IAddTeacher) => {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<IAdd>();
     const { validator } = useValidator()
 
@@ -24,10 +26,11 @@ const AddTeacher = ({ setIsModalOpen, isModalOpen }: IAddTeacher) => {
 
     const onSubmit: SubmitHandler<IAdd> = async (data) => {
         try {
-            await creatUser(data)
+            await creatUser({ ...data, role: ROLE.TEACHER })
             setIsModalOpen(false);
+            getDataTeacher();
         } catch (error: any) {
-            toast.error('Lỗi')
+            toast.error(error?.response?.data?.message)
         }
     }
 

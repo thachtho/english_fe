@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './index.scss'
 
 import {
@@ -12,25 +12,23 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingFn,
-  sortingFns,
   useReactTable
 } from '@tanstack/react-table'
 
 import {
-  compareItems,
   RankingInfo,
-  rankItem,
+  rankItem
 } from '@tanstack/match-sorter-utils'
+import { useNavigate } from 'react-router-dom'
+import { getTeachers } from '../../../api/user/user.api'
 import { DeleteIcon, EditIcon } from '../../../components'
 import Breadcrumb from '../../../components/Breadcrumb'
+import BaseLayoutContent from '../../../components/Layout/BaseLayoutContent'
 import Panigation from '../../../components/React-table/Panigation'
 import TableList from '../../../components/React-table/Table'
 import Button from '../../../components/UiElements/Button'
-import { makeData, Person } from './makeData'
-import { useNavigate } from 'react-router-dom'
 import AddTeacher from './AddTeacher'
-import BaseLayoutContent from '../../../components/Layout/BaseLayoutContent'
+import useTeacher from './hooks/useTeacher'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -54,51 +52,35 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed
 }
 
-const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
-  let dir = 0
-
-  // Only sort by rank if the column has ranking information
-  if (rowA.columnFiltersMeta[columnId]) {
-    dir = compareItems(
-      rowA.columnFiltersMeta[columnId]?.itemRank!,
-      rowB.columnFiltersMeta[columnId]?.itemRank!
-    )
-  }
-
-  // Provide an alphanumeric fallback for when the item ranks are equal
-  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir
-}
-
 function Teacher() {
   const navigation = useNavigate();
   const rerender = React.useReducer(() => ({}), {})[1]
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
   const [globalFilter, setGlobalFilter] = React.useState('')
 
-  const columns = React.useMemo<ColumnDef<Person, any>[]>(
+  const columns = React.useMemo<ColumnDef<any, any>[]>(
     () => [
         {
-          accessorKey: 'firstName',
-            cell: info => info.getValue(),
+            id: 'id',
+            cell: row => row.row.index + 1,
             header: () => <span>STT</span>,
             footer: props => props.column.id,
+
           },
           {
-            accessorFn: row => row.lastName,
-            id: 'lastName',
+            accessorFn: row => row.nickname,
+            id: 'nickname',
             cell: info => info.getValue(),
-            header: () => <span>Họ và tên</span>,
+            header: () => <span>Nickname</span>,
             footer: props => props.column.id,
           },
           {
-            accessorFn: row => `${row.firstName} ${row.lastName}`,
-            id: 'fullName',
-            header: 'Nickname',
+            accessorFn: row => row.fullname,
+            id: 'fullname',
+            header: 'Họ và tên',
             cell: info => info.getValue(),
             footer: props => props.column.id,
           },
@@ -114,20 +96,15 @@ function Teacher() {
                 </Button>
                 <Button handleClick={() => alert(1)} className='text-meta-5' text={'Chi tiết'}/>
               </div>
-
             ),
           },
     ],
     []
   )
 
-  const [data, setData] = React.useState<Person[]>(() => {
-    return makeData(1000)
-  })
-//   const refreshData = () => setData(_old => makeData(50000))
-
+  const { teachers, getDataTeacher } = useTeacher();
   const table = useReactTable({
-    data,
+    data: teachers,
     columns,
     filterFns: {
       fuzzy: fuzzyFilter,
@@ -178,6 +155,7 @@ function Teacher() {
         <AddTeacher 
           setIsModalOpen={setIsModalOpen} 
           isModalOpen={isModalOpen}
+          getDataTeacher={getDataTeacher}
         />
     </>
   )
