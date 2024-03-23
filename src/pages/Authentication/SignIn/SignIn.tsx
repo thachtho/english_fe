@@ -1,18 +1,17 @@
-import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { login } from "../../../api/auth.api";
 import { LockIcon, MessageIcon } from '../../../components/index';
 import LogoDark from '../../../images/logo/logo-dark.svg';
 import Logo from '../../../images/logo/logo.svg';
-import { messageErrorValidate } from "../../../shared/enums/auth.validator";
 import MobileImg from "./MobileImg";
-import { login } from "../../../api/auth.api";
-import { useState } from "react";
-import { toast } from "react-toastify";
-
-type Filed = "nickname" | "password"
+import useValidator from "../../../hooks/validator";
 
 const SignIn = () => {
   const navigation = useNavigate();
+  const { validator } = useValidator()
   const [isError, setIsError] = useState(false)
   const { register, handleSubmit, formState: { errors } } = useForm<ILogin>();
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
@@ -27,15 +26,6 @@ const SignIn = () => {
         toast.error('Tên đăng nhập hoặc mật khẩu không chính xác!')
       }
     }
-  }
-
-  const validator = (filed: FieldErrors<ILogin>) => {
-    const keyName = Object.keys(filed)[0] as Filed
-    const dataMessage = messageErrorValidate[keyName]
-    const type = filed[keyName]?.type as 'maxLength' | 'required'
-    const message = dataMessage[type]
-
-    return <span>{message}</span>
   }
 
   return (
@@ -88,7 +78,7 @@ const SignIn = () => {
                   </label>
                   <div className="relative">
                     <input
-                      {...register("password", { required: true, maxLength: 20, minLength: 6 })}
+                      {...register("password", { required: true, maxLength: 20, minLength: 4 })}
                       type="password"
                       placeholder="Nhập mật khẩu"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"

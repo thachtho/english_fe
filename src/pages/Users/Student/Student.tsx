@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
-import Breadcrumb from '../../components/Breadcrumb';
-import { Socket } from '../../socket/socket';
+import Breadcrumb from '../../../components/Breadcrumb';
 
 const data = [
     { id: 'MX10021', code: 'MX10021', address: 'Da nang' },
@@ -15,7 +14,7 @@ const staff = [
 
 function Student() {
     const [orders, setOrders] = useState(data)
-    const socket = Socket
+
   
     const handleRemote = () => {
         alert('Remote')
@@ -26,9 +25,7 @@ function Student() {
     }
 
     const handleChonTaiXe = (e: any) => {
-        socket?.emit('chontaixe', {
-            staffId: +e.target.value
-        });
+
     }
 
   return (
@@ -174,7 +171,7 @@ function Student() {
                                     </svg>
                                     </button>
                                     <button className="hover:text-primary" onClick={() => handleEdit()}>
-                                    <FaRegEdit/>
+                                        <FaRegEdit/>
                                     </button>
                                 </div>
                             </td>

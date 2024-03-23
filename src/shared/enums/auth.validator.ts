@@ -21,5 +21,10 @@ export const messageErrorValidate = {
         maxLength: `Password ${notTooLong()}`,
         minLength: `Password ${notTooShort()}`
     },
+    fullname: {
+        required: `Họ và tên ${notRequired()}`,
+        maxLength: `Họ và tên ${notTooLong()}`,
+        minLength: `Họ và tên ${notTooShort()}`
+    }
 }
 

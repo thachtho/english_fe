@@ -9,9 +9,8 @@ const Settings = lazy(() => import('../pages/Settings'));
 const Tables = lazy(() => import('../pages/Tables'));
 const Alerts = lazy(() => import('../components/UiElements/Alerts'));
 const Buttons = lazy(() => import('../components/UiElements/Buttons'));
-const Teacher = lazy(() => import('../pages/Users/Teacher'));
-const Student = lazy(() => import('../pages/Users/Student'));
-
+const Teacher = lazy(() => import('../pages/Users/Teacher/Teacher'));
+const Student = lazy(() => import('../pages/Users/Student/Student'));
 
 const coreRoutes = [
   {
