@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './index.scss'
 
 import {
@@ -20,15 +20,14 @@ import {
   rankItem
 } from '@tanstack/match-sorter-utils'
 import { useNavigate } from 'react-router-dom'
-import { getTeachers } from '../../../api/user/user.api'
 import { DeleteIcon, EditIcon } from '../../../components'
-import Breadcrumb from '../../../components/Breadcrumb'
-import BaseLayoutContent from '../../../components/Layout/BaseLayoutContent'
 import Panigation from '../../../components/React-table/Panigation'
 import TableList from '../../../components/React-table/Table'
 import Button from '../../../components/UiElements/Button'
+import BaseLayoutContent from '../../../layout/BaseLayoutContent'
 import AddTeacher from './AddTeacher'
 import useTeacher from './hooks/useTeacher'
+import useTitle from '../../../hooks/useTitle'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -53,6 +52,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 }
 
 function Teacher() {
+  useTitle();
   const navigation = useNavigate();
   const rerender = React.useReducer(() => ({}), {})[1]
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -134,9 +134,8 @@ function Teacher() {
 
   return (
     <>
-        <Breadcrumb pageName="Danh sách giáo viên" />
         <Button 
-          className='inline-flex items-center justify-center rounded-md bg-primary py-2 px-5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 cursor-pointer m-2'
+          className='inline-flex items-center justify-center rounded-md bg-primary py-2 px-5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 cursor-pointer mr-2'
           handleClick={handleAddTeacher}
           text='Add' 
         />

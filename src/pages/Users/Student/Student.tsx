@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import Breadcrumb from '../../../components/Breadcrumb';
+import useTitle from '../../../hooks/useTitle';
 
 const data = [
     { id: 'MX10021', code: 'MX10021', address: 'Da nang' },
@@ -13,6 +14,7 @@ const staff = [
 ]
 
 function Student() {
+    useTitle();
     const [orders, setOrders] = useState(data)
 
   
