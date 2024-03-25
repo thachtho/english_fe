@@ -12,6 +12,7 @@ function useLocalStorage<T>(
     try {
       // Get from local storage by key
       const item = window.localStorage.getItem(key);
+
       // Parse stored json or if none return initialValue
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
@@ -20,6 +21,7 @@ function useLocalStorage<T>(
       return initialValue;
     }
   });
+  console.log(222222222, initialValue)
 
   // useEffect to update local storage when the state changes
   useEffect(() => {

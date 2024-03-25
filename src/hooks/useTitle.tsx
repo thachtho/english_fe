@@ -16,7 +16,6 @@ function useTitle() {
         try {
             const path = location.pathname?.slice(1)
             const { data } = await getTitleByPath(path)
-            console.log(22222222)
             setTitleGlobal(data?.name)
         } catch (error: any) {
             toast.error(error?.response?.data?.message)
