@@ -19,15 +19,14 @@ import {
   RankingInfo,
   rankItem
 } from '@tanstack/match-sorter-utils'
-import { useNavigate } from 'react-router-dom'
 import { DeleteIcon, EditIcon } from '../../../components'
 import Panigation from '../../../components/React-table/Panigation'
 import TableList from '../../../components/React-table/Table'
 import Button from '../../../components/UiElements/Button'
+import useTitle from '../../../hooks/useTitle'
 import BaseLayoutContent from '../../../layout/BaseLayoutContent'
 import AddTeacher from './AddTeacher'
 import useTeacher from './hooks/useTeacher'
-import useTitle from '../../../hooks/useTitle'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -53,14 +52,9 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 
 function Teacher() {
   useTitle();
-  const navigation = useNavigate();
-  const rerender = React.useReducer(() => ({}), {})[1]
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [globalFilter, setGlobalFilter] = React.useState('')
-
   const columns = React.useMemo<ColumnDef<any, any>[]>(
     () => [
         {
@@ -68,8 +62,7 @@ function Teacher() {
             cell: row => row.row.index + 1,
             header: () => <span>STT</span>,
             footer: props => props.column.id,
-
-          },
+          },  
           {
             accessorFn: row => row.nickname,
             id: 'nickname',
@@ -101,7 +94,6 @@ function Teacher() {
     ],
     []
   )
-
   const { teachers, getDataTeacher } = useTeacher();
   const table = useReactTable({
     data: teachers,
@@ -151,11 +143,14 @@ function Teacher() {
             <Panigation table={table} />                
           </div>
         </BaseLayoutContent>
-        <AddTeacher 
-          setIsModalOpen={setIsModalOpen} 
-          isModalOpen={isModalOpen}
-          getDataTeacher={getDataTeacher}
-        />
+        {isModalOpen &&
+          <AddTeacher 
+            setIsModalOpen={setIsModalOpen} 
+            isModalOpen={isModalOpen}
+            getDataTeacher={getDataTeacher}
+          />
+        }
+
     </>
   )
 }
