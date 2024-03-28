@@ -2,21 +2,20 @@ import { Modal } from 'antd';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { creatUser } from '../../../api/user/user.api';
-import useValidator from '../../../hooks/validator';
-import { ROLE } from '../../../shared/enums/role';
+import { creatClass } from '../../api/class.api';
+import useValidator from '../../hooks/validator';
 
-interface IAddTeacher {
+interface IAddClass {
     setIsModalOpen: (isShow: boolean) => void,
     isModalOpen: boolean,
-    getDataStudent: () => void
+    getDataClass: () => void
 }
 
 interface IAdd {
-    fullname: string
+    className: string
 }
 
-const AddStudent = ({ setIsModalOpen, isModalOpen, getDataStudent }: IAddTeacher) => {
+const AddClass = ({ setIsModalOpen, isModalOpen, getDataClass }: IAddClass) => {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<IAdd>();
     const { validator } = useValidator()
 
@@ -26,9 +25,9 @@ const AddStudent = ({ setIsModalOpen, isModalOpen, getDataStudent }: IAddTeacher
 
     const onSubmit: SubmitHandler<IAdd> = async (data) => {
         try {
-            await creatUser({ ...data, role: ROLE.STUDENT })
+            await creatClass({ name: data.className })
             setIsModalOpen(false);
-            getDataStudent();
+            getDataClass();
         } catch (error: any) {
             toast.error(error?.response?.data?.message)
         }
@@ -36,7 +35,7 @@ const AddStudent = ({ setIsModalOpen, isModalOpen, getDataStudent }: IAddTeacher
 
     useEffect(() => {
         if (isModalOpen) {
-            setValue('fullname', '', { shouldDirty: true })
+            setValue('className', '', { shouldDirty: true })
         }
     }, [isModalOpen]) 
 
@@ -50,12 +49,12 @@ const AddStudent = ({ setIsModalOpen, isModalOpen, getDataStudent }: IAddTeacher
                     Tên học sinh
                     </label>
                     <input 
-                        {...register("fullname", { required: true, maxLength: 50, minLength: 3 })}
+                        {...register("className", { required: true, maxLength: 50, minLength: 1 })}
                         type="text"
                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
                 </div>
-                {errors.fullname ? validator(errors) : ''}
+                {errors.className ? validator(errors) : ''}
                 </div>
             </div>
         </Modal>
@@ -63,4 +62,4 @@ const AddStudent = ({ setIsModalOpen, isModalOpen, getDataStudent }: IAddTeacher
     );
 };
 
-export default AddStudent;
+export default AddClass;

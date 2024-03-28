@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
-import { getUserByKey } from "../../../../api/user/user.api";
+import { getUsersByKey } from "../../../../api/user/user.api";
 
 function useStudent() {
-    const [teachers, setTeacher] = React.useState<any[]>([])
+    const [teachers, setTeacher] = React.useState<IUser[]>([])
 
-    const getDataTeacher = async () => {
+    const getDataStudent = async () => {
         try {
-          const { data } = await getUserByKey('student')
+          const { data } = await getUsersByKey('student')
           setTeacher(data);
         } catch (error: any) {
             toast.error(error?.response?.data?.message)
@@ -15,12 +15,12 @@ function useStudent() {
     }
 
     useEffect(() => {
-        getDataTeacher();
+        getDataStudent();
     }, [])
 
     return {
         teachers,
-        getDataTeacher
+        getDataStudent
     }
 }
 

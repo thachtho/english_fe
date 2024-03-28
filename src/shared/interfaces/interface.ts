@@ -13,3 +13,16 @@ interface IControl {
     path: string,
     name: string
 }
+
+interface IUser {
+    id: number;
+    fullname: string | null;
+    nickname: string;
+    password: string;
+    role: number;
+    agencyId: number;
+    createdBy: number;
+    deletedAt: Date | null;
+    createdAt: Date;
+    updatedAt: Date;
+}

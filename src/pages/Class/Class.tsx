@@ -19,14 +19,14 @@ import {
   RankingInfo,
   rankItem
 } from '@tanstack/match-sorter-utils'
-import { DeleteIcon, EditIcon } from '../../../components'
-import Panigation from '../../../components/React-table/Panigation'
-import TableList from '../../../components/React-table/Table'
-import Button from '../../../components/UiElements/Button'
-import useTitle from '../../../hooks/useTitle'
-import BaseLayoutContent from '../../../layout/BaseLayoutContent'
-import useStudent from './hooks/useStudent'
-import AddStudent from './AddStudent'
+import { DeleteIcon, EditIcon } from '../../components'
+import Panigation from '../../components/React-table/Panigation'
+import TableList from '../../components/React-table/Table'
+import Button from '../../components/UiElements/Button'
+import useTitle from '../../hooks/useTitle'
+import BaseLayoutContent from '../../layout/BaseLayoutContent'
+import AddClass from './AddClass'
+import useClass from './hooks/useClass'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -50,7 +50,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed
 }
 
-function Student() {
+function Class() {
   useTitle();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -64,16 +64,16 @@ function Student() {
             footer: props => props.column.id,
           },  
           {
-            accessorFn: row => row.nickname,
-            id: 'nickname',
+            accessorFn: row => row.name,
+            id: 'name',
             cell: info => info.getValue(),
-            header: () => <span>Nickname</span>,
+            header: () => <span>Tên lớp</span>,
             footer: props => props.column.id,
           },
           {
-            accessorFn: row => row.fullname,
-            id: 'fullname',
-            header: 'Họ và tên',
+            accessorFn: row => row.agencyId,
+            id: 'agencyId',
+            header: 'Tên trường',
             cell: info => info.getValue(),
             footer: props => props.column.id,
           },
@@ -94,9 +94,9 @@ function Student() {
     ],
     []
   )
-  const { teachers, getDataStudent } = useStudent();
+  const { classs, getDataClass } = useClass();
   const table = useReactTable({
-    data: teachers,
+    data: classs,
     columns,
     filterFns: {
       fuzzy: fuzzyFilter,
@@ -144,10 +144,10 @@ function Student() {
           </div>
         </BaseLayoutContent>
         {isModalOpen &&
-          <AddStudent
+          <AddClass
             setIsModalOpen={setIsModalOpen} 
             isModalOpen={isModalOpen}
-            getDataStudent={getDataStudent}
+            getDataClass={getDataClass}
           />
         }
 
@@ -155,4 +155,4 @@ function Student() {
   )
 }
 
-export default Student;
+export default Class;
