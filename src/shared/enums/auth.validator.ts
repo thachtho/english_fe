@@ -30,6 +30,14 @@ export const messageErrorValidate = {
         required: `Tên lớp ${notRequired()}`,
         maxLength: `Tên lớp ${notTooLong()}`,
         minLength: `Tên lớp ${notTooShort()}`
-    }
+    },
+    teacherId: {
+        required: `Giáo viên ${notRequired()}`,
+        maxLength: `Giáo viên ${notTooLong()}`,
+        minLength: `Giáo viên ${notTooShort()}`,
+        min: `Giáo viên không được để trống`
+    },
+
+
 }
 

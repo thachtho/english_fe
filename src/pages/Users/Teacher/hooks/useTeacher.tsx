@@ -7,7 +7,7 @@ function useTeacher() {
 
     const getDataTeacher = async () => {
         try {
-            const { data } = await getUsersByKey('teacher')
+            const { data } = await getUsersByKey('teachers')
             setTeacher(data);
         } catch (error: any) {
             toast.error(error?.response?.data?.message)

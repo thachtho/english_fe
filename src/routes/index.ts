@@ -11,7 +11,8 @@ const Alerts = lazy(() => import('../components/UiElements/Alerts'));
 const Buttons = lazy(() => import('../components/UiElements/Buttons'));
 const Teacher = lazy(() => import('../pages/Users/Teacher/Teacher'));
 const Student = lazy(() => import('../pages/Users/Student/Student'));
-const Class = lazy(() => import('../pages/Class/Class'));
+const Class = lazy(() => import('../pages/Class/index'));
+const DetailClass = lazy(() => import('../pages/Class/Detail/index'));
 
 const coreRoutes = [
   {
@@ -73,6 +74,11 @@ const coreRoutes = [
     path: '/class',
     title: 'Class',
     component: Class,
+  },
+  {
+    path: '/class/:id',
+    title: 'Detail',
+    component: DetailClass,
   }
 ];
 

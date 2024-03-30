@@ -94,9 +94,9 @@ function Student() {
     ],
     []
   )
-  const { teachers, getDataStudent } = useStudent();
+  const { students, getDataStudent } = useStudent();
   const table = useReactTable({
-    data: teachers,
+    data: students,
     columns,
     filterFns: {
       fuzzy: fuzzyFilter,

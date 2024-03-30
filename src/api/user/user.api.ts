@@ -1,6 +1,6 @@
 import http from '../http';
 
-type USER_KEY = 'student' | 'teacher'
+type USER_KEY = 'students' | 'teachers'
 
 export const getUsers = () => http.get<any>(`/users`);
 export const creatUser = (data: any) => http.post<IUser>(`/users`, data);

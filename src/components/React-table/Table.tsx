@@ -7,6 +7,7 @@ export interface ITable {
 function TableList({
     table
 }: ITable) {
+    console.log(12321321, table)
   return (
     <table>
         <thead>

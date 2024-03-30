@@ -8,21 +8,28 @@ interface IBaseSize {
     height?: number
 }
 
-interface IControl {
+interface IBase {
     id: number,
+    deletedAt: Date,
+    createdAt: Date,
+    updatedAt: Date,
+    createdBy: number
+}
+
+interface IControl extends IBase{
     path: string,
     name: string
 }
 
-interface IUser {
-    id: number;
+interface IUser extends IBase{
     fullname: string | null;
     nickname: string;
-    password: string;
+    password?: string;
     role: number;
     agencyId: number;
-    createdBy: number;
-    deletedAt: Date | null;
-    createdAt: Date;
-    updatedAt: Date;
+}
+
+interface IClass extends IBase{
+    name: string,
+    teacherId: number
 }
