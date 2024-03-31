@@ -18,6 +18,7 @@ import EditClass from './EditClass'
 import ModalConfirm from '../../components/Modal/Confirm'
 import { deleteClass } from '../../api/class.api'
 import toast from 'react-hot-toast'
+import HeaderAddElementComponent from '../../components/HeaderAddElementComponent'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -40,7 +41,7 @@ function Class() {
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 
-  const handleAddTeacher = () => {
+  const handleAddClass = () => {
     setIsModalAddOpen(true);
   }
 
@@ -55,16 +56,10 @@ function Class() {
   
   return (
     <>
-        <Button 
-          className='inline-flex items-center justify-center rounded-md bg-primary py-2 px-5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 cursor-pointer mr-2'
-          handleClick={handleAddTeacher}
-          text='Add' 
-        />
-        <Button 
-          className='inline-flex items-center justify-center rounded-md bg-primary py-2 px-5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 cursor-pointer'
-          handleClick={handleAddTeacher}
-          text='Import excel' 
-        />
+        <HeaderAddElementComponent 
+            handleAdd={handleAddClass}
+            handleImportExcell={handleAddClass}
+        />    
         <BaseLayoutContent>
           <div className='student'>
             <TableList table={table}/>

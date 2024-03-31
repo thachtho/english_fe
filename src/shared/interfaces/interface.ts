@@ -32,4 +32,12 @@ interface IUser extends IBase{
 interface IClass extends IBase{
     name: string,
     teacherId: number
+    classToUsers: IClassToUser[]
+}
+
+interface IClassToUser extends IBase{
+    classId: number,
+    userId: number
+    user: IUser,
+    class: IClass
 }

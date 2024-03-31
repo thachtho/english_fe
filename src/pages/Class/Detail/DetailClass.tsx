@@ -1,80 +1,39 @@
-import { ColumnDef } from '@tanstack/react-table';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getClassDetail } from '../../../api/class.api';
-import { DeleteIcon, EditIcon } from '../../../components';
+import HeaderAddElementComponent from '../../../components/HeaderAddElementComponent';
 import Panigation from '../../../components/React-table/Panigation';
 import TableList from '../../../components/React-table/Table';
-import Button from '../../../components/UiElements/Button';
 import { useApp } from '../../../context/app.context';
 import useFetchData from '../../../hooks/useFetchData';
 import UseReactTable from '../../../hooks/useReactTable';
 import BaseLayoutContent from '../../../layout/BaseLayoutContent';
-import AddStudent from '../../Users/Student/AddStudent';
-import './detail.scss'
-
-interface IDetailClass extends IClass{
-  students: IUser
-}
+import AddStudentToClass from './AddStudentToClass';
+import './detail.scss';
+import useColumnClassDetail from './useColumseClassDetail';
 
 function DetailClass() {
   const { id: classId } = useParams();
   const { setTitleGlobal } = useApp()
-  const [classs, setClass] = useState<IDetailClass>()
+  const { columns } = useColumnClassDetail()
+  const [students, setStudents] = useState<IUser[]>()
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { fetch } = useFetchData({
     api: getClassDetail,
-    params: classId,
-    setState: setClass
+    params: classId
   })
   
   useEffect(() => {
     ( async () => {
       const data = await fetch() as IClass;
+      const students = data.classToUsers.map((item) => {
+        return item.user
+      })
+      setStudents(students)
       setTitleGlobal(`Lớp ${data.name}`)
     })() 
   }, [])
-
-  const columns = React.useMemo<ColumnDef<any, any>[]>(
-    () => [
-        {
-            id: 'id',
-            cell: row => row.row.index + 1,
-            header: () => <span>STT</span>,
-            footer: props => props.column.id,
-          },  
-          {
-            accessorFn: row => row.nickname,
-            id: 'nickname',
-            cell: info => info.getValue(),
-            header: () => <span>Nickname</span>,
-            footer: props => props.column.id,
-          },
-          {
-            accessorFn: row => row.fullname,
-            id: 'fullname',
-            header: 'Họ và tên',
-            cell: info => info.getValue(),
-            footer: props => props.column.id,
-          },
-          {
-            header: 'Action',
-            cell: (row) => (
-              <div className='flex justify-center'>
-                <Button handleClick={() => console.log(333333, row)} className='pr-5'>
-                  <EditIcon />
-                </Button>
-                <Button handleClick={() => console.log(333333, row)} className='pr-5'>
-                  <DeleteIcon width={20} height={20}/>
-                </Button>
-                <Button handleClick={() => alert(1)} className='text-meta-5' text={'Chi tiết'}/>
-              </div>
-            ),
-          },
-    ],
-    []
-  )
 
   const handleAddStudent = () => {
     setIsModalOpen(true);
@@ -82,24 +41,17 @@ function DetailClass() {
 
   const { table } = UseReactTable({
     columns,
-    data: classs?.students??[]
+    data: students??[]
   })
-
   
   return (
     <div className='detail-class'>
       <div className='flex justify-between'> 
         <div>
-          <Button 
-            className='inline-flex items-center justify-center rounded-md bg-primary py-2 px-5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 cursor-pointer mr-2'
-            handleClick={handleAddStudent}
-            text='Add' 
-          />
-          <Button 
-            className='inline-flex items-center justify-center rounded-md bg-primary py-2 px-5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 cursor-pointer'
-            handleClick={() => alert(2)}
-            text='Import excel' 
-          />
+          <HeaderAddElementComponent 
+              handleAdd={handleAddStudent}
+              handleImportExcell={handleAddStudent}
+          />  
         </div>
         <span>
           GV: Bui Thanh Tho
@@ -113,10 +65,10 @@ function DetailClass() {
           </div>
       </BaseLayoutContent>
       {isModalOpen &&
-          <AddStudent
+          <AddStudentToClass
             setIsModalOpen={setIsModalOpen} 
             isModalOpen={isModalOpen}
-            getDataStudent={() => {}}
+            classId={Number(classId)}
           />
       }
     </div>

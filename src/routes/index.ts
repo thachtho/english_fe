@@ -13,6 +13,7 @@ const Teacher = lazy(() => import('../pages/Users/Teacher/Teacher'));
 const Student = lazy(() => import('../pages/Users/Student/Student'));
 const Class = lazy(() => import('../pages/Class/index'));
 const DetailClass = lazy(() => import('../pages/Class/Detail/index'));
+const Course = lazy(() => import('../pages/Course/index'));
 
 const coreRoutes = [
   {
@@ -79,6 +80,11 @@ const coreRoutes = [
     path: '/class/:id',
     title: 'Detail',
     component: DetailClass,
+  },
+  {
+    path: '/khoa-hoc',
+    title: 'Course',
+    component: Course,
   }
 ];
 

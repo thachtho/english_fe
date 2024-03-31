@@ -27,6 +27,7 @@ import useTitle from '../../../hooks/useTitle'
 import BaseLayoutContent from '../../../layout/BaseLayoutContent'
 import AddTeacher from './AddTeacher'
 import useTeacher from './hooks/useTeacher'
+import HeaderAddElementComponent from '../../../components/HeaderAddElementComponent'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -126,16 +127,10 @@ function Teacher() {
 
   return (
     <>
-        <Button 
-          className='inline-flex items-center justify-center rounded-md bg-primary py-2 px-5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 cursor-pointer mr-2'
-          handleClick={handleAddTeacher}
-          text='Add' 
-        />
-        <Button 
-          className='inline-flex items-center justify-center rounded-md bg-primary py-2 px-5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 cursor-pointer'
-          handleClick={handleAddTeacher}
-          text='Import excel' 
-        />
+        <HeaderAddElementComponent 
+            handleAdd={handleAddTeacher}
+            handleImportExcell={handleAddTeacher}
+        />  
         <BaseLayoutContent>
           <div className='teacher'>
             <TableList table={table}/>
