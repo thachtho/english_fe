@@ -1,0 +1,35 @@
+.course {
+    font-size: 14px;
+    table, tr, td {
+      border: 1px solid lightgray;
+    }
+  
+    th, tr, td {
+      min-width: 200px;
+    }
+  
+    td {
+      padding: 5px;
+    }
+    
+    tbody {
+      border-bottom: 1px solid lightgray;
+    }
+    
+    th {
+      border-bottom: 1px solid lightgray;
+      border-right: 1px solid lightgray;
+      padding: 2px 4px;
+    }
+    
+    tfoot {
+      color: gray;
+    }
+    
+    tfoot th {
+      font-weight: normal;
+    }
+}
+  
+
+  

@@ -2,9 +2,7 @@ import DetailClass from "./DetailClass"
 
 function index() {
   return (
-    <DetailClass>
-      
-    </DetailClass>
+    <DetailClass />
   )
 }
 

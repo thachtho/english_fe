@@ -41,3 +41,8 @@ interface IClassToUser extends IBase{
     user: IUser,
     class: IClass
 }
+
+interface ICourse extends IBase{
+    from: number,
+    to: number
+}

@@ -1,5 +1,9 @@
-import { DatePicker, DatePickerProps, Modal, Space } from 'antd'
+import { DatePickerProps } from 'antd';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { createCourse } from '../../api/course.api';
+import ModalCourse from './Modal';
+import dayjs from 'dayjs';
 
 interface IPropsType {
     setIsModalOpen: (isOpen: boolean) => void,
@@ -10,13 +14,20 @@ function ModalAddCourse({
     isModalOpen,
     setIsModalOpen
 }: IPropsType) {
-    const [from, setFrom] = useState<number | null>(null)
-    const [to, setTo] = useState<number | null>(null)
+    const [from, setFrom] = useState<number | null>(dayjs().get('year'))
+    const [to, setTo] = useState<number | null>(dayjs().get('year'))
 
-    const handleOk = () => {
-        console.log('From::', from);
-        console.log('To::', to);
+    const handleOk = async () => {
+        const data = {
+            from: Number(from), to: Number(to)
+        }
 
+        try {
+            await createCourse(data);
+            setIsModalOpen(false)
+          } catch (error: any) {
+            toast.error(error?.response?.data?.message)
+        }
     }
 
     const onChangeFrom: DatePickerProps['onChange'] = (date, dateString) => {
@@ -28,18 +39,15 @@ function ModalAddCourse({
     };
 
     return (
-        <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
-            <Space direction="vertical" className='flex flex-row justify-between'>
-                <div>
-                    <label>From:</label>
-                    <DatePicker onChange={onChangeFrom} picker="year" />                    
-                </div>
-                <div>
-                    <label>To:</label>
-                    <DatePicker onChange={onChangeTo} picker="year" />
-                </div>
-            </Space>  
-        </Modal>
+        <ModalCourse 
+            handleOk={handleOk}
+            isModalOpen={isModalOpen}
+            onChangeFrom={onChangeFrom}
+            onChangeTo={onChangeTo}
+            setIsModalOpen={setIsModalOpen}
+            from={from}
+            to={to}
+        />
     )
 }
 
