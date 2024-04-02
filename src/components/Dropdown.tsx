@@ -22,19 +22,15 @@ const Dropdown = ({
     };
 
     return(
-        <>
-            <Select
-                className='z-20 w-full h-10'
-                showSearch
-                optionFilterProp="children"
-                onChange={onChange}
-                filterOption={filterOption}
-                options={data}
-                defaultValue={defaultValue}
-            />            
-            
-        </>
-
+        <Select
+            className='z-20 w-full h-10'
+            showSearch
+            optionFilterProp="children"
+            onChange={onChange}
+            filterOption={filterOption}
+            options={data}
+            defaultValue={defaultValue}
+        />  
     )
 };
 

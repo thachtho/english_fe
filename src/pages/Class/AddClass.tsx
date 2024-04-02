@@ -5,15 +5,17 @@ interface IPropsAddClass {
     setIsModalOpen: (isShow: boolean) => void,
     isModalOpen: boolean,
     getDataClass: () => void,
+    courseId: number
 }
 
 function AddClass({
     setIsModalOpen,
     isModalOpen,
     getDataClass,
+    courseId
 }: IPropsAddClass) {
-    const handleAdd = (values: { name: string, teacherId: number }) => {
-        return createClass(values)
+    const handleAdd = async (values: { name: string, teacherId: number }) => {
+        return createClass({ ...values, courseId: Number(courseId) })
     }
     
     return (

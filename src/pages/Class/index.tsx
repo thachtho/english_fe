@@ -4,18 +4,28 @@ import Class from './Class'
 import './index.scss'
 import { useNavigate } from 'react-router-dom';
 import useQueryUrl from '../../hooks/useQueryUrl';
+import { getDefaultCourse } from '../../api/course.api';
 
 function index() {
   const navigation = useNavigate();
-  const course = useQueryUrl('course')
+  const course = useQueryUrl('courseId')
 
   useEffect(() => {
-    if (!course) {
-      navigation('/class?course=2012-2013')
-    }
+    ( async () => {
+      if (!course) {
+        const { data: courseId } = await getDefaultCourse()
+
+        if (courseId) {
+          navigation(`/class?courseId=${courseId}`)
+        }
+      }
+    })()
+
   }, [])
 
-  console.log(1231231, course)
+  if (!course) {
+    return <></>
+  }
 
   return (
     <ClassProvider >

@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import React from 'react'
-import Button from '../../components/UiElements/Button';
-import { DeleteIcon, EditIcon } from '../../components';
+import Button from '../../../components/UiElements/Button';
+import { DeleteIcon, EditIcon } from '../../../components';
 import { useNavigate } from 'react-router-dom';
 
 function useColumnCourse({
@@ -26,7 +26,7 @@ function useColumnCourse({
   }
 
   const navigateClass = (id: number, course: string) => {
-    navigation(`/class?course=${course}`);
+    navigation(`/class?courseId=${id}`);
   }
 
   const columns = React.useMemo<ColumnDef<ICourse, any>[]>(

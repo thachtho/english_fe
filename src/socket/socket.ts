@@ -7,7 +7,6 @@ export class SocketSingleton{
     constructor() {
      
         this.socket = io(ApiConstant.URL);
-        console.log(123123123, this.socket)
         this.socket.on('connect', () => {
           console.log('Connected to server admin page!.');
         });
