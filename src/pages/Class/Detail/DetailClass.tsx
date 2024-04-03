@@ -9,7 +9,6 @@ import useFetchData from '../../../hooks/useFetchData';
 import UseReactTable from '../../../hooks/useReactTable';
 import BaseLayoutContent from '../../../layout/BaseLayoutContent';
 import AddStudentToClass from './AddStudentToClass';
-import './detail.scss';
 import useColumnClassDetail from './useColumseClassDetail';
 
 function DetailClass() {
@@ -48,7 +47,7 @@ function DetailClass() {
   })
   
   return (
-    <div className='detail-class'>
+    <div className='react-table'>
       <div className='flex justify-between'> 
         <div>
           <HeaderAddElementComponent 

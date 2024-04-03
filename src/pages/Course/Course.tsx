@@ -12,7 +12,6 @@ import ModalAddCourse from './ModalAddCourse';
 import ModalEditCourse from './ModalEditCourse';
 import useColumnCourse from './hooks/useColumnCourse';
 import useFetchCourse from './hooks/useFetchCourse';
-import './index.scss'
 
 function Course() {
     useTitle();
@@ -55,7 +54,7 @@ function Course() {
                 handleAdd={handleAdd}
                 isButtonImportExcell={false}
             />  
-            <div className='course'>
+            <div className='react-table'>
                 {courses.length > 0 &&
                     <BaseLayoutContent>
                         <div className='student'>

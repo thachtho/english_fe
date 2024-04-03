@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import './index.scss'
 
 import {
   ColumnDef,
@@ -132,7 +131,7 @@ function Teacher() {
             handleImportExcell={handleAddTeacher}
         />  
         <BaseLayoutContent>
-          <div className='teacher'>
+          <div className='react-table'>
             <TableList table={table}/>
             <div className="h-2" />
             <Panigation table={table} />                

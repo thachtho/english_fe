@@ -8,7 +8,7 @@ import SignUp from './pages/Authentication/SignUp';
 import ECommerce from './pages/Dashboard/ECommerce';
 import routes from './routes';
 import SignIn from './pages/Authentication/SignIn/SignIn';
-
+import './app.scss';
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {

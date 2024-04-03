@@ -80,7 +80,7 @@ function Class() {
         </div>
  
           <BaseLayoutContent>
-            <div className='student'>
+            <div className='react-table'>
               <TableList table={table}/>
               <div className="h-2" />
               <Panigation table={table} />                
