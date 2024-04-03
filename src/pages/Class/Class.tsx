@@ -13,14 +13,12 @@ import HeaderAddElementComponent from '../../components/HeaderAddElementComponen
 import ModalConfirm from '../../components/Modal/Confirm'
 import Panigation from '../../components/React-table/Panigation'
 import TableList from '../../components/React-table/Table'
-import useTitle from '../../hooks/useTitle'
+import { useClass as useClassContext } from "../../context/class.context"
 import BaseLayoutContent from '../../layout/BaseLayoutContent'
 import AddClass from './AddClass'
+import DropdownCourse from './DropdownCourse'
 import EditClass from './EditClass'
 import useClass from './hooks/useClass'
-import DropdownCourse from './DropdownCourse'
-import { useClass as useClassContext } from "../../context/class.context";
-import { useApp } from '../../context/app.context'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {

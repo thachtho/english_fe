@@ -18,6 +18,8 @@ function DetailClass() {
   const { columns } = useColumnClassDetail()
   const [students, setStudents] = useState<IUser[]>()
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [teacherName, setTeacherName] = useState<string>('')
+
 
   const { fetch } = useFetchData({
     api: getClassDetail,
@@ -30,10 +32,11 @@ function DetailClass() {
       const students = data.classToUsers.map((item) => {
         return item.user
       })
+      setTeacherName(data.teacher.fullname as string);
       setStudents(students)
       setTitleGlobal(`Lớp ${data.name}`)
     })() 
-  }, [])
+  }, [isModalOpen])
 
   const handleAddStudent = () => {
     setIsModalOpen(true);
@@ -54,7 +57,7 @@ function DetailClass() {
           />  
         </div>
         <span>
-          GV: Bui Thanh Tho
+          GV: {teacherName}
         </span>
       </div>
       <BaseLayoutContent>

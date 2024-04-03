@@ -33,7 +33,8 @@ interface IClass extends IBase{
     name: string,
     teacherId: number,
     courseId: number,
-    classToUsers: IClassToUser[]
+    classToUsers: IClassToUser[],
+    teacher: IUser
 }
 
 interface IClassToUser extends IBase{
