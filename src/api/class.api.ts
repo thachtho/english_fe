@@ -6,6 +6,6 @@ export const createClass = (data: Pick<IClass, 'name' | 'teacherId' | 'courseId'
 export const editClass = (id: number, data: { id: number, name: string, teacherId: number }) => http.patch<IClass>(`/class/${id}`, data);
 export const deleteClass = (id: number) => http.delete(`/class/${id}`);
 export const getClassDetail = (id: number) => http.get<IClass>(`/class/${id}`);
-export const addStudentToClass = (data: Pick<IClassToUser, 'classId' | 'userId'>) => http.post<any>(`/class-user`, data);
+export const addStudentToClass = (data: Pick<IClassToStudent, 'classId' | 'userId'>) => http.post<any>(`/class-user`, data);
 
 

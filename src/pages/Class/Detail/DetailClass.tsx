@@ -10,12 +10,17 @@ import UseReactTable from '../../../hooks/useReactTable';
 import BaseLayoutContent from '../../../layout/BaseLayoutContent';
 import AddStudentToClass from './AddStudentToClass';
 import useColumnClassDetail from './useColumseClassDetail';
+import { Empty } from 'antd';
+import useLoader from '../../../hooks/useLoader';
+import Loader from '../../../common/Loader';
+import ContentComponent from '../../../components/ContentComponent';
 
 function DetailClass() {
+  const { loading } = useLoader()
   const { id: classId } = useParams();
   const { setTitleGlobal } = useApp()
   const { columns } = useColumnClassDetail()
-  const [students, setStudents] = useState<IUser[]>()
+  const [students, setStudents] = useState<IUser[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [teacherName, setTeacherName] = useState<string>('')
 
@@ -28,9 +33,10 @@ function DetailClass() {
   useEffect(() => {
     ( async () => {
       const data = await fetch() as IClass;
-      const students = data.classToUsers.map((item) => {
+      const students = data.classToStudents.map((item) => {
         return item.user
       })
+
       setTeacherName(data.teacher.fullname as string);
       setStudents(students)
       setTitleGlobal(`Lớp ${data.name}`)
@@ -45,35 +51,46 @@ function DetailClass() {
     columns,
     data: students??[]
   })
+
   
   return (
-    <div className='react-table'>
-      <div className='flex justify-between'> 
-        <div>
-          <HeaderAddElementComponent 
-              handleAdd={handleAddStudent}
-              handleImportExcell={handleAddStudent}
-          />  
-        </div>
-        <span>
-          GV: {teacherName}
-        </span>
-      </div>
-      <BaseLayoutContent>
-          <div className='student'>
-            <TableList table={table}/>
-            <div className="h-2" />
-            <Panigation  table={table} />                
+      <ContentComponent 
+          data={students}
+          loading={loading}
+          message='Chưa có học sinh nào'
+      >
+      <div className='react-table'>
+        <div className='flex justify-between'> 
+          <div>
+            <HeaderAddElementComponent 
+                handleAdd={handleAddStudent}
+                handleImportExcell={handleAddStudent}
+            />  
           </div>
-      </BaseLayoutContent>
-      {isModalOpen &&
-          <AddStudentToClass
-            setIsModalOpen={setIsModalOpen} 
-            isModalOpen={isModalOpen}
-            classId={Number(classId)}
-          />
-      }
-    </div>
+          <span>
+            GV: {teacherName}
+          </span>
+        </div>
+        <BaseLayoutContent>
+          {students.length > 0 && 
+            <div className='student'>
+              <TableList table={table}/>
+              <div className="h-2" />
+              <Panigation  table={table} />                
+            </div>
+          }
+
+        </BaseLayoutContent>
+        {isModalOpen &&
+            <AddStudentToClass
+              setIsModalOpen={setIsModalOpen} 
+              isModalOpen={isModalOpen}
+              classId={Number(classId)}
+            />
+        }
+      </div>   
+
+      </ContentComponent>
   )
 }
 

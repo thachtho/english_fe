@@ -27,6 +27,9 @@ import BaseLayoutContent from '../../../layout/BaseLayoutContent'
 import AddTeacher from './AddTeacher'
 import useTeacher from './hooks/useTeacher'
 import HeaderAddElementComponent from '../../../components/HeaderAddElementComponent'
+import { Empty } from 'antd'
+import ContentComponent from '../../../components/ContentComponent'
+import useLoader from '../../../hooks/useLoader'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -51,6 +54,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 }
 
 function Teacher() {
+  const { loading } = useLoader()
   useTitle();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -126,24 +130,32 @@ function Teacher() {
 
   return (
     <>
-        <HeaderAddElementComponent 
-            handleAdd={handleAddTeacher}
-            handleImportExcell={handleAddTeacher}
-        />  
-        <BaseLayoutContent>
-          <div className='react-table'>
-            <TableList table={table}/>
-            <div className="h-2" />
-            <Panigation table={table} />                
-          </div>
-        </BaseLayoutContent>
-        {isModalOpen &&
-          <AddTeacher 
-            setIsModalOpen={setIsModalOpen} 
-            isModalOpen={isModalOpen}
-            getDataTeacher={getDataTeacher}
-          />
-        }
+        <ContentComponent 
+            data={teachers}
+            loading={loading}
+            message='Chưa có giáo viên nào'
+        >
+          <HeaderAddElementComponent 
+              handleAdd={handleAddTeacher}
+              handleImportExcell={handleAddTeacher}
+          />  
+          <BaseLayoutContent>
+            <div className='react-table'>
+              <TableList table={table}/>
+              <div className="h-2" />
+              <Panigation table={table} />                
+            </div>
+          </BaseLayoutContent>
+          {isModalOpen &&
+            <AddTeacher 
+              setIsModalOpen={setIsModalOpen} 
+              isModalOpen={isModalOpen}
+              getDataTeacher={getDataTeacher}
+            />
+          }
+
+        </ContentComponent>
+
 
     </>
   )

@@ -27,6 +27,9 @@ import BaseLayoutContent from '../../../layout/BaseLayoutContent'
 import useStudent from './hooks/useStudent'
 import AddStudent from './AddStudent'
 import HeaderAddElementComponent from '../../../components/HeaderAddElementComponent'
+import { Empty } from 'antd'
+import ContentComponent from '../../../components/ContentComponent'
+import useLoader from '../../../hooks/useLoader'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -51,6 +54,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 }
 
 function Student() {
+  const { loading } = useLoader()
   useTitle();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -125,27 +129,31 @@ function Student() {
   }
 
   return (
-    <>
-        <HeaderAddElementComponent 
-            handleAdd={handleAddStudent}
-            handleImportExcell={handleAddStudent}
-        />  
-        <BaseLayoutContent>
-          <div className='react-table'>
-            <TableList table={table}/>
-            <div className="h-2" />
-            <Panigation table={table} />                
-          </div>
-        </BaseLayoutContent>
-        {isModalOpen &&
-          <AddStudent
-            setIsModalOpen={setIsModalOpen} 
-            isModalOpen={isModalOpen}
-            getDataStudent={getDataStudent}
-          />
-        }
+    <ContentComponent 
+        data={students}
+        loading={loading}
+        message='Chưa có học sinh nào'
+    >
+      <HeaderAddElementComponent 
+          handleAdd={handleAddStudent}
+          handleImportExcell={handleAddStudent}
+      />  
+      <BaseLayoutContent>
+        <div className='react-table'>
+          <TableList table={table}/>
+          <div className="h-2" />
+          <Panigation table={table} />                
+        </div>
+      </BaseLayoutContent>
+      {isModalOpen &&
+        <AddStudent
+          setIsModalOpen={setIsModalOpen} 
+          isModalOpen={isModalOpen}
+          getDataStudent={getDataStudent}
+        />
+      }
 
-    </>
+    </ContentComponent>
   )
 }
 

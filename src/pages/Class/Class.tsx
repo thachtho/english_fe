@@ -19,6 +19,9 @@ import AddClass from './AddClass'
 import DropdownCourse from './DropdownCourse'
 import EditClass from './EditClass'
 import useClass from './hooks/useClass'
+import { Empty } from 'antd'
+import ContentComponent from '../../components/ContentComponent'
+import useLoader from '../../hooks/useLoader'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -30,6 +33,7 @@ declare module '@tanstack/react-table' {
 }
 
 function Class() {
+  const { loading } = useLoader()
   const [idEditSelected, setIdEditSelected] = useState<number | null>(null)
   const { courses } = useClassContext()
   const handleEditTeacher = (id: number) => {
@@ -62,7 +66,11 @@ function Class() {
   }
   
   return (
-    <> 
+    <ContentComponent 
+        data={classs}
+        loading={loading}
+        message='Chưa có lớp học nào'
+    >
       {courseId && 
         <>
         <div className='flex justify-between'>
@@ -71,14 +79,14 @@ function Class() {
               handleImportExcell={handleAddClass}
               isButtonImportExcell={false}
           />  
- 
+
           <DropdownCourse 
             courseId={Number(courseId)}
             courses={courses}
           />
 
         </div>
- 
+
           <BaseLayoutContent>
             <div className='react-table'>
               <TableList table={table}/>
@@ -115,7 +123,8 @@ function Class() {
           }        
         </>
       }
-    </>
+
+    </ContentComponent>
   )
 }
 
