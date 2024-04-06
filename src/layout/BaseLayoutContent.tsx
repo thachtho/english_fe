@@ -19,7 +19,7 @@ function BaseLayoutContent({
   return (
     <div className="flex flex-col gap-10 mt-2">
       <div className={backgorund}>
-        <div className={overflow}>
+        <div className={overflow} style={{ height: "70vh" }}>
           {loading ? <Loader /> : (data.length === 0 ? <Empty description={message}/> :  children)}
         </div>
       </div>
