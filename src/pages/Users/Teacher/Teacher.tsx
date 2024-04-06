@@ -19,17 +19,15 @@ import {
   rankItem
 } from '@tanstack/match-sorter-utils'
 import { DeleteIcon, EditIcon } from '../../../components'
+import HeaderAddElementComponent from '../../../components/HeaderAddElementComponent'
 import Panigation from '../../../components/React-table/Panigation'
 import TableList from '../../../components/React-table/Table'
 import Button from '../../../components/UiElements/Button'
+import useLoader from '../../../hooks/useLoader'
 import useTitle from '../../../hooks/useTitle'
 import BaseLayoutContent from '../../../layout/BaseLayoutContent'
 import AddTeacher from './AddTeacher'
 import useTeacher from './hooks/useTeacher'
-import HeaderAddElementComponent from '../../../components/HeaderAddElementComponent'
-import { Empty } from 'antd'
-import ContentComponent from '../../../components/ContentComponent'
-import useLoader from '../../../hooks/useLoader'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -130,33 +128,28 @@ function Teacher() {
 
   return (
     <>
-        <ContentComponent 
-            data={teachers}
-            loading={loading}
-            message='Chưa có giáo viên nào'
-        >
-          <HeaderAddElementComponent 
-              handleAdd={handleAddTeacher}
-              handleImportExcell={handleAddTeacher}
-          />  
-          <BaseLayoutContent>
-            <div className='react-table'>
-              <TableList table={table}/>
-              <div className="h-2" />
-              <Panigation table={table} />                
-            </div>
-          </BaseLayoutContent>
-          {isModalOpen &&
-            <AddTeacher 
-              setIsModalOpen={setIsModalOpen} 
-              isModalOpen={isModalOpen}
-              getDataTeacher={getDataTeacher}
-            />
-          }
-
-        </ContentComponent>
-
-
+      <HeaderAddElementComponent 
+          handleAdd={handleAddTeacher}
+          handleImportExcell={handleAddTeacher}
+      />  
+      <BaseLayoutContent
+        data={teachers}
+        loading={loading}
+        message='Chưa có giáo viên nào'
+      >
+        <div className='react-table'>
+          <TableList table={table}/>
+          <div className="h-2" />
+          <Panigation table={table} />                
+        </div>
+      </BaseLayoutContent>
+      {isModalOpen &&
+        <AddTeacher 
+          setIsModalOpen={setIsModalOpen} 
+          isModalOpen={isModalOpen}
+          getDataTeacher={getDataTeacher}
+        />
+      }
     </>
   )
 }

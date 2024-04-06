@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { deleteCourse } from '../../api/course.api';
-import ContentComponent from '../../components/ContentComponent';
 import HeaderAddElementComponent from '../../components/HeaderAddElementComponent';
 import ModalConfirm from '../../components/Modal/Confirm';
 import Panigation from '../../components/React-table/Panigation';
@@ -52,18 +51,18 @@ function Course() {
     })
 
     return (
-        <ContentComponent 
-            data={courses}
-            loading={loading}
-            message='Chưa có khóa học nào'
-        >
+        <>
             <HeaderAddElementComponent 
                 handleAdd={handleAdd}
                 isButtonImportExcell={false}
             />  
             <div className='react-table'>
                 {courses.length > 0 &&
-                    <BaseLayoutContent>
+                    <BaseLayoutContent
+                        data={courses}
+                        loading={loading}
+                        message='Chưa có khóa học nào'
+                    >
                         <div className='student'>
                             <TableList table={table}/>
                             <div className="h-2" />
@@ -97,7 +96,7 @@ function Course() {
                     />
                 }
             </div>                  
-        </ContentComponent>
+        </>
     )
 }
 

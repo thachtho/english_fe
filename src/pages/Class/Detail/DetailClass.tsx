@@ -6,14 +6,11 @@ import Panigation from '../../../components/React-table/Panigation';
 import TableList from '../../../components/React-table/Table';
 import { useApp } from '../../../context/app.context';
 import useFetchData from '../../../hooks/useFetchData';
+import useLoader from '../../../hooks/useLoader';
 import UseReactTable from '../../../hooks/useReactTable';
 import BaseLayoutContent from '../../../layout/BaseLayoutContent';
 import AddStudentToClass from './AddStudentToClass';
 import useColumnClassDetail from './useColumseClassDetail';
-import { Empty } from 'antd';
-import useLoader from '../../../hooks/useLoader';
-import Loader from '../../../common/Loader';
-import ContentComponent from '../../../components/ContentComponent';
 
 function DetailClass() {
   const { loading } = useLoader()
@@ -54,43 +51,41 @@ function DetailClass() {
 
   
   return (
-      <ContentComponent 
-          data={students}
-          loading={loading}
-          message='Chưa có học sinh nào'
-      >
-      <div className='react-table'>
-        <div className='flex justify-between'> 
-          <div>
-            <HeaderAddElementComponent 
-                handleAdd={handleAddStudent}
-                handleImportExcell={handleAddStudent}
-            />  
-          </div>
-          <span>
-            GV: {teacherName}
-          </span>
+    <div className='react-table'>
+      <div className='flex justify-between'> 
+        <div>
+          <HeaderAddElementComponent 
+              handleAdd={handleAddStudent}
+              handleImportExcell={handleAddStudent}
+          />  
         </div>
-        <BaseLayoutContent>
-          {students.length > 0 && 
-            <div className='student'>
-              <TableList table={table}/>
-              <div className="h-2" />
-              <Panigation  table={table} />                
-            </div>
-          }
-
-        </BaseLayoutContent>
-        {isModalOpen &&
-            <AddStudentToClass
-              setIsModalOpen={setIsModalOpen} 
-              isModalOpen={isModalOpen}
-              classId={Number(classId)}
-            />
+        <span>
+          GV: {teacherName}
+        </span>
+      </div>
+      <BaseLayoutContent
+        data={students}
+        loading={loading}
+        message='Chưa có học sinh nào'
+      >
+        {students.length > 0 && 
+          <div className='student'>
+            <TableList table={table}/>
+            <div className="h-2" />
+            <Panigation  table={table} />                
+          </div>
         }
-      </div>   
 
-      </ContentComponent>
+      </BaseLayoutContent>    
+
+      {isModalOpen &&
+          <AddStudentToClass
+            setIsModalOpen={setIsModalOpen} 
+            isModalOpen={isModalOpen}
+            classId={Number(classId)}
+          />
+      }
+    </div>   
   )
 }
 

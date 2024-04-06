@@ -21,8 +21,8 @@ const DefaultLayout = () => {
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}
-          <main>
-            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+          <main style={{ height: "90vh" }}>
+            <div className="mx-auto  p-4 md:p-6 2xl:p-10">
               <Outlet />
             </div>
           </main>

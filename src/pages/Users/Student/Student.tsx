@@ -19,17 +19,15 @@ import {
   rankItem
 } from '@tanstack/match-sorter-utils'
 import { DeleteIcon, EditIcon } from '../../../components'
+import HeaderAddElementComponent from '../../../components/HeaderAddElementComponent'
 import Panigation from '../../../components/React-table/Panigation'
 import TableList from '../../../components/React-table/Table'
 import Button from '../../../components/UiElements/Button'
+import useLoader from '../../../hooks/useLoader'
 import useTitle from '../../../hooks/useTitle'
 import BaseLayoutContent from '../../../layout/BaseLayoutContent'
-import useStudent from './hooks/useStudent'
 import AddStudent from './AddStudent'
-import HeaderAddElementComponent from '../../../components/HeaderAddElementComponent'
-import { Empty } from 'antd'
-import ContentComponent from '../../../components/ContentComponent'
-import useLoader from '../../../hooks/useLoader'
+import useStudent from './hooks/useStudent'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -129,16 +127,16 @@ function Student() {
   }
 
   return (
-    <ContentComponent 
-        data={students}
-        loading={loading}
-        message='Chưa có học sinh nào'
-    >
+    <>
       <HeaderAddElementComponent 
           handleAdd={handleAddStudent}
           handleImportExcell={handleAddStudent}
       />  
-      <BaseLayoutContent>
+      <BaseLayoutContent
+        data={students}
+        loading={loading}
+        message='Chưa có học sinh nào'
+      >
         <div className='react-table'>
           <TableList table={table}/>
           <div className="h-2" />
@@ -153,7 +151,7 @@ function Student() {
         />
       }
 
-    </ContentComponent>
+    </>
   )
 }
 
