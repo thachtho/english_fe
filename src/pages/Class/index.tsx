@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDefaultCourse } from '../../api/course.api';
+import KeepAliveCustom from '../../components/KeepAliveCustom';
 import ClassProvider from '../../context/class.context';
 import useQueryUrl from '../../hooks/useQueryUrl';
 import Class from './Class';
@@ -27,9 +28,11 @@ function index() {
   }
 
   return (
-    <ClassProvider >
-        <Class />
-    </ClassProvider>
+    <KeepAliveCustom>
+      <ClassProvider >
+          <Class />
+      </ClassProvider>
+    </KeepAliveCustom>
   )
 }
 

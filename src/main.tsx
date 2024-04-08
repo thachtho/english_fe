@@ -7,17 +7,18 @@ import './index.css';
 import './satoshi.css';
 import AppProvider from './context/app.context';
 import TabsProvider from './context/tabs.context';
+import { AliveScope } from 'react-activation'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  // <React.StrictMode>
-    <Router>
-      <TabsProvider>
-        <AppProvider>
+  <Router>
+    <TabsProvider>
+      <AppProvider>
+        <AliveScope>
           <App />
-        </AppProvider>
-      </TabsProvider>
+        </AliveScope>
+      </AppProvider>
+    </TabsProvider>
+    <ToastContainer />
+  </Router>    
 
-      <ToastContainer />
-    </Router>
-  // </React.StrictMode>
 );

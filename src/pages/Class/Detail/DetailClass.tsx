@@ -11,6 +11,7 @@ import UseReactTable from '../../../hooks/useReactTable';
 import BaseLayoutContent from '../../../layout/BaseLayoutContent';
 import AddStudentToClass from './AddStudentToClass';
 import useColumnClassDetail from './useColumseClassDetail';
+import { getKeyTab } from '../../../untils';
 
 function DetailClass() {
   const { setTitleCurrentTab } = useTabs();
@@ -36,7 +37,9 @@ function DetailClass() {
 
       setTeacherName(data.teacher.fullname as string);
       setStudents(students)
-      setTitleCurrentTab(data.name)
+      const key = getKeyTab(location as any)
+      console.log(12312321, key)
+      setTitleCurrentTab(data.name, key)
     })() 
   }, [isModalOpen, classId])
 

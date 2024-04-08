@@ -1,14 +1,16 @@
 import { useEffect } from 'react'
-import { useTabs } from '../context/tabs.context'
-import { getTitleByPath } from '../api/control.api'
 import toast from 'react-hot-toast'
-import { matchRoutes, useLocation}  from 'react-router-dom'
+import { matchRoutes, useLocation } from 'react-router-dom'
+import { getTitleByPath } from '../api/control.api'
+import { useTabs } from '../context/tabs.context'
 import routes from '../routes'
+import { getKeyTab } from '../untils'
 
 function useAddTab() {
     const { addTab } = useTabs();
     const location = useLocation();
     const match = (matchRoutes(routes, location)??[])[0]?.route.path;
+
 
     useEffect(() => {
         ( async () => {
@@ -23,13 +25,12 @@ function useAddTab() {
     const fetch = async () => {
         try {
             const path = match?.slice(1)
-            const search = location.search
             const { data } = await getTitleByPath(path)
+            const key = getKeyTab(location as any)
 
             return {
                 label: data.name,
-                key: location.pathname,
-                search,
+                key: key,
                 match
             }
         } catch (error: any) {

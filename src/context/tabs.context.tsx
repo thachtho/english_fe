@@ -1,18 +1,19 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
 type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
 const defaultPanes = [
-    { label: 'Home', key: '/' }
+    { label: 'Home', key: '/', isSetTitle: false }
 ];
 
 
 interface Item {
     label: string;
     key: string;
-    search?: string
+    search?: string,
+    isSetTitle?: boolean
 }
 interface TabsState {
     items: Item[],
@@ -21,7 +22,7 @@ interface TabsState {
     addTab: (data: Item) => void,
     removeTab: (targetKey: TargetKey) => void
     onEditTab: (targetKey: TargetKey, action: 'add' | 'remove') => void,
-    setTitleCurrentTab: (title: string) => void
+    setTitleCurrentTab: (title: string, key: string) => void
 }
 
 export const TabsContext = React.createContext<TabsState>({
@@ -45,14 +46,11 @@ const TabsProvider = ({ children }: any) => {
         setActiveKey(key);
       };
     
-      const addTab = ({ label, key, search }: Item) => {
-        if (search && search?.length !== 0) {
-            key = `${key}${search}`
-        }
+      const addTab = ({ label, key }: Item) => {
         const isExit = items.find((item) => item.key === key);
 
         if (!isExit) {
-            setItems([...items, { label, key }]);
+            setItems([...items, { label, key, isSetTitle: false }]);
         }
 
         setActiveKey(key);
@@ -77,27 +75,26 @@ const TabsProvider = ({ children }: any) => {
         }
       };
 
-      const setTitleCurrentTab = (title: string) => {
-        const getKeyActive = () =>  new Promise((resolve, reject) => {
-            setActiveKey((prev1) => {
-                resolve(prev1)
-                return prev1
-            })
-        })
+      const setTitleCurrentTab = (title: string, key: string) => {  
         setTimeout( async () => {
-            const newKeyActive = await getKeyActive();
-
             setItems((items) => {
-                const tab = items.find((item) => item.key === newKeyActive)
+                const tab = items.find((item) => item.key === key)
 
                 if (tab) {
-                    tab.label = `${tab?.label} ${title}`
+                    if (!tab?.isSetTitle) {
+                        tab.isSetTitle = true
+                        tab.label = `${tab?.label} ${title}`
+                    }
                 }
 
                 return [...items]
             })
-        }, 1000);
+        }, 500);
       }
+
+      useEffect(() => {
+        console.log(12312321)
+      }, [window.location.href])
 
     const values = {
         addTab,

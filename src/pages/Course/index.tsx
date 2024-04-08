@@ -1,8 +1,12 @@
+import KeepAliveCustom from '../../components/KeepAliveCustom';
 import Course from './Course';
 
 function index() {
+
   return (
-    <Course />
+    <KeepAliveCustom>
+      <Course />
+    </KeepAliveCustom>
   )
 }
 
