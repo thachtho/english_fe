@@ -25,7 +25,8 @@ function useAddTab() {
     const fetch = async () => {
         try {
             const path = match?.slice(1)
-            const { data } = await getTitleByPath(path)
+            const { data } = await getTitleByPath(!path ? '/' : path)
+            
             const key = getKeyTab(location as any)
 
             return {
@@ -34,6 +35,7 @@ function useAddTab() {
                 match
             }
         } catch (error: any) {
+            
             toast.error(error?.response?.data?.message)
         }
     }

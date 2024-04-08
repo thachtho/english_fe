@@ -4,11 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
-const defaultPanes = [
-    { label: 'Home', key: '/', isSetTitle: false }
-];
-
-
 interface Item {
     label: string;
     key: string;
@@ -38,8 +33,8 @@ export const TabsContext = React.createContext<TabsState>({
 
 const TabsProvider = ({ children }: any) => {
     const navigation = useNavigate();
-    const [activeKey, setActiveKey] = useState(defaultPanes[0].key);
-    const [items, setItems] = useState(defaultPanes);
+    const [activeKey, setActiveKey] = useState('');
+    const [items, setItems] = useState<Item[]>([]);
 
     const onChangeTab = (key: string) => {
         navigation(`${key}`)

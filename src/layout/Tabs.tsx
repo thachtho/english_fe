@@ -7,16 +7,15 @@ const TabsLayout: React.FC = () => {
   const { activeKey, items, onEditTab, onChangeTab } = useTabs();
 
   return (
-    <div>
-      <Tabs
-        hideAdd
-        onChange={onChangeTab}
-        activeKey={activeKey}
-        type="editable-card"
-        onEdit={onEditTab}
-        items={items}
-      />
-    </div>
+    <Tabs
+      hideAdd
+      onChange={onChangeTab}
+      activeKey={activeKey}
+      type="editable-card"
+      onEdit={onEditTab}
+      items={items}
+      className='mt-2 ml-2'
+    />
   );
 };
 

@@ -30,3 +30,17 @@
       font-weight: normal;
     }
 }
+
+.ant-tabs-tab-with-remove {
+  background-color: white !important; 
+  // border: 1px solid rgb(221, 218, 218) !important;
+}
+
+.ant-tabs-tab-active {
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity)) !important;
+  border: 1px solid rgb(221, 218, 218) !important;
+  border-bottom: none !important
+}
+.ant-tabs-nav {
+  margin: 0 !important;
+}

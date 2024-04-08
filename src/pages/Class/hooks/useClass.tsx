@@ -6,9 +6,8 @@ import { getClass } from "../../../api/class.api";
 import { DeleteIcon, EditIcon } from "../../../components";
 import Button from "../../../components/UiElements/Button";
 import { useClass as useClassContext } from "../../../context/class.context";
-import UseReactTable from "../../../hooks/useReactTable";
 import useQueryUrl from "../../../hooks/useQueryUrl";
-import { useApp } from "../../../context/app.context";
+import UseReactTable from "../../../hooks/useReactTable";
 
 function useClass({
   handleEditTeacher,
@@ -18,7 +17,6 @@ function useClass({
   setIsModalConfirmDeleteOpen: any
 }) {
     const navigation = useNavigate();
-    const { setTitleGlobal } = useApp()
     const courseId = useQueryUrl('courseId');
     const [classs, setClass] = React.useState<IClass[]>([])
     const [idDelete, setIdDelete] = React.useState<null | number>(null)
@@ -98,7 +96,6 @@ function useClass({
     })
 
     useEffect(() => {
-      setTitleGlobal('Khoa hoc')
       getDataClass();
     }, [courseId])
 
