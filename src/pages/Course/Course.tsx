@@ -5,9 +5,9 @@ import HeaderAddElementComponent from '../../components/HeaderAddElementComponen
 import ModalConfirm from '../../components/Modal/Confirm';
 import Panigation from '../../components/React-table/Panigation';
 import TableList from '../../components/React-table/Table';
+import useAddTab from '../../hooks/useAddTab';
 import useLoader from '../../hooks/useLoader';
 import UseReactTable from '../../hooks/useReactTable';
-import useTitle from '../../hooks/useTitle';
 import BaseLayoutContent from '../../layout/BaseLayoutContent';
 import ModalAddCourse from './ModalAddCourse';
 import ModalEditCourse from './ModalEditCourse';
@@ -16,7 +16,7 @@ import useFetchCourse from './hooks/useFetchCourse';
 
 function Course() {
     const { loading } = useLoader()
-    useTitle();
+    useAddTab();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [isModalConfirmDeleteOpen, setIsModalConfirmDeleteOpen] = useState(false);

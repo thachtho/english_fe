@@ -24,10 +24,10 @@ import Panigation from '../../../components/React-table/Panigation'
 import TableList from '../../../components/React-table/Table'
 import Button from '../../../components/UiElements/Button'
 import useLoader from '../../../hooks/useLoader'
-import useTitle from '../../../hooks/useTitle'
 import BaseLayoutContent from '../../../layout/BaseLayoutContent'
 import AddTeacher from './AddTeacher'
 import useTeacher from './hooks/useTeacher'
+import useAddTab from '../../../hooks/useAddTab'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -53,7 +53,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 
 function Teacher() {
   const { loading } = useLoader()
-  useTitle();
+  useAddTab();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [globalFilter, setGlobalFilter] = React.useState('')

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import ClassProvider from '../../context/class.context'
-import Class from './Class'
 import { useNavigate } from 'react-router-dom';
-import useQueryUrl from '../../hooks/useQueryUrl';
 import { getDefaultCourse } from '../../api/course.api';
+import ClassProvider from '../../context/class.context';
+import useQueryUrl from '../../hooks/useQueryUrl';
+import Class from './Class';
 
 function index() {
   const navigation = useNavigate();

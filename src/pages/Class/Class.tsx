@@ -20,6 +20,7 @@ import AddClass from './AddClass'
 import DropdownCourse from './DropdownCourse'
 import EditClass from './EditClass'
 import useClass from './hooks/useClass'
+import useAddTab from '../../hooks/useAddTab'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -31,6 +32,7 @@ declare module '@tanstack/react-table' {
 }
 
 function Class() {
+  useAddTab()
   const { loading } = useLoader()
   const [idEditSelected, setIdEditSelected] = useState<number | null>(null)
   const { courses } = useClassContext()

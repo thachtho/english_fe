@@ -6,13 +6,17 @@ import App from './App';
 import './index.css';
 import './satoshi.css';
 import AppProvider from './context/app.context';
+import TabsProvider from './context/tabs.context';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   // <React.StrictMode>
     <Router>
-      <AppProvider>
-        <App />
-      </AppProvider>
+      <TabsProvider>
+        <AppProvider>
+          <App />
+        </AppProvider>
+      </TabsProvider>
+
       <ToastContainer />
     </Router>
   // </React.StrictMode>
