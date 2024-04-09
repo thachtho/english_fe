@@ -21,6 +21,7 @@ function DetailClass() {
   const [students, setStudents] = useState<IUser[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [teacherName, setTeacherName] = useState<string>('')
+  const [className, setClassName] = useState<string>('')
 
 
   const { fetch } = useFetchData({
@@ -38,8 +39,8 @@ function DetailClass() {
       setTeacherName(data.teacher.fullname as string);
       setStudents(students)
       const key = getKeyTab(location as any)
-      console.log(12312321, key)
       setTitleCurrentTab(data.name, key)
+      setClassName(data.name)
     })() 
   }, [isModalOpen, classId])
 
@@ -51,7 +52,6 @@ function DetailClass() {
     columns,
     data: students??[]
   })
-
   
   return (
     <div className='react-table'>

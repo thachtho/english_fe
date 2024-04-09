@@ -7,7 +7,7 @@ import Loader from './common/Loader';
 import './app.scss';
 import SignIn from './pages/Authentication/SignIn/SignIn';
 import SignUp from './pages/Authentication/SignUp';
-import Home from './pages/index';
+import Home from './pages/Home/index';
 import routes from './routes';
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
@@ -34,7 +34,7 @@ function App() {
               path={path}
               key={index}
               element={
-                <Suspense fallback={<Loader />}>
+                <Suspense fallback={<>...</>}>
                   <Component />
                 </Suspense>
               }

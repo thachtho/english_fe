@@ -18,7 +18,8 @@ interface IBase {
 
 interface IControl extends IBase{
     path: string,
-    name: string
+    name: string,
+    controlChildrens: IControl[],
 }
 
 interface IUser extends IBase{

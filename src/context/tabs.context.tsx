@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getKeyTab } from '../untils';
 
 
 type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
@@ -87,10 +88,12 @@ const TabsProvider = ({ children }: any) => {
         }, 500);
       }
 
-      useEffect(() => {
-        console.log(12312321)
-      }, [window.location.href])
+      // useEffect(() => {
+      //   const key = getKeyTab(location as any);
+      //   setActiveKey(key);
+      // }, [items, window.location.href])
 
+      console.log(1111111, items)
     const values = {
         addTab,
         onChangeTab,

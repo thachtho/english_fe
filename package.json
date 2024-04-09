@@ -9,7 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@faker-js/faker": "^8.4.1",
+    "@mui/icons-material": "^5.15.15",
+    "@mui/material": "^5.15.15",
+    "@mui/x-date-pickers": "^7.1.1",
     "@tanstack/match-sorter-utils": "^8.11.8",
     "@tanstack/react-table": "^8.15.0",
     "@windmill/react-ui": "^0.6.0",
@@ -23,6 +28,7 @@
     "jsvectormap": "^1.5.3",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
+    "material-react-table": "^2.12.1",
     "nebular": "^0.0.1",
     "react": "^18.2.0",
     "react-activation": "^0.12.4",
