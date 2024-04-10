@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Route, Routes } from 'react-router-dom';
 
@@ -34,9 +34,9 @@ function App() {
               path={path}
               key={index}
               element={
-                <Suspense fallback={<>...</>}>
-                  <Component />
-                </Suspense>
+                <React.Suspense fallback={<>...</>}>
+                    <Component />
+                </React.Suspense> 
               }
             />
           ))}

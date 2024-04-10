@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getKeyTab } from '../untils';
+import { useAliveController } from 'react-activation';
 
 
 type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
@@ -9,7 +10,8 @@ interface Item {
     label: string;
     key: string;
     search?: string,
-    isSetTitle?: boolean
+    isSetTitle?: boolean,
+    closable?: boolean
 }
 interface TabsState {
     items: Item[],
@@ -34,8 +36,10 @@ export const TabsContext = React.createContext<TabsState>({
 
 const TabsProvider = ({ children }: any) => {
     const navigation = useNavigate();
+    const location = useLocation();
     const [activeKey, setActiveKey] = useState('');
     const [items, setItems] = useState<Item[]>([]);
+    const { drop } = useAliveController()
 
     const onChangeTab = (key: string) => {
         navigation(`${key}`)
@@ -60,6 +64,8 @@ const TabsProvider = ({ children }: any) => {
           setActiveKey(key);
           navigation(`${key}`)
         }
+
+        drop(activeKey); //xoa cache component keepAlive
         setItems(newPanes);
       };
     
@@ -88,12 +94,11 @@ const TabsProvider = ({ children }: any) => {
         }, 500);
       }
 
-      // useEffect(() => {
-      //   const key = getKeyTab(location as any);
-      //   setActiveKey(key);
-      // }, [items, window.location.href])
+      useEffect(() => {
+        const key = getKeyTab(location as any);
+        setActiveKey(key);
+      }, [items, window.location.href])
 
-      console.log(1111111, items)
     const values = {
         addTab,
         onChangeTab,

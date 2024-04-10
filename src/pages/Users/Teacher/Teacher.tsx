@@ -27,7 +27,6 @@ import useLoader from '../../../hooks/useLoader'
 import BaseLayoutContent from '../../../layout/BaseLayoutContent'
 import AddTeacher from './AddTeacher'
 import useTeacher from './hooks/useTeacher'
-import useAddTab from '../../../hooks/useAddTab'
 
 declare module '@tanstack/react-table' {
   interface FilterFns {
@@ -53,7 +52,6 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 
 function Teacher() {
   const { loading } = useLoader()
-  useAddTab();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [globalFilter, setGlobalFilter] = React.useState('')

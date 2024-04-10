@@ -23,7 +23,6 @@ import HeaderAddElementComponent from '../../../components/HeaderAddElementCompo
 import Panigation from '../../../components/React-table/Panigation'
 import TableList from '../../../components/React-table/Table'
 import Button from '../../../components/UiElements/Button'
-import useAddTab from '../../../hooks/useAddTab'
 import useLoader from '../../../hooks/useLoader'
 import BaseLayoutContent from '../../../layout/BaseLayoutContent'
 import AddStudent from './AddStudent'
@@ -53,7 +52,6 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 
 function Student() {
   const { loading } = useLoader()
-  useAddTab();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [globalFilter, setGlobalFilter] = React.useState('')

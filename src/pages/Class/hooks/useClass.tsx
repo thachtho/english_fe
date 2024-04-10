@@ -2,7 +2,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { getClass } from "../../../api/class.api";
+
+import { getClassListByCourseId } from "../../../api/class.api";
 import { DeleteIcon, EditIcon } from "../../../components";
 import Button from "../../../components/UiElements/Button";
 import { useClass as useClassContext } from "../../../context/class.context";
@@ -83,7 +84,7 @@ function useClass({
 
      const getDataClass = async () => {
         try {
-          const { data } = await getClass(Number(courseId))
+          const { data } = await getClassListByCourseId(Number(courseId))
           setClass(data);
         } catch (error: any) {
             toast.error(error?.response?.data?.message)

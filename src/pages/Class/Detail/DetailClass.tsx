@@ -1,31 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getClassDetail } from '../../../api/class.api';
+
+import { studentsInClass } from '../../../api/class.api';
 import HeaderAddElementComponent from '../../../components/HeaderAddElementComponent';
 import Panigation from '../../../components/React-table/Panigation';
 import TableList from '../../../components/React-table/Table';
-import { useTabs } from '../../../context/tabs.context';
 import useFetchData from '../../../hooks/useFetchData';
 import useLoader from '../../../hooks/useLoader';
 import UseReactTable from '../../../hooks/useReactTable';
 import BaseLayoutContent from '../../../layout/BaseLayoutContent';
 import AddStudentToClass from './AddStudentToClass';
 import useColumnClassDetail from './useColumseClassDetail';
-import { getKeyTab } from '../../../untils';
 
 function DetailClass() {
-  const { setTitleCurrentTab } = useTabs();
   const { loading } = useLoader()
   const { id: classId } = useParams();
   const { columns } = useColumnClassDetail()
   const [students, setStudents] = useState<IUser[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [teacherName, setTeacherName] = useState<string>('')
-  const [className, setClassName] = useState<string>('')
-
 
   const { fetch } = useFetchData({
-    api: getClassDetail,
+    api: studentsInClass,
     params: classId
   })
   
@@ -38,9 +34,7 @@ function DetailClass() {
 
       setTeacherName(data.teacher.fullname as string);
       setStudents(students)
-      const key = getKeyTab(location as any)
-      setTitleCurrentTab(data.name, key)
-      setClassName(data.name)
+
     })() 
   }, [isModalOpen, classId])
 

@@ -5,7 +5,6 @@ import HeaderAddElementComponent from '../../components/HeaderAddElementComponen
 import ModalConfirm from '../../components/Modal/Confirm';
 import Panigation from '../../components/React-table/Panigation';
 import TableList from '../../components/React-table/Table';
-import useAddTab from '../../hooks/useAddTab';
 import useLoader from '../../hooks/useLoader';
 import UseReactTable from '../../hooks/useReactTable';
 import BaseLayoutContent from '../../layout/BaseLayoutContent';
@@ -16,7 +15,6 @@ import useFetchCourse from './hooks/useFetchCourse';
 
 function Course() {
     const { loading } = useLoader()
-    useAddTab();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [isModalConfirmDeleteOpen, setIsModalConfirmDeleteOpen] = useState(false);
@@ -63,7 +61,7 @@ function Course() {
                         loading={loading}
                         message='Chưa có khóa học nào'
                     >
-                        <div className='student'>
+                        <div className='react-table'>
                             <TableList table={table}/>
                             <div className="h-2" />
                             <Panigation table={table} />                
