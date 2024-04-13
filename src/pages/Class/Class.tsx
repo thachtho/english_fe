@@ -66,7 +66,7 @@ const Class = () => {
         accessorKey: 'blockId',
       },
     ]
-  }, [teachers.length])
+  }, [teachers.length, courseId])
 
   const table = useMaterialReactTable({
     columns,
