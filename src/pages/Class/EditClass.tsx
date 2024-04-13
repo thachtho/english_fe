@@ -9,6 +9,8 @@ interface IPropsEditClass {
     idEditSelected: number | null,
     dataClass: IClass[],
     teachers: IUser[]
+    courseId: number,
+    dataTeachersDropdown: IPropsDropdown[]
 }
 
 function EditClass({
@@ -16,10 +18,13 @@ function EditClass({
     isModalOpen,
     getDataClass,
     dataClass,
-    idEditSelected
+    idEditSelected,
+    courseId,
+    teachers,
+    dataTeachersDropdown
 }: IPropsEditClass) {
-    const handleEdit = async (values: { name: string, teacherId: number }) => {
-        return editClass(Number(idEditSelected), { ...values, id: idEditSelected as number });
+    const handleEdit = async (values: { name: string, teacherId: number, blockId: number }) => {
+        return editClass(Number(idEditSelected), { ...values, id: idEditSelected as number, courseId });
     }
 
     const data = useMemo(() => {
@@ -27,7 +32,8 @@ function EditClass({
 
         return {
             className: option?.name,
-            teacherId: option?.teacherId
+            teacherId: option?.teacherId,
+            blockId: option?.blockId
         };
     }, [])
     
@@ -39,6 +45,9 @@ function EditClass({
             handle={handleEdit}
             options={data}
             isEdit={true}
+            teachers={teachers}
+            dataTeachersDropdown={dataTeachersDropdown}
+            title='Chỉnh sửa'
         />
     )
 }

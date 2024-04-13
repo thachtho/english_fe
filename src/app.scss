@@ -48,3 +48,7 @@
 :where(.css-dev-only-do-not-override-1kuana8).ant-tabs-top >.ant-tabs-nav::before, :where(.css-dev-only-do-not-override-1kuana8).ant-tabs-bottom >.ant-tabs-nav::before, :where(.css-dev-only-do-not-override-1kuana8).ant-tabs-top >div>.ant-tabs-nav::before, :where(.css-dev-only-do-not-override-1kuana8).ant-tabs-bottom >div>.ant-tabs-nav::before{
   border-bottom: 1px solid rgb(221, 218, 218) ;
 }
+
+.MuiAlert-message {
+  display: none;
+}

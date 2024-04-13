@@ -6,12 +6,14 @@ import { useNavigate } from "react-router-dom"
 
 interface IProps {
     courseId: number,
-    courses: ICourse[]
+    courses: ICourse[],
+    setCourseIdSelected: (value: number) => void
 }
 
 function DropdownCourse({
     courseId,
-    courses
+    courses,
+    setCourseIdSelected
 }: IProps) {
     const navigation = useNavigate();
     const [courseName, setCourseName] = useState<string>('')
@@ -36,17 +38,18 @@ function DropdownCourse({
     })
 
     const handleChangeCourse = (value: number) => {
-        navigation(`/class?courseId=${value}`)
+        setCourseIdSelected(value)
+        navigation(`/class`)
     }
 
     return (
         <div>
             {courseName && dataDropdown.length > 0 &&
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center cursor-pointer">
                     <span>Khóa:</span>
                     <Dropdown 
                         data={dataDropdown} 
-                        defaultValue={courseName}
+                        defaultValue={courseId}
                         handleChange={handleChangeCourse}
                     />
                 </div>

@@ -3,6 +3,7 @@ import React from 'react'
 import Button from '../../../components/UiElements/Button';
 import { DeleteIcon, EditIcon } from '../../../components';
 import { useNavigate } from 'react-router-dom';
+import { useApp } from '../../../context/app.context';
 
 function useColumnCourse({
   setIdSelected,
@@ -14,6 +15,7 @@ function useColumnCourse({
   setIsModalConfirmDeleteOpen: (isOpen: boolean) => void,
 }) {
   const navigation = useNavigate();
+  const { setCourseIdSelected } = useApp()
   const [idDelete, setIdDelete] = React.useState<null | number>(null)
   const handleEdit = (id: number) => {
     setIsModalEditOpen(true)
@@ -26,7 +28,8 @@ function useColumnCourse({
   }
 
   const navigateClass = (id: number, course: string) => {
-    navigation(`/class?courseId=${id}`);
+    setCourseIdSelected(id);
+    navigation(`/class`);
   }
 
   const columns = React.useMemo<ColumnDef<ICourse, any>[]>(

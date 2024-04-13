@@ -16,6 +16,7 @@
     "@mui/material": "^5.15.15",
     "@mui/x-date-pickers": "^7.1.1",
     "@tanstack/match-sorter-utils": "^8.11.8",
+    "@tanstack/react-query": "^5.29.2",
     "@tanstack/react-table": "^8.15.0",
     "@windmill/react-ui": "^0.6.0",
     "angular": "^1.6.10",

@@ -1,58 +1,131 @@
-import { useState } from 'react'
-
 import {
-  FilterFn
-} from '@tanstack/react-table'
-
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Tooltip
+} from '@mui/material';
 import {
-  RankingInfo
-} from '@tanstack/match-sorter-utils'
-import toast from 'react-hot-toast'
-import { deleteClass } from '../../api/class.api'
-import HeaderAddElementComponent from '../../components/HeaderAddElementComponent'
-import ModalConfirm from '../../components/Modal/Confirm'
-import Panigation from '../../components/React-table/Panigation'
-import TableList from '../../components/React-table/Table'
-import { useClass as useClassContext } from "../../context/class.context"
-import useLoader from '../../hooks/useLoader'
-import BaseLayoutContent from '../../layout/BaseLayoutContent'
-import AddClass from './AddClass'
-import DropdownCourse from './DropdownCourse'
-import EditClass from './EditClass'
-import useClass from './hooks/useClass'
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef
+} from 'material-react-table';
+import { useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
+import { deleteClass } from '../../api/class.api';
+import { DeleteIcon, EditIcon } from '../../components';
+import ModalConfirm from '../../components/Modal/Confirm';
+import { useApp } from '../../context/app.context';
+import { BLOCKS } from '../../shared/constants';
+import AddClass from './AddClass';
+import DropdownCourse from './DropdownCourse';
+import EditClass from './EditClass';
+import useClass from './hooks/useClass';
 
-declare module '@tanstack/react-table' {
-  interface FilterFns {
-    fuzzy: FilterFn<unknown>
-  }
-  interface FilterMeta {
-    itemRank: RankingInfo
-  }
-}
-
-function Class() {
-  const { loading } = useLoader()
-  const [idEditSelected, setIdEditSelected] = useState<number | null>(null)
-  const { courses } = useClassContext()
-  const handleEditTeacher = (id: number) => {
-    setIsModalEditOpen(true);
-    setIdEditSelected(id);
-  }
-  const [isModalConfirmDeleteOpen, setIsModalConfirmDeleteOpen] = useState(false);
-  const { 
+const Class = () => {
+  const { height } = useApp()
+    const { 
     getDataClass, 
-    table, 
     classs, 
     teachers, 
-    idDelete,
-    courseId
-  } = useClass({ handleEditTeacher, setIsModalConfirmDeleteOpen });
+    courseId,
+    dataTeachersDropdown,
+    courses,
+    setCourseIdSelected
+  } = useClass();
+
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+  const [idEditSelected, setIdEditSelected] = useState<number | null>(null)
+  const [idDelete, setIdDelete] = useState<null | number>(null)
+  const [isModalConfirmDeleteOpen, setIsModalConfirmDeleteOpen] = useState(false);
+  const columns = useMemo<MRT_ColumnDef<IClass>[]>(() => {
+    return [
+      {
+        header: 'Tên lớp',
+        accessorKey: 'name',
+      },
+      {
+        accessorFn: (row) => {
+          const teacherId = row.teacherId;
+          const teacher = teachers.find(teacher => teacher.id === teacherId);
 
-  const handleAddClass = () => {
-    setIsModalAddOpen(true);
-  }
+          return teacher ? teacher.fullname : '';
+        },
+        header: 'Giáo viên',
+        accessorKey: 'teacherId',
+      },
+      {
+        accessorFn: (row) => {
+          const blockId = row.blockId;
+          const block = BLOCKS.find(block => block.value === blockId);
+
+          return block ? block.label : '';
+        },
+        header: 'Khối',
+        accessorKey: 'blockId',
+      },
+    ]
+  }, [teachers.length])
+
+  const table = useMaterialReactTable({
+    columns,
+    data: classs,
+    enableGrouping: true,
+    enableBottomToolbar: false,
+    enableStickyHeader: true,
+    enableStickyFooter: true,
+    enablePagination: false,
+    enableEditing: true,
+    initialState: {
+      expanded: true, //expand all groups by default
+      grouping: ['blockId'], //an array of columns to group by by default (can be multiple)
+      pagination: { pageIndex: 0, pageSize: 20 },
+    },
+    muiTableContainerProps: { sx: { maxHeight: `${(height-180)}px` } },
+
+    renderRowActions: ({ row }) => (
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Tooltip title="Edit">
+          <IconButton onClick={() => {
+            setIsModalEditOpen(true)
+            setIdEditSelected(row.original.id);
+          }}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton color="error" onClick={() => {
+            setIsModalConfirmDeleteOpen(true)
+            setIdDelete(row.original.id)
+          }}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ),
+    renderTopToolbarCustomActions: () => (
+      <div className='flex'>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setIsModalAddOpen(true); //simplest way to open the create row modal with no default values
+          }}
+        >
+          Add
+        </Button>
+        <div className='ml-5'>
+          <DropdownCourse 
+              courseId={Number(courseId)}
+              courses={courses}
+              setCourseIdSelected={setCourseIdSelected}
+          />          
+        </div>
+
+      </div>
+    ),
+
+  });
 
   const handleDelete = async() => {
     try {
@@ -62,68 +135,45 @@ function Class() {
         toast.error(error?.response?.data?.message)
     }
   }
-  
+
+
   return (
-    <>
-      {courseId && 
-        <>
-        <div className='flex justify-between'>
-          <HeaderAddElementComponent 
-              handleAdd={handleAddClass}
-              handleImportExcell={handleAddClass}
-              isButtonImportExcell={false}
-          />  
-
-          <DropdownCourse 
-            courseId={Number(courseId)}
-            courses={courses}
-          />
-
-        </div>
-
-          <BaseLayoutContent
-            data={classs}
-            loading={loading}
-            message='Chưa có lớp học nào'
-          >
-            <div className='react-table'>
-              <TableList table={table}/>
-              <div className="h-2" />
-              <Panigation table={table} />                
-            </div>
-          </BaseLayoutContent>
-          {isModalAddOpen &&
-            <AddClass
-              setIsModalOpen={setIsModalAddOpen} 
-              isModalOpen={isModalAddOpen}
-              getDataClass={getDataClass}
-              courseId={Number(courseId)}
-            />
-          }
-          {isModalEditOpen &&
-            <EditClass
-              setIsModalOpen={setIsModalEditOpen} 
-              isModalOpen={isModalEditOpen}
-              getDataClass={getDataClass}
-              idEditSelected={idEditSelected}
-              dataClass={classs}
-              teachers={teachers}
-            />
-          }
-
-          {isModalConfirmDeleteOpen &&
-            <ModalConfirm 
-              isOpen={isModalConfirmDeleteOpen} 
-              setIsOpen={setIsModalConfirmDeleteOpen} 
-              handle={handleDelete}
-              message={'Xác nhận xóa?'}
-            />
-          }        
-        </>
+    <Stack gap="1rem">
+      <MaterialReactTable table={table} />
+      {isModalAddOpen &&
+        <AddClass
+          setIsModalOpen={setIsModalAddOpen} 
+          isModalOpen={isModalAddOpen}
+          getDataClass={getDataClass}
+          courseId={Number(courseId)}
+          teachers={teachers}
+          dataTeachersDropdown={dataTeachersDropdown}
+        />
+      }
+      {isModalEditOpen &&
+        <EditClass
+          setIsModalOpen={setIsModalEditOpen} 
+          isModalOpen={isModalEditOpen}
+          getDataClass={getDataClass}
+          idEditSelected={idEditSelected}
+          dataClass={classs}
+          teachers={teachers}
+          courseId={Number(courseId)}
+          dataTeachersDropdown={dataTeachersDropdown}
+        />
       }
 
-    </>
-  )
-}
+      {isModalConfirmDeleteOpen &&
+        <ModalConfirm 
+          isOpen={isModalConfirmDeleteOpen} 
+          setIsOpen={setIsModalConfirmDeleteOpen} 
+          handle={handleDelete}
+          message={'Xác nhận xóa?'}
+        />
+      } 
+    </Stack>
+  );
+};
 
 export default Class;
+

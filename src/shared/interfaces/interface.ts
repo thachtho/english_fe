@@ -1,3 +1,8 @@
+interface IPropsDropdown {
+    label: string | number,
+    value: string | number
+}
+
 interface ILogin {
     nickname: string,
     password: string
@@ -34,6 +39,7 @@ interface IClass extends IBase{
     name: string,
     teacherId: number,
     courseId: number,
+    blockId: number,
     classToStudents: IClassToStudent[],
     teacher: IUser
 }

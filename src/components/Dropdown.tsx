@@ -3,7 +3,7 @@ import { Select } from 'antd';
 interface IDropdownProps {
     data: any[],
     handleChange?: (value: number) => void,
-    defaultValue?: string
+    defaultValue?: any
 }
 
 const filterOption = (input: string, option?: { label: string; value: string }) =>
@@ -21,9 +21,16 @@ const Dropdown = ({
         }
     };
 
+    data = data.map((item) => {
+        return {
+            ...item, value: String(item.value)
+        }
+    })
+    defaultValue = String(defaultValue)||''
+
     return(
         <Select
-            className='z-20 w-full h-10'
+            className='z-20 w-full h-10 cursor-pointer'
             showSearch
             optionFilterProp="children"
             onChange={onChange}

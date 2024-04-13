@@ -4,6 +4,12 @@ import { getUsersByKey } from "../../../../api/user/user.api";
 
 function useTeacher() {
     const [teachers, setTeacher] = React.useState<IUser[]>([])
+    const dataTeachersDropdown = teachers.map((teacher) => {
+        return {
+            value: teacher.id,
+            label: teacher.fullname as string
+        }
+    })
 
     const getDataTeacher = async () => {
         try {
@@ -20,7 +26,8 @@ function useTeacher() {
 
     return {
         teachers,
-        getDataTeacher
+        getDataTeacher,
+        dataTeachersDropdown
     }
 }
 

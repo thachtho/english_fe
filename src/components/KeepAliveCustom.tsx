@@ -12,7 +12,6 @@ function KeepAliveCustom({ children }: IProps) {
   const location = useLocation();
   useAddTab()
   const key = getKeyTab(location as any);
-  console.log(111111, key);
 
   return (
         <KeepAlive cacheKey={key} name={key}>

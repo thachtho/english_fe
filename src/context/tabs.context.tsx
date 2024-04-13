@@ -9,9 +9,8 @@ type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 interface Item {
     label: string;
     key: string;
-    search?: string,
-    isSetTitle?: boolean,
-    closable?: boolean
+    mainTitle?: string,
+    extension?: string
 }
 interface TabsState {
     items: Item[],
@@ -50,7 +49,7 @@ const TabsProvider = ({ children }: any) => {
         const isExit = items.find((item) => item.key === key);
 
         if (!isExit) {
-            setItems([...items, { label, key, isSetTitle: false }]);
+            setItems([...items, { label, key, mainTitle: label, extension: '' }]);
         }
 
         setActiveKey(key);
@@ -83,10 +82,7 @@ const TabsProvider = ({ children }: any) => {
                 const tab = items.find((item) => item.key === key)
 
                 if (tab) {
-                    if (!tab?.isSetTitle) {
-                        tab.isSetTitle = true
-                        tab.label = `${tab?.label} ${title}`
-                    }
+                  tab.label = `${tab?.mainTitle} ${title}`
                 }
 
                 return [...items]

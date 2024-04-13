@@ -1,22 +1,26 @@
 import { Modal } from 'antd';
+import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import Dropdown from '../../components/Dropdown';
 import useValidator from '../../hooks/validator';
-import useTeacher from '../Users/Teacher/hooks/useTeacher';
-import { AxiosResponse } from 'axios';
+import { BLOCKS } from '../../shared/constants';
 
 interface IPropsModal {
     setIsModalOpen: (isShow: boolean) => void,
     isModalOpen: boolean,
     getDataClass: () => void,
-    handle: ({ name, teacherId }: { name: string, teacherId: number }) => Promise<AxiosResponse<IClass, any>>,
+    handle: ({ name, teacherId }: { name: string, teacherId: number, blockId: number }) => Promise<AxiosResponse<IClass, any>>,
     options?: {
         className?: string,
-        teacherId?: number
+        teacherId?: number,
+        blockId?: number
     },
-    isEdit?: boolean
+    isEdit?: boolean,
+    teachers: IUser[],
+    dataTeachersDropdown: IPropsDropdown[],
+    title: string
 }
 
 interface IHanlde {
@@ -29,13 +33,17 @@ const ModalClass = ({
     getDataClass,
     handle,
     options,
-    isEdit = false
+    isEdit = false,
+    dataTeachersDropdown,
+    title
 }: IPropsModal) => {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<IHanlde>();
     const { validator } = useValidator()
-    const { teachers } = useTeacher()
     const [userSlected, setUserSelected] = useState(() => {
         return options?.teacherId??null
+    });
+    const [blockSlected, setBlockSelected] = useState<null | number>(() => {
+        return options?.blockId??null
     });
     const [messageError, setMessageError] = useState('')
 
@@ -44,13 +52,19 @@ const ModalClass = ({
     };
 
     const onSubmit: SubmitHandler<IHanlde> = async (data) => {
-        if (userSlected === 0) {
+        if (userSlected === 0 || userSlected === null) {
             setMessageError('Giáo viên không được để trống!')
 
             return;
         }
+
+        if (blockSlected === 0 || blockSlected === null) {
+            setMessageError('Khối không được để trống!')
+
+            return;
+        }
         try {
-            await handle({ name: data.className.trim(), teacherId: Number(userSlected) })
+            await handle({ name: data.className.trim(), teacherId: Number(userSlected), blockId: blockSlected })
             setIsModalOpen(false);
             getDataClass();
         } catch (error: any) {
@@ -69,18 +83,14 @@ const ModalClass = ({
         setUserSelected(value)
     }
 
-    const data = teachers.map((teacher) => {
-        return {
-            value: teacher.id,
-            label: teacher.fullname
-        }
-    })
-
-    const defaultDataDropdown = teachers.find((item) => item.id === options?.teacherId)
+    const handleChangeBlock = (value: number) => {
+        setMessageError('');
+        setBlockSelected(value)
+    }
 
     return (
         <>
-            <Modal title="Thêm" open={isModalOpen} onOk={handleSubmit(onSubmit)} onCancel={handleCancel}>
+            <Modal title={title} open={isModalOpen} onOk={handleSubmit(onSubmit)} onCancel={handleCancel}>
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="flex flex-col gap-5.5 p-6.5">
                         <div>
@@ -100,16 +110,30 @@ const ModalClass = ({
                                 Giáo viên
                             </label>
                             <div className="relative z-20 bg-transparent dark:bg-form-input">
-                                {((isEdit && defaultDataDropdown ) || (!isEdit)) &&
+                                {((isEdit && options?.teacherId ) || (!isEdit)) &&
                                     <Dropdown 
-                                        data={data} 
+                                        data={dataTeachersDropdown} 
                                         handleChange={handleChangeTeacher} 
-                                        defaultValue={defaultDataDropdown?.fullname as string}
+                                        defaultValue={options?.teacherId ? String(options?.teacherId) : ''}
                                     />
                                 }
                             </div>
                         </div>
                         {messageError.length > 0 && <span className="text-meta-1"><i>{messageError}</i></span>}
+                        <div className="mb-4.5">
+                            <label className="mb-2.5 block text-black dark:text-white">
+                                Khối
+                            </label>
+                            <div className="relative z-20 bg-transparent dark:bg-form-input">
+                                {((isEdit && blockSlected ) || (!isEdit)) &&
+                                    <Dropdown 
+                                        data={BLOCKS} 
+                                        handleChange={handleChangeBlock} 
+                                        defaultValue={ blockSlected ? String(blockSlected) : ''}
+                                    />
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </Modal>

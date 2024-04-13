@@ -4,21 +4,24 @@ import useFetchCourse from '../pages/Course/hooks/useFetchCourse';
 
 interface ClassState {
     teachers: IUser[],
-    courses: ICourse[]
+    courses: ICourse[],
+    dataTeachersDropdown: IPropsDropdown[]
 }
 
 export const ClassContext = React.createContext<ClassState>({
     teachers: [],
-    courses: []
+    courses: [],
+    dataTeachersDropdown: []
 });
 
 const ClassProvider = ({ children }: any) => {
-    const { teachers } = useTeacher()
+    const { teachers, dataTeachersDropdown } = useTeacher()
     const { courses } = useFetchCourse({});
 
     const values = {
         teachers,
-        courses
+        courses,
+        dataTeachersDropdown
     };
 
     return <ClassContext.Provider value={values}>{children}</ClassContext.Provider>;
