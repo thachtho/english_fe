@@ -13,7 +13,7 @@ const filterOption = (input: string, option?: { label: string; value: string }) 
 const Dropdown = ({ 
     data,
     handleChange,
-    defaultValue
+    defaultValue = ''
 }: IDropdownProps) => {
     const onChange = (value: string) => {
         if (handleChange) {

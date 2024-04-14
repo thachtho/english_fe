@@ -3,7 +3,7 @@ import { Modal } from "antd"
 interface IPropsModalConfirm {
     isOpen: boolean,
     setIsOpen: (isOpen: boolean) => void,
-    handle: () => Promise<void>,
+    handle: () => Promise<void> | void,
     message: string
 }
 function ModalConfirm({ 

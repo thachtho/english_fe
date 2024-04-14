@@ -8,13 +8,15 @@ import toast from 'react-hot-toast';
 interface IPropsType {
     setIsModalOpen: (isOpen: boolean) => void,
     isModalOpen: boolean,
-    classId: number
+    classId: number,
+    getStudentsInClass: () => void
 }
 
 function AddStudentToClass({
     isModalOpen,
     setIsModalOpen,
-    classId
+    classId,
+    getStudentsInClass
 }: IPropsType) {
     const { students } = useStudent()
     const [userSelected, setUserSelected] = useState<null | number>(null)
@@ -29,6 +31,7 @@ function AddStudentToClass({
             try {
                 await addStudentToClass(data)
                 setIsModalOpen(false)
+                getStudentsInClass()
             } catch (error: any) {
                 toast.error(error?.response?.data?.message)
             }
@@ -52,7 +55,7 @@ function AddStudentToClass({
   return (
     <>
         {students.length > 0 &&
-            <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="Add" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <div className="relative z-20 bg-transparent dark:bg-form-input">
                         <Dropdown 
                             data={data} 

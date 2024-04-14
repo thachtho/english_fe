@@ -1,155 +1,162 @@
-import React, { useState } from 'react'
-
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  FilterFn,
-  getCoreRowModel,
-  getFacetedMinMaxValues,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable
-} from '@tanstack/react-table'
-
+  Box,
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+  Tooltip
+} from '@mui/material';
 import {
-  RankingInfo,
-  rankItem
-} from '@tanstack/match-sorter-utils'
-import { DeleteIcon, EditIcon } from '../../../components'
-import HeaderAddElementComponent from '../../../components/HeaderAddElementComponent'
-import Panigation from '../../../components/React-table/Panigation'
-import TableList from '../../../components/React-table/Table'
-import Button from '../../../components/UiElements/Button'
-import useLoader from '../../../hooks/useLoader'
-import BaseLayoutContent from '../../../layout/BaseLayoutContent'
-import AddTeacher from './AddTeacher'
-import useTeacher from './hooks/useTeacher'
+  MRT_EditActionButtons,
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef,
+  MRT_TableOptions
+} from 'material-react-table';
+import { useMemo, useState } from 'react';
+import { DeleteIcon, EditIcon } from '../../../components';
+import { useApp } from '../../../context/app.context';
+import ModalConfirm from '../../../components/Modal/Confirm';
+import { deleteUser, updateUser } from '../../../api/user/user.api';
+import toast from 'react-hot-toast';
+import useTeacher from './hooks/useTeacher';
+import AddTeacher from './AddTeacher';
 
-declare module '@tanstack/react-table' {
-  interface FilterFns {
-    fuzzy: FilterFn<unknown>
-  }
-  interface FilterMeta {
-    itemRank: RankingInfo
-  }
-}
 
-const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-  // Rank the item
-  const itemRank = rankItem(row.getValue(columnId), value)
-
-  // Store the itemRank info
-  addMeta({
-    itemRank,
-  })
-
-  // Return if the item should be filtered in/out
-  return itemRank.passed
-}
-
-function Teacher() {
-  const { loading } = useLoader()
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [globalFilter, setGlobalFilter] = React.useState('')
-  const columns = React.useMemo<ColumnDef<any, any>[]>(
-    () => [
-        {
-            id: 'id',
-            cell: row => row.row.index + 1,
-            header: () => <span>STT</span>,
-            footer: props => props.column.id,
-          },  
-          {
-            accessorFn: row => row.nickname,
-            id: 'nickname',
-            cell: info => info.getValue(),
-            header: () => <span>Nickname</span>,
-            footer: props => props.column.id,
-          },
-          {
-            accessorFn: row => row.fullname,
-            id: 'fullname',
-            header: 'Họ và tên',
-            cell: info => info.getValue(),
-            footer: props => props.column.id,
-          },
-          {
-            header: 'Action',
-            cell: (row) => (
-              <div className='flex justify-center'>
-                <Button handleClick={() => console.log(333333, row)} className='pr-5'>
-                  <EditIcon />
-                </Button>
-                <Button handleClick={() => console.log(333333, row)} className='pr-5'>
-                  <DeleteIcon width={20} height={20}/>
-                </Button>
-                <Button handleClick={() => alert(1)} className='text-meta-5' text={'Chi tiết'}/>
-              </div>
-            ),
-          },
-    ],
-    []
-  )
+const Teacher = () => {
+  const { height } = useApp()
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [idTeacherSelected, setIdTeacherSelected] = useState<null | number>(null)
   const { teachers, getDataTeacher } = useTeacher();
-  const table = useReactTable({
-    data: teachers,
-    columns,
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
-    state: {
-      columnFilters,
-      globalFilter,
-    },
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: fuzzyFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    debugTable: true,
-    debugHeaders: true,
-    debugColumns: false,
-  })
 
-  const handleAddTeacher = () => {
-    setIsModalOpen(true);
+  const handleDelete = () => {
+    deleteUser(Number(idTeacherSelected))
+    getDataTeacher()
   }
+
+  const handleSaveUser: MRT_TableOptions<IUser>['onEditingRowSave'] = async ({
+    values,
+    row
+  }) => {
+    try {
+      const data = {
+        ...values,
+        id: row.original.id
+      }
+      
+      await updateUser(row.original.id, data);
+      table.setEditingRow(null); //exit editing mode      
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message)
+    }
+  };
+
+  const columns = useMemo<MRT_ColumnDef<IUser>[]>(
+    () => [
+      {
+        header: 'Tên giáo viên',
+        accessorKey: 'fullname',
+      },
+      {
+        header: 'Nickname',
+        accessorKey: 'nickname'
+      },
+    ],
+    [],
+  );
+  const table = useMaterialReactTable({
+    columns,
+    data: teachers,
+    enableGrouping: true,
+    enableBottomToolbar: false,
+    enableStickyHeader: true,
+    enableStickyFooter: true,
+    enablePagination: false,
+    enableEditing: true,
+    onEditingRowSave: handleSaveUser,
+    muiTableContainerProps: { sx: { maxHeight: `${(height-180)}px` } },
+    renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
+      <>
+        <DialogTitle variant="h3">Thêm giáo viên</DialogTitle>
+        <DialogContent
+          sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+        >
+          {internalEditComponents} {/* or render custom edit components here */}
+        </DialogContent>
+        <DialogActions>
+          <MRT_EditActionButtons variant="text" table={table} row={row} />
+        </DialogActions>
+      </>
+    ),
+    //optionally customize modal content
+    renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
+      <>
+        <DialogTitle variant="h3">Chỉnh sửa</DialogTitle>
+          <DialogContent
+            sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+          >
+            {internalEditComponents} {/* or render custom edit components here */}
+          </DialogContent>
+        <DialogActions>
+        <MRT_EditActionButtons variant="text" table={table} row={row} />
+        </DialogActions>
+      </>
+    ),
+    renderRowActions: ({ row }) => (
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Tooltip title="Edit">
+          <IconButton onClick={() => table.setEditingRow(row) }>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton color="error" onClick={() => {
+            setIsModalDeleteOpen(true)
+            setIdTeacherSelected(row.original.id)
+          }}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ),
+    renderTopToolbarCustomActions: () => (
+      <Button
+        variant="contained"
+        onClick={() => {
+          setIsModalAddOpen(true); //simplest way to open the create row modal with no default values
+        }}
+      >
+        Add
+      </Button>
+    ),
+
+  });
 
   return (
-    <>
-      <HeaderAddElementComponent 
-          handleAdd={handleAddTeacher}
-          handleImportExcell={handleAddTeacher}
-      />  
-      <BaseLayoutContent
-        data={teachers}
-        loading={loading}
-        message='Chưa có giáo viên nào'
-      >
-        <div className='react-table'>
-          <TableList table={table}/>
-          <div className="h-2" />
-          <Panigation table={table} />                
-        </div>
-      </BaseLayoutContent>
-      {isModalOpen &&
+    <Stack gap="1rem">
+      <MaterialReactTable table={table} />
+      {isModalAddOpen &&
         <AddTeacher 
-          setIsModalOpen={setIsModalOpen} 
-          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalAddOpen} 
+          isModalOpen={isModalAddOpen}
           getDataTeacher={getDataTeacher}
         />
       }
-    </>
-  )
-}
+
+      {isModalDeleteOpen &&
+        <ModalConfirm 
+          isOpen={isModalDeleteOpen} 
+          setIsOpen={setIsModalDeleteOpen} 
+          handle={() => handleDelete()}
+          message={'Xác nhận xóa?'}
+        />
+      } 
+    </Stack>
+  );
+};
 
 export default Teacher;
+

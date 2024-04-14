@@ -21,8 +21,10 @@ import AddClass from './AddClass';
 import DropdownCourse from './DropdownCourse';
 import EditClass from './EditClass';
 import useClass from './hooks/useClass';
+import { useNavigate } from 'react-router-dom';
 
 const Class = () => {
+  const navigation = useNavigate();
   const { height } = useApp()
     const { 
     getDataClass, 
@@ -36,9 +38,24 @@ const Class = () => {
 
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+  const [isModalConfirmDeleteOpen, setIsModalConfirmDeleteOpen] = useState(false);
   const [idEditSelected, setIdEditSelected] = useState<number | null>(null)
   const [idDelete, setIdDelete] = useState<null | number>(null)
-  const [isModalConfirmDeleteOpen, setIsModalConfirmDeleteOpen] = useState(false);
+
+  const navigateDetail = (id: number) => {
+    navigation(`/class/${id}`);
+  }
+
+  const handleDelete = async() => {
+    try {
+        await deleteClass(Number(idDelete));
+        return getDataClass()
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message)
+    }
+  }
+
+
   const columns = useMemo<MRT_ColumnDef<IClass>[]>(() => {
     return [
       {
@@ -85,7 +102,7 @@ const Class = () => {
     muiTableContainerProps: { sx: { maxHeight: `${(height-180)}px` } },
 
     renderRowActions: ({ row }) => (
-      <Box sx={{ display: 'flex', gap: '1rem' }}>
+      <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         <Tooltip title="Edit">
           <IconButton onClick={() => {
             setIsModalEditOpen(true)
@@ -102,6 +119,7 @@ const Class = () => {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
+        <button className='text-primary' onClick={() => navigateDetail(row.original.id)}>Chi tiết</button>
       </Box>
     ),
     renderTopToolbarCustomActions: () => (
@@ -126,16 +144,6 @@ const Class = () => {
     ),
 
   });
-
-  const handleDelete = async() => {
-    try {
-        await deleteClass(Number(idDelete));
-        return getDataClass()
-      } catch (error: any) {
-        toast.error(error?.response?.data?.message)
-    }
-  }
-
 
   return (
     <Stack gap="1rem">

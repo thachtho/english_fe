@@ -1,89 +1,148 @@
-import { useEffect, useState } from 'react';
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Tooltip
+} from '@mui/material';
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef
+} from 'material-react-table';
+import { useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
-
-import { studentsInClass } from '../../../api/class.api';
-import HeaderAddElementComponent from '../../../components/HeaderAddElementComponent';
-import Panigation from '../../../components/React-table/Panigation';
-import TableList from '../../../components/React-table/Table';
-import useFetchData from '../../../hooks/useFetchData';
-import useLoader from '../../../hooks/useLoader';
-import UseReactTable from '../../../hooks/useReactTable';
-import BaseLayoutContent from '../../../layout/BaseLayoutContent';
+import { removeStudentInClass, studentsInClass } from '../../../api/class.api';
+import { DeleteIcon } from '../../../components';
+import { useApp } from '../../../context/app.context';
 import AddStudentToClass from './AddStudentToClass';
-import useColumnClassDetail from './useColumseClassDetail';
+import ModalConfirm from '../../../components/Modal/Confirm';
 
-function DetailClass() {
-  const { loading } = useLoader()
+const DetailClass = () => {
+  const { height } = useApp()
   const { id: classId } = useParams();
-  const { columns } = useColumnClassDetail()
-  const [students, setStudents] = useState<IUser[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [students, setStudents] = useState<IUser[]>([])
   const [teacherName, setTeacherName] = useState<string>('')
+  const [className, setClassName] = useState<string>('')
+  const [isModalConfirmDeleteOpen, setIsModalConfirmDeleteOpen] = useState(false);
+  const [idStudentSelected, setIdStudentSelected] = useState<null | number>(null)
 
-  const { fetch } = useFetchData({
-    api: studentsInClass,
-    params: classId
-  })
-  
   useEffect(() => {
     ( async () => {
-      const data = await fetch() as IClass;
-      const students = data.classToStudents.map((item) => {
-        return item.user
-      })
-
-      setTeacherName(data.teacher.fullname as string);
-      setStudents(students)
-
+      try {
+        await getStudentsInClass();
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message)
+      }
     })() 
-  }, [isModalOpen, classId])
+  }, [])
 
-  const handleAddStudent = () => {
-    setIsModalOpen(true);
+  const getStudentsInClass = async () => {
+    const { data } = await studentsInClass(Number(classId));
+    const students = data.classToStudents.map((item) => {
+      return item.user
+    })
+
+    setTeacherName(data.teacher.fullname as string);
+    setStudents(students)    
+    setClassName(data.name)
   }
 
-  const { table } = UseReactTable({
-    columns,
-    data: students??[]
-  })
-  
-  return (
-    <div className='react-table'>
-      <div className='flex justify-between'> 
-        <div>
-          <HeaderAddElementComponent 
-              handleAdd={handleAddStudent}
-              handleImportExcell={handleAddStudent}
-          />  
-        </div>
-        <span>
-          GV: {teacherName}
-        </span>
-      </div>
-      <BaseLayoutContent
-        data={students}
-        loading={loading}
-        message='Chưa có học sinh nào'
-      >
-        {students.length > 0 && 
-          <div className='student'>
-            <TableList table={table}/>
-            <div className="h-2" />
-            <Panigation  table={table} />                
-          </div>
+  const handleDelete = async() => {
+    try {
+        const values = {
+          userId: idStudentSelected as number, 
+          classId: Number(classId)
         }
 
-      </BaseLayoutContent>    
+        await removeStudentInClass(values);
+        return getStudentsInClass()
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message)
+    }
+  }
 
+  const columns = useMemo<MRT_ColumnDef<IUser>[]>(() => {
+    return [
+      {
+        header: 'Tên học sinh',
+        accessorKey: 'fullname',
+      },
+      {
+        header: 'Nickname',
+        accessorKey: 'nickname',
+      }
+    ]
+  }, [])
+
+  const table = useMaterialReactTable({
+    columns,
+    data: students,
+    enableGrouping: true,
+    enableBottomToolbar: false,
+    enableStickyHeader: true,
+    enableStickyFooter: true,
+    enablePagination: false,
+    enableEditing: true,
+
+    muiTableContainerProps: { sx: { maxHeight: `${(height-180)}px` } },
+
+    renderRowActions: ({ row }) => (
+      <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <Tooltip title="Delete">
+          <IconButton color="error" onClick={() => {
+            setIsModalConfirmDeleteOpen(true)
+            setIdStudentSelected(row.original.id)
+          }}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ),
+    renderTopToolbarCustomActions: () => (
+      <div className='flex items-center'>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setIsModalOpen(true); //simplest way to open the create row modal with no default values
+          }}
+        >
+          Add
+        </Button>
+        <span className='ml-10'>Lớp: {className}</span>
+        <span className='ml-10'>GV: {teacherName}</span>
+      </div>
+    ),
+
+  });
+
+  return (
+    <>
+      <Stack gap="1rem">
+        <MaterialReactTable table={table} />
+      </Stack>    
       {isModalOpen &&
           <AddStudentToClass
             setIsModalOpen={setIsModalOpen} 
             isModalOpen={isModalOpen}
             classId={Number(classId)}
+            getStudentsInClass={getStudentsInClass}
           />
       }
-    </div>   
-  )
-}
 
-export default DetailClass
+      {isModalConfirmDeleteOpen &&
+        <ModalConfirm 
+          isOpen={isModalConfirmDeleteOpen} 
+          setIsOpen={setIsModalConfirmDeleteOpen} 
+          handle={handleDelete}
+          message={'Xác nhận xóa?'}
+        />
+      } 
+    </>
+  );
+};
+
+export default DetailClass;
+

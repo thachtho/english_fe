@@ -40,6 +40,7 @@ interface IClass extends IBase{
     teacherId: number,
     courseId: number,
     blockId: number,
+    success: boolean,
     classToStudents: IClassToStudent[],
     teacher: IUser
 }

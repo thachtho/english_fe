@@ -13,19 +13,48 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
-  MRT_TableOptions,
-  MRT_Row,
+  MRT_TableOptions
 } from 'material-react-table';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { DeleteIcon, EditIcon } from '../../../components';
+import { useApp } from '../../../context/app.context';
 import AddStudent from './AddStudent';
 import useStudent from './hooks/useStudent';
+import ModalConfirm from '../../../components/Modal/Confirm';
+import { deleteUser, updateUser } from '../../../api/user/user.api';
+import toast from 'react-hot-toast';
 
 
 const Student = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { height } = useApp()
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [idStudentSelected, setIdStudentSelected] = useState<null | number>(null)
+  const { students, getDataStudent }= useStudent()
+
+  const handleDelete = () => {
+    deleteUser(Number(idStudentSelected))
+    getDataStudent()
+  }
+
+  const handleSaveUser: MRT_TableOptions<IUser>['onEditingRowSave'] = async ({
+    values,
+    row
+  }) => {
+    try {
+      const data = {
+        ...values,
+        id: row.original.id
+      }
+      
+      await updateUser(row.original.id, data);
+      table.setEditingRow(null); //exit editing mode      
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message)
+    }
+  };
+
   const columns = useMemo<MRT_ColumnDef<IUser>[]>(
-    //column definitions...
     () => [
       {
         header: 'Tên học sinh',
@@ -37,28 +66,7 @@ const Student = () => {
       },
     ],
     [],
-    //end
   );
-
-  //demo state
-  const [height, setHeight] = useState(window.innerHeight);
-  const { students, getDataStudent }= useStudent()
-
-  const handleSaveUser: MRT_TableOptions<IUser>['onEditingRowSave'] = async ({
-    values,
-    table,
-  }) => {
-    getDataStudent();
-    table.setEditingRow(null); //exit editing mode
-  };
-
-  const openDeleteConfirmModal = (row: MRT_Row<IUser>) => {
-    if (window.confirm('Are you sure you want to delete this user?')) {
-      console.log(row.original.id);
-    }
-  };
-
-
   const table = useMaterialReactTable({
     columns,
     data: students,
@@ -68,13 +76,8 @@ const Student = () => {
     enableStickyFooter: true,
     enablePagination: false,
     enableEditing: true,
-    initialState: {
-      expanded: true, //expand all groups by default
-      // grouping: ['gender'], //an array of columns to group by by default (can be multiple)
-      pagination: { pageIndex: 0, pageSize: 20 },
-    },
-    muiTableContainerProps: { sx: { maxHeight: `${(height-180)}px` } },
     onEditingRowSave: handleSaveUser,
+    muiTableContainerProps: { sx: { maxHeight: `${(height-180)}px` } },
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Thêm học sinh</DialogTitle>
@@ -102,15 +105,18 @@ const Student = () => {
         </DialogActions>
       </>
     ),
-    renderRowActions: ({ row, table }) => (
+    renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', gap: '1rem' }}>
         <Tooltip title="Edit">
-          <IconButton onClick={() => table.setEditingRow(row)}>
+          <IconButton onClick={() => table.setEditingRow(row) }>
             <EditIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton color="error" onClick={() => openDeleteConfirmModal(row)}>
+          <IconButton color="error" onClick={() => {
+            setIsModalDeleteOpen(true)
+            setIdStudentSelected(row.original.id)
+          }}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -120,7 +126,7 @@ const Student = () => {
       <Button
         variant="contained"
         onClick={() => {
-          setIsModalOpen(true); //simplest way to open the create row modal with no default values
+          setIsModalAddOpen(true); //simplest way to open the create row modal with no default values
         }}
       >
         Add
@@ -129,31 +135,25 @@ const Student = () => {
 
   });
 
-  useEffect(() => {
-    function handleResize() {
-      setHeight(window.innerHeight);
-    }
-
-    // Thêm sự kiện resize để cập nhật chiều cao màn hình khi kích thước màn hình thay đổi
-    window.addEventListener('resize', handleResize);
-
-    // Dọn dẹp sự kiện khi thành phần bị gỡ bỏ
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-
   return (
     <Stack gap="1rem">
       <MaterialReactTable table={table} />
-      {isModalOpen &&
+      {isModalAddOpen &&
         <AddStudent
-          setIsModalOpen={setIsModalOpen} 
-          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalAddOpen} 
+          isModalOpen={isModalAddOpen}
           getDataStudent={getDataStudent}
         />
       }
+
+      {isModalDeleteOpen &&
+        <ModalConfirm 
+          isOpen={isModalDeleteOpen} 
+          setIsOpen={setIsModalDeleteOpen} 
+          handle={() => handleDelete()}
+          message={'Xác nhận xóa?'}
+        />
+      } 
     </Stack>
   );
 };
