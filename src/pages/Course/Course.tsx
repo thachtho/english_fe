@@ -1,101 +1,178 @@
-import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { deleteCourse } from '../../api/course.api';
-import HeaderAddElementComponent from '../../components/HeaderAddElementComponent';
-import ModalConfirm from '../../components/Modal/Confirm';
-import Panigation from '../../components/React-table/Panigation';
-import TableList from '../../components/React-table/Table';
-import useLoader from '../../hooks/useLoader';
-import UseReactTable from '../../hooks/useReactTable';
-import BaseLayoutContent from '../../layout/BaseLayoutContent';
-import ModalAddCourse from './ModalAddCourse';
-import ModalEditCourse from './ModalEditCourse';
-import useColumnCourse from './hooks/useColumnCourse';
+import {
+  Box,
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+  Tooltip,
+} from '@mui/material';
+import {
+  MRT_EditActionButtons,
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef,
+} from 'material-react-table';
+import { useMemo, useState } from 'react';
+import { DeleteIcon, EditIcon } from '../../components';
+import { useApp } from '../../context/app.context';
 import useFetchCourse from './hooks/useFetchCourse';
+import ModalEditCourse from './ModalEditCourse';
+import ModalAddCourse from './ModalAddCourse';
+import ModalConfirm from '../../components/Modal/Confirm';
+import { deleteCourse } from '../../api/course.api';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
-function Course() {
-    const { loading } = useLoader()
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isModalEditOpen, setIsModalEditOpen] = useState(false);
-    const [isModalConfirmDeleteOpen, setIsModalConfirmDeleteOpen] = useState(false);
+const Student = () => {
+  const navigation = useNavigate();
+  const { height, setCourseIdSelected } = useApp();
+  const { courses, renderCourses } = useFetchCourse();
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
+  const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+  const [isModalConfirmDeleteOpen, setIsModalConfirmDeleteOpen] =
+    useState(false);
+  const [idSelected, setIdSelected] = useState<null | number>(null);
+  const navigateClass = (id: number) => {
+    setCourseIdSelected(id);
+    navigation(`/class`);
+  };
 
-    const { courses } = useFetchCourse({
-        isModalConfirmDeleteOpen,
-        isModalEditOpen,
-        isModalOpen
-    })
-    const [idSelected, setIdSelected] = useState<null | number>(null)
-    const { columns, idDelete } = useColumnCourse({
-        setIdSelected,
-        setIsModalEditOpen,
-        setIsModalConfirmDeleteOpen
-    })
+  const handleDelete = async () => {
+    try {
+      await deleteCourse(Number(idSelected));
 
-    const handleAdd = () => {
-        setIsModalOpen(true)
+      return renderCourses();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
     }
+  };
 
-    const handleDelete = async () => {
-        try {
-            await deleteCourse(Number(idDelete));
-          } catch (error: any) {
-            toast.error(error?.response?.data?.message)
-        }
-    }
+  const columns = useMemo<MRT_ColumnDef<ICourse>[]>(
+    () => [
+      {
+        header: 'Khoa hoc',
+        accessorKey: 'from',
+        Cell: (row) => {
+          const { from, to } = row.row.original;
 
-    const { table } = UseReactTable({
-        columns,
-        data: courses??[]
-    })
+          return <div>{`${from}-${to}`}</div>;
+        },
+      },
+    ],
+    [],
+  );
+  const table = useMaterialReactTable({
+    columns,
+    data: courses,
+    enableGrouping: true,
+    enableBottomToolbar: false,
+    enableStickyHeader: true,
+    enableStickyFooter: true,
+    enablePagination: false,
+    enableEditing: true,
+    muiTableContainerProps: { sx: { maxHeight: `${height - 180}px` } },
+    renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
+      <>
+        <DialogTitle variant="h3">Thêm học sinh</DialogTitle>
+        <DialogContent
+          sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+        >
+          {internalEditComponents} {/* or render custom edit components here */}
+        </DialogContent>
+        <DialogActions>
+          <MRT_EditActionButtons variant="text" table={table} row={row} />
+        </DialogActions>
+      </>
+    ),
+    //optionally customize modal content
+    renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
+      <>
+        <DialogTitle variant="h3">Chỉnh sửa</DialogTitle>
+        <DialogContent
+          sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+        >
+          {internalEditComponents} {/* or render custom edit components here */}
+        </DialogContent>
+        <DialogActions>
+          <MRT_EditActionButtons variant="text" table={table} row={row} />
+        </DialogActions>
+      </>
+    ),
+    renderRowActions: ({ row }) => (
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Tooltip title="Edit">
+          <IconButton
+            onClick={() => {
+              setIsModalEditOpen(true);
+              setIdSelected(row.original.id);
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton
+            color="error"
+            onClick={() => {
+              setIsModalConfirmDeleteOpen(true);
+              setIdSelected(row.original.id);
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+        <button
+          className="text-primary"
+          onClick={() => navigateClass(row.original.id)}
+        >
+          Chi tiết
+        </button>
+      </Box>
+    ),
+    renderTopToolbarCustomActions: () => (
+      <Button
+        variant="contained"
+        onClick={() => {
+          setIsModalAddOpen(true);
+        }}
+      >
+        Add
+      </Button>
+    ),
+  });
 
-    return (
-        <>
-            <HeaderAddElementComponent 
-                handleAdd={handleAdd}
-                isButtonImportExcell={false}
-            />  
-            <div className='react-table'>
-                {courses.length > 0 &&
-                    <BaseLayoutContent
-                        data={courses}
-                        loading={loading}
-                        message='Chưa có khóa học nào'
-                    >
-                        <div className='react-table'>
-                            <TableList table={table}/>
-                            <div className="h-2" />
-                            <Panigation table={table} />                
-                        </div>
-                    </BaseLayoutContent>
-                }
+  return (
+    <Stack gap="1rem">
+      <MaterialReactTable table={table} />
 
-                {isModalOpen &&
-                    <ModalAddCourse
-                        isModalOpen={isModalOpen}
-                        setIsModalOpen={setIsModalOpen}
-                    />
-                } 
+      {isModalEditOpen && idSelected && (
+        <ModalEditCourse
+          isModalOpen={isModalEditOpen}
+          setIsModalOpen={setIsModalEditOpen}
+          renderCourses={renderCourses}
+          id={idSelected}
+        />
+      )}
 
-                {isModalEditOpen && idSelected &&
-                    <ModalEditCourse
-                        isModalOpen={isModalEditOpen}
-                        setIsModalOpen={setIsModalEditOpen}
-                        id={idSelected}
-                    />
-                } 
+      {isModalAddOpen && (
+        <ModalAddCourse
+          isModalOpen={isModalAddOpen}
+          setIsModalOpen={setIsModalAddOpen}
+          renderCourses={renderCourses}
+        />
+      )}
+      {isModalConfirmDeleteOpen && (
+        <ModalConfirm
+          isOpen={isModalConfirmDeleteOpen}
+          setIsOpen={setIsModalConfirmDeleteOpen}
+          handle={handleDelete}
+          message={'Xác nhận xóa?'}
+        />
+      )}
+    </Stack>
+  );
+};
 
-
-                {isModalConfirmDeleteOpen &&
-                    <ModalConfirm 
-                        isOpen={isModalConfirmDeleteOpen} 
-                        setIsOpen={setIsModalConfirmDeleteOpen} 
-                        handle={handleDelete}
-                        message={'Xác nhận xóa?'}
-                    />
-                }
-            </div>                  
-        </>
-    )
-}
-
-export default Course
+export default Student;

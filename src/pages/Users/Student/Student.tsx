@@ -6,14 +6,14 @@ import {
   DialogTitle,
   IconButton,
   Stack,
-  Tooltip
+  Tooltip,
 } from '@mui/material';
 import {
   MRT_EditActionButtons,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
-  MRT_TableOptions
+  MRT_TableOptions,
 } from 'material-react-table';
 import { useMemo, useState } from 'react';
 import { DeleteIcon, EditIcon } from '../../../components';
@@ -24,33 +24,34 @@ import ModalConfirm from '../../../components/Modal/Confirm';
 import { deleteUser, updateUser } from '../../../api/user/user.api';
 import toast from 'react-hot-toast';
 
-
 const Student = () => {
-  const { height } = useApp()
+  const { height } = useApp();
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
-  const [idStudentSelected, setIdStudentSelected] = useState<null | number>(null)
-  const { students, getDataStudent }= useStudent()
+  const [idStudentSelected, setIdStudentSelected] = useState<null | number>(
+    null,
+  );
+  const { students, getDataStudent } = useStudent();
 
   const handleDelete = () => {
-    deleteUser(Number(idStudentSelected))
-    getDataStudent()
-  }
+    deleteUser(Number(idStudentSelected));
+    getDataStudent();
+  };
 
   const handleSaveUser: MRT_TableOptions<IUser>['onEditingRowSave'] = async ({
     values,
-    row
+    row,
   }) => {
     try {
       const data = {
         ...values,
-        id: row.original.id
-      }
-      
+        id: row.original.id,
+      };
+
       await updateUser(row.original.id, data);
-      table.setEditingRow(null); //exit editing mode      
+      table.setEditingRow(null); //exit editing mode
     } catch (error: any) {
-      toast.error(error?.response?.data?.message)
+      toast.error(error?.response?.data?.message);
     }
   };
 
@@ -62,7 +63,7 @@ const Student = () => {
       },
       {
         header: 'Nickname',
-        accessorKey: 'nickname'
+        accessorKey: 'nickname',
       },
     ],
     [],
@@ -77,7 +78,7 @@ const Student = () => {
     enablePagination: false,
     enableEditing: true,
     onEditingRowSave: handleSaveUser,
-    muiTableContainerProps: { sx: { maxHeight: `${(height-180)}px` } },
+    muiTableContainerProps: { sx: { maxHeight: `${height - 180}px` } },
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Thêm học sinh</DialogTitle>
@@ -108,15 +109,18 @@ const Student = () => {
     renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', gap: '1rem' }}>
         <Tooltip title="Edit">
-          <IconButton onClick={() => table.setEditingRow(row) }>
+          <IconButton onClick={() => table.setEditingRow(row)}>
             <EditIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton color="error" onClick={() => {
-            setIsModalDeleteOpen(true)
-            setIdStudentSelected(row.original.id)
-          }}>
+          <IconButton
+            color="error"
+            onClick={() => {
+              setIsModalDeleteOpen(true);
+              setIdStudentSelected(row.original.id);
+            }}
+          >
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -132,31 +136,29 @@ const Student = () => {
         Add
       </Button>
     ),
-
   });
 
   return (
     <Stack gap="1rem">
       <MaterialReactTable table={table} />
-      {isModalAddOpen &&
+      {isModalAddOpen && (
         <AddStudent
-          setIsModalOpen={setIsModalAddOpen} 
+          setIsModalOpen={setIsModalAddOpen}
           isModalOpen={isModalAddOpen}
           getDataStudent={getDataStudent}
         />
-      }
+      )}
 
-      {isModalDeleteOpen &&
-        <ModalConfirm 
-          isOpen={isModalDeleteOpen} 
-          setIsOpen={setIsModalDeleteOpen} 
+      {isModalDeleteOpen && (
+        <ModalConfirm
+          isOpen={isModalDeleteOpen}
+          setIsOpen={setIsModalDeleteOpen}
           handle={() => handleDelete()}
           message={'Xác nhận xóa?'}
         />
-      } 
+      )}
     </Stack>
   );
 };
 
 export default Student;
-

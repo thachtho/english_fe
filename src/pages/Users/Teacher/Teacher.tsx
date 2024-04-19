@@ -6,14 +6,14 @@ import {
   DialogTitle,
   IconButton,
   Stack,
-  Tooltip
+  Tooltip,
 } from '@mui/material';
 import {
   MRT_EditActionButtons,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
-  MRT_TableOptions
+  MRT_TableOptions,
 } from 'material-react-table';
 import { useMemo, useState } from 'react';
 import { DeleteIcon, EditIcon } from '../../../components';
@@ -24,33 +24,34 @@ import toast from 'react-hot-toast';
 import useTeacher from './hooks/useTeacher';
 import AddTeacher from './AddTeacher';
 
-
 const Teacher = () => {
-  const { height } = useApp()
+  const { height } = useApp();
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
-  const [idTeacherSelected, setIdTeacherSelected] = useState<null | number>(null)
+  const [idTeacherSelected, setIdTeacherSelected] = useState<null | number>(
+    null,
+  );
   const { teachers, getDataTeacher } = useTeacher();
 
   const handleDelete = () => {
-    deleteUser(Number(idTeacherSelected))
-    getDataTeacher()
-  }
+    deleteUser(Number(idTeacherSelected));
+    getDataTeacher();
+  };
 
   const handleSaveUser: MRT_TableOptions<IUser>['onEditingRowSave'] = async ({
     values,
-    row
+    row,
   }) => {
     try {
       const data = {
         ...values,
-        id: row.original.id
-      }
-      
+        id: row.original.id,
+      };
+
       await updateUser(row.original.id, data);
-      table.setEditingRow(null); //exit editing mode      
+      table.setEditingRow(null); //exit editing mode
     } catch (error: any) {
-      toast.error(error?.response?.data?.message)
+      toast.error(error?.response?.data?.message);
     }
   };
 
@@ -62,7 +63,7 @@ const Teacher = () => {
       },
       {
         header: 'Nickname',
-        accessorKey: 'nickname'
+        accessorKey: 'nickname',
       },
     ],
     [],
@@ -77,7 +78,7 @@ const Teacher = () => {
     enablePagination: false,
     enableEditing: true,
     onEditingRowSave: handleSaveUser,
-    muiTableContainerProps: { sx: { maxHeight: `${(height-180)}px` } },
+    muiTableContainerProps: { sx: { maxHeight: `${height - 180}px` } },
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Thêm giáo viên</DialogTitle>
@@ -95,28 +96,31 @@ const Teacher = () => {
     renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Chỉnh sửa</DialogTitle>
-          <DialogContent
-            sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
-          >
-            {internalEditComponents} {/* or render custom edit components here */}
-          </DialogContent>
+        <DialogContent
+          sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+        >
+          {internalEditComponents} {/* or render custom edit components here */}
+        </DialogContent>
         <DialogActions>
-        <MRT_EditActionButtons variant="text" table={table} row={row} />
+          <MRT_EditActionButtons variant="text" table={table} row={row} />
         </DialogActions>
       </>
     ),
     renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', gap: '1rem' }}>
         <Tooltip title="Edit">
-          <IconButton onClick={() => table.setEditingRow(row) }>
+          <IconButton onClick={() => table.setEditingRow(row)}>
             <EditIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton color="error" onClick={() => {
-            setIsModalDeleteOpen(true)
-            setIdTeacherSelected(row.original.id)
-          }}>
+          <IconButton
+            color="error"
+            onClick={() => {
+              setIsModalDeleteOpen(true);
+              setIdTeacherSelected(row.original.id);
+            }}
+          >
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -132,31 +136,29 @@ const Teacher = () => {
         Add
       </Button>
     ),
-
   });
 
   return (
     <Stack gap="1rem">
       <MaterialReactTable table={table} />
-      {isModalAddOpen &&
-        <AddTeacher 
-          setIsModalOpen={setIsModalAddOpen} 
+      {isModalAddOpen && (
+        <AddTeacher
+          setIsModalOpen={setIsModalAddOpen}
           isModalOpen={isModalAddOpen}
           getDataTeacher={getDataTeacher}
         />
-      }
+      )}
 
-      {isModalDeleteOpen &&
-        <ModalConfirm 
-          isOpen={isModalDeleteOpen} 
-          setIsOpen={setIsModalDeleteOpen} 
+      {isModalDeleteOpen && (
+        <ModalConfirm
+          isOpen={isModalDeleteOpen}
+          setIsOpen={setIsModalDeleteOpen}
           handle={() => handleDelete()}
           message={'Xác nhận xóa?'}
         />
-      } 
+      )}
     </Stack>
   );
 };
 
 export default Teacher;
-

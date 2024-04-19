@@ -1,34 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import { getCourses } from '../../../api/course.api';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { getCourses } from '../../../api/course.api';
 
-interface IProps {
-    isModalOpen?: boolean,
-    isModalEditOpen?: boolean, 
-    isModalConfirmDeleteOpen?: boolean
-}
+function useFetchCourse() {
+  const [courses, setCourses] = useState<ICourse[]>([]);
 
-function useFetchCourse({
-    isModalConfirmDeleteOpen,
-    isModalEditOpen,
-    isModalOpen
-}: IProps) {
-    const [courses, setCourses] = useState<ICourse[]>([])
+  useEffect(() => {
+    (async () => {
+      await renderCourses();
+    })();
+  }, []);
 
-    useEffect(() => {
-        ( async () => {
-            try {
-                const { data } = await getCourses();
-                setCourses(data);
-            } catch (error: any) {
-                toast.error(error?.response?.data?.message)
-            }
-        })()
-    }, [isModalOpen, isModalEditOpen, isModalConfirmDeleteOpen])
+  const renderCourses = async () => {
+    try {
+      const { data } = await getCourses();
+      setCourses(data);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+    }
+  };
 
   return {
-    courses
-  }
+    courses,
+    renderCourses,
+  };
 }
 
-export default useFetchCourse
+export default useFetchCourse;
