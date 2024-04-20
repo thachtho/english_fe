@@ -1,34 +1,36 @@
 import React, { useContext } from 'react';
-import useTeacher from '../pages/Users/Teacher/hooks/useTeacher';
-import useFetchCourse from '../pages/Course/hooks/useFetchCourse';
+import useFetchCourse from '../pages/AdminAgency/Course/hooks/useFetchCourse';
+import useTeacher from '../pages/AdminAgency/Users/Teacher/hooks/useTeacher';
 
 interface ClassState {
-    teachers: IUser[],
-    courses: ICourse[],
-    dataTeachersDropdown: IPropsDropdown[]
+  teachers: IUser[];
+  courses: ICourse[];
+  dataTeachersDropdown: IPropsDropdown[];
 }
 
 export const ClassContext = React.createContext<ClassState>({
-    teachers: [],
-    courses: [],
-    dataTeachersDropdown: []
+  teachers: [],
+  courses: [],
+  dataTeachersDropdown: [],
 });
 
 const ClassProvider = ({ children }: any) => {
-    const { teachers, dataTeachersDropdown } = useTeacher()
-    const { courses } = useFetchCourse({});
+  const { teachers, dataTeachersDropdown } = useTeacher();
+  const { courses } = useFetchCourse();
 
-    const values = {
-        teachers,
-        courses,
-        dataTeachersDropdown
-    };
+  const values = {
+    teachers,
+    courses,
+    dataTeachersDropdown,
+  };
 
-    return <ClassContext.Provider value={values}>{children}</ClassContext.Provider>;
+  return (
+    <ClassContext.Provider value={values}>{children}</ClassContext.Provider>
+  );
 };
 
 export default ClassProvider;
 
 export const useClass = (): ClassState => {
-    return useContext(ClassContext);
+  return useContext(ClassContext);
 };

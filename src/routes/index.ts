@@ -9,11 +9,15 @@ const Settings = lazy(() => import('../pages/Settings'));
 const Tables = lazy(() => import('../pages/Tables'));
 const Alerts = lazy(() => import('../components/UiElements/Alerts'));
 const Buttons = lazy(() => import('../components/UiElements/Buttons'));
-const Teacher = lazy(() => import('../pages/Users/Teacher/index'));
-const Student = lazy(() => import('../pages/Users/Student/index'));
-const Class = lazy(() => import('../pages/Class/index'));
-const DetailClass = lazy(() => import('../pages/Class/Detail/index'));
-const Course = lazy(() => import('../pages/Course/index'));
+const Teacher = lazy(() => import('../pages/AdminAgency/Users/Teacher/index'));
+const Student = lazy(() => import('../pages/AdminAgency/Users/Student/index'));
+const Class = lazy(() => import('../pages/AdminAgency/Class/index'));
+const DetailClass = lazy(
+  () => import('../pages/AdminAgency/Class/Detail/index'),
+);
+const Course = lazy(() => import('../pages/AdminAgency/Course/index'));
+//teacher
+const ClassList = lazy(() => import('../pages/TeacherPage/ClassList/index'));
 
 const coreRoutes = [
   {
@@ -85,7 +89,12 @@ const coreRoutes = [
     path: '/khoa-hoc',
     title: 'Course',
     component: Course,
-  }
+  },
+  {
+    path: '/teacher/classList',
+    title: 'CLassList',
+    component: ClassList,
+  },
 ];
 
 const routes = [...coreRoutes];

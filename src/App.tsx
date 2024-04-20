@@ -9,6 +9,7 @@ import SignIn from './pages/Authentication/SignIn/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Home from './pages/Home/index';
 import routes from './routes';
+import Error from './pages/Error';
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
@@ -22,8 +23,12 @@ function App() {
     <Loader />
   ) : (
     <>
-    <Toaster position='top-right' reverseOrder={false} containerClassName='overflow-auto'/>
-  
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        containerClassName="overflow-auto"
+      />
+
       <Routes>
         <Route path="/auth/signin" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} />
@@ -35,12 +40,13 @@ function App() {
               key={index}
               element={
                 <React.Suspense fallback={<>...</>}>
-                    <Component />
-                </React.Suspense> 
+                  <Component />
+                </React.Suspense>
               }
             />
           ))}
         </Route>
+        <Route path="*" element={<Error />} />
       </Routes>
     </>
   );
