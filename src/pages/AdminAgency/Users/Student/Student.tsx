@@ -27,7 +27,7 @@ import { deleteUser, updateUser } from '../../../../api/user/user.api';
 import { useApp } from '../../../../context/app.context';
 
 const Student = () => {
-  const { height } = useApp();
+  const { optionsReactTableDefault } = useApp();
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [idStudentSelected, setIdStudentSelected] = useState<null | number>(
@@ -73,14 +73,12 @@ const Student = () => {
   const table = useMaterialReactTable({
     columns,
     data: students,
-    enableGrouping: true,
-    enableBottomToolbar: false,
-    enableStickyHeader: true,
-    enableStickyFooter: true,
-    enablePagination: false,
-    enableEditing: true,
+    ...optionsReactTableDefault,
+    initialState: {
+      ...optionsReactTableDefault.initialState,
+    },
     onEditingRowSave: handleSaveUser,
-    muiTableContainerProps: { sx: { maxHeight: `${height - 180}px` } },
+
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Thêm học sinh</DialogTitle>

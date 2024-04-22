@@ -29,7 +29,7 @@ import ModalConfirm from '../../../components/Modal/Confirm';
 
 const Student = () => {
   const navigation = useNavigate();
-  const { height, setCourseIdSelected } = useApp();
+  const { height, setCourseIdSelected, optionsReactTableDefault } = useApp();
   const { courses, renderCourses } = useFetchCourse();
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
@@ -68,13 +68,10 @@ const Student = () => {
   const table = useMaterialReactTable({
     columns,
     data: courses,
-    enableGrouping: true,
-    enableBottomToolbar: false,
-    enableStickyHeader: true,
-    enableStickyFooter: true,
-    enablePagination: false,
-    enableEditing: true,
-    muiTableContainerProps: { sx: { maxHeight: `${height - 180}px` } },
+    ...optionsReactTableDefault,
+    initialState: {
+      ...optionsReactTableDefault.initialState,
+    },
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Thêm học sinh</DialogTitle>

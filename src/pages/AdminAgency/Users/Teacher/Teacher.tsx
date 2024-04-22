@@ -26,7 +26,7 @@ import { useApp } from '../../../../context/app.context';
 import ModalConfirm from '../../../../components/Modal/Confirm';
 
 const Teacher = () => {
-  const { height } = useApp();
+  const { optionsReactTableDefault } = useApp();
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [idTeacherSelected, setIdTeacherSelected] = useState<null | number>(
@@ -72,14 +72,11 @@ const Teacher = () => {
   const table = useMaterialReactTable({
     columns,
     data: teachers,
-    enableGrouping: true,
-    enableBottomToolbar: false,
-    enableStickyHeader: true,
-    enableStickyFooter: true,
-    enablePagination: false,
-    enableEditing: true,
+    ...optionsReactTableDefault,
     onEditingRowSave: handleSaveUser,
-    muiTableContainerProps: { sx: { maxHeight: `${height - 180}px` } },
+    initialState: {
+      ...optionsReactTableDefault.initialState,
+    },
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Thêm giáo viên</DialogTitle>

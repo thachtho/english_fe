@@ -17,7 +17,7 @@ import AddStudentToClass from './AddStudentToClass';
 import ModalConfirm from '../../../../components/Modal/Confirm';
 
 const DetailClass = () => {
-  const { height } = useApp();
+  const { height, optionsReactTableDefault } = useApp();
   const { id: classId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [students, setStudents] = useState<IUser[]>([]);
@@ -80,14 +80,7 @@ const DetailClass = () => {
   const table = useMaterialReactTable({
     columns,
     data: students,
-    enableGrouping: true,
-    enableBottomToolbar: false,
-    enableStickyHeader: true,
-    enableStickyFooter: true,
-    enablePagination: false,
-    enableEditing: true,
-
-    muiTableContainerProps: { sx: { maxHeight: `${height - 180}px` } },
+    ...optionsReactTableDefault,
 
     renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>

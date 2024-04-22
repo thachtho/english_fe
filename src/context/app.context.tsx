@@ -4,27 +4,29 @@ import { useNavigate } from 'react-router-dom';
 import { LOCAL_STORAGE_KEY } from '../shared/enums/localstorage';
 
 interface AppState {
-    titleGlobal: string,
-    setTitleGlobal: React.Dispatch<React.SetStateAction<string>>,
-    userInfo: IUserInfo,
-    setUserInfo: React.Dispatch<React.SetStateAction<IUserInfo>>
-    height: number,
-    setCourseIdSelected: React.Dispatch<React.SetStateAction<number | null>>,
-    courseIdSelected: number | null
+  titleGlobal: string;
+  setTitleGlobal: React.Dispatch<React.SetStateAction<string>>;
+  userInfo: IUserInfo;
+  setUserInfo: React.Dispatch<React.SetStateAction<IUserInfo>>;
+  height: number;
+  setCourseIdSelected: React.Dispatch<React.SetStateAction<number | null>>;
+  courseIdSelected: number | null;
+  optionsReactTableDefault: any;
 }
 
 interface IUserInfo {
-  nickname: string,
+  nickname: string;
 }
 
 export const AppContext = React.createContext<AppState>({
-    titleGlobal: '',
-    setTitleGlobal: () => {},
-    userInfo: { nickname: '' },
-    setUserInfo: () => null,
-    height: 0,
-    setCourseIdSelected: () => {},
-    courseIdSelected: null
+  titleGlobal: '',
+  setTitleGlobal: () => {},
+  userInfo: { nickname: '' },
+  setUserInfo: () => null,
+  height: 0,
+  setCourseIdSelected: () => {},
+  courseIdSelected: null,
+  optionsReactTableDefault: {},
 });
 
 const AppProvider = ({ children }: any) => {
@@ -32,8 +34,21 @@ const AppProvider = ({ children }: any) => {
   const [height, setHeight] = useState(window.innerHeight);
   const [titleGlobal, setTitleGlobal] = useState('');
   const [userInfo, setUserInfo] = useState<IUserInfo>({ nickname: '' });
-  const [storedValue] = useLocalStorage(LOCAL_STORAGE_KEY.USER_INFO, null)
+  const [storedValue] = useLocalStorage(LOCAL_STORAGE_KEY.USER_INFO, null);
   const [courseIdSelected, setCourseIdSelected] = useState<number | null>(null);
+
+  const optionsReactTableDefault = {
+    enableGrouping: true,
+    enableBottomToolbar: false,
+    enableStickyHeader: true,
+    enableStickyFooter: true,
+    enablePagination: false,
+    enableEditing: true,
+    initialState: {
+      columnPinning: { right: ['mrt-row-actions'] },
+    },
+    muiTableContainerProps: { sx: { maxHeight: `${height - 180}px` } },
+  };
 
   useEffect(() => {
     function handleResize() {
@@ -56,16 +71,17 @@ const AppProvider = ({ children }: any) => {
     setUserInfo,
     height,
     courseIdSelected,
-    setCourseIdSelected
+    setCourseIdSelected,
+    optionsReactTableDefault,
   };
 
   useEffect(() => {
     if (storedValue) {
-      setUserInfo(storedValue)
+      setUserInfo(storedValue);
     } else {
-      navigation('/auth/signin')
+      navigation('/auth/signin');
     }
-  }, [])
+  }, []);
 
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;
 };

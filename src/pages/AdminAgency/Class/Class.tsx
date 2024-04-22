@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Class = () => {
   const navigation = useNavigate();
-  const { height } = useApp();
+  const { optionsReactTableDefault, height } = useApp();
   const {
     getDataClass,
     classs,
@@ -82,18 +82,12 @@ const Class = () => {
   const table = useMaterialReactTable({
     columns,
     data: classs,
-    enableGrouping: true,
-    enableBottomToolbar: false,
-    enableStickyHeader: true,
-    enableStickyFooter: true,
-    enablePagination: false,
-    enableEditing: true,
+    ...optionsReactTableDefault,
     initialState: {
       expanded: true, //expand all groups by default
       grouping: ['blockId'], //an array of columns to group by by default (can be multiple)
-      pagination: { pageIndex: 0, pageSize: 20 },
+      ...optionsReactTableDefault.initialState,
     },
-    muiTableContainerProps: { sx: { maxHeight: `${height - 180}px` } },
 
     renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>

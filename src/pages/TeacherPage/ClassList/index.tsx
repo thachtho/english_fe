@@ -1,10 +1,13 @@
 import KeepAliveCustom from '../../../components/KeepAliveCustom';
 import ClassList from './ClassList';
+import ClassListProvider from './ClassList.context';
 
 function index() {
   return (
     <KeepAliveCustom>
-      <ClassList />
+      <ClassListProvider>
+        <ClassList />
+      </ClassListProvider>
     </KeepAliveCustom>
   );
 }
