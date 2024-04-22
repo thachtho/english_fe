@@ -18,6 +18,9 @@ const DetailClass = lazy(
 const Course = lazy(() => import('../pages/AdminAgency/Course/index'));
 //teacher
 const ClassList = lazy(() => import('../pages/TeacherPage/ClassList/index'));
+const UnitLesson = lazy(
+  () => import('../pages/TeacherPage/English/UnitLesson/index'),
+);
 
 const coreRoutes = [
   {
@@ -91,9 +94,14 @@ const coreRoutes = [
     component: Course,
   },
   {
-    path: '/teacher/classList',
+    path: 'class-list',
     title: 'CLassList',
     component: ClassList,
+  },
+  {
+    path: '/english/unit-lesson',
+    title: 'UnitLesson',
+    component: UnitLesson,
   },
 ];
 
