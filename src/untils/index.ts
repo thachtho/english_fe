@@ -4,6 +4,13 @@ export interface IResponseClassList {
   name: string;
   courseName: string;
 }
+
+export interface IResponseUnitLessons {
+  id: number;
+  blockId: number;
+  name: string;
+  courseName: string;
+}
 const getKeyTab = (location: Location) => {
   const search = location.search;
 

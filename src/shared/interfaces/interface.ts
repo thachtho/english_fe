@@ -58,3 +58,14 @@ interface ICourse extends IBase {
   courseName: string;
   classList: IClass[];
 }
+
+interface IUnit extends IBase {
+  name: string;
+  blockId: number;
+  lessons: ILesson[];
+}
+
+interface ILesson extends IBase {
+  name: string;
+  unitId: number;
+}
