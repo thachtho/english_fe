@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Class = () => {
   const navigation = useNavigate();
-  const { optionsReactTableDefault, height } = useApp();
+  const { optionsReactTableDefault } = useApp();
   const {
     getDataClass,
     classs,

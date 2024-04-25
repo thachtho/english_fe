@@ -5,11 +5,10 @@ import {
   type MRT_TableOptions,
 } from 'material-react-table';
 import { useMemo, useState } from 'react';
+import { useApp } from '../../../../context/app.context';
 import Lesson from './Lesson/Lesson';
 import Unit from './Unit/Unit';
 import { data, type Person } from './makeData';
-import { useApp } from '../../../../context/app.context';
-import DropdownBlocks from '../DropdownBlocks';
 
 const UnitLesson = () => {
   const { optionsReactTableDefault } = useApp();
@@ -50,10 +49,6 @@ const UnitLesson = () => {
 
   return (
     <>
-      <div className="w-28 ml-2">
-        <DropdownBlocks setCourseIdSelected={() => {}} />
-      </div>
-
       <Box
         sx={{
           display: 'grid',

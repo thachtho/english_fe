@@ -15,6 +15,9 @@ const ClassList = lazy(() => import('../pages/TeacherPage/ClassList/index'));
 const UnitLesson = lazy(
   () => import('../pages/TeacherPage/English/UnitLesson/index'),
 );
+const StudyProgram = lazy(
+  () => import('../pages/TeacherPage/English/StudyProgram/index'),
+);
 
 const coreRoutes = [
   {
@@ -71,6 +74,11 @@ const coreRoutes = [
     path: '/english/unit-lesson',
     title: 'UnitLesson',
     component: UnitLesson,
+  },
+  {
+    path: '/english/study-program',
+    title: 'StudyProgram',
+    component: StudyProgram,
   },
 ];
 

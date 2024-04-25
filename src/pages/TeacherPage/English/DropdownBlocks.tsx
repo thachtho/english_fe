@@ -2,12 +2,12 @@ import Dropdown from '../../../components/Dropdown';
 import { BLOCKS } from '../../../shared/constants';
 
 interface IProps {
-  setCourseIdSelected: (value: number) => void;
+  setValueSelected: (value: number) => void;
 }
 
-function DropdownBlocks({ setCourseIdSelected }: IProps) {
+function DropdownBlocks({ setValueSelected }: IProps) {
   const handleChangeCourse = (value: number) => {
-    alert(value);
+    setValueSelected(value);
   };
 
   return (

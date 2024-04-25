@@ -69,3 +69,8 @@ interface ILesson extends IBase {
   name: string;
   unitId: number;
 }
+
+interface IStudyProgram extends IBase {
+  name: string;
+  blockId: number;
+}
