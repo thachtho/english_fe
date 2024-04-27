@@ -12,6 +12,10 @@ interface AppState {
   setCourseIdSelected: React.Dispatch<React.SetStateAction<number | null>>;
   courseIdSelected: number | null;
   optionsReactTableDefault: any;
+  studyProgramIdSelected: null | number;
+  setStudyProgramIdSelected: React.Dispatch<
+    React.SetStateAction<number | null>
+  >;
 }
 
 interface IUserInfo {
@@ -27,6 +31,8 @@ export const AppContext = React.createContext<AppState>({
   setCourseIdSelected: () => {},
   courseIdSelected: null,
   optionsReactTableDefault: {},
+  studyProgramIdSelected: null,
+  setStudyProgramIdSelected: () => {},
 });
 
 const AppProvider = ({ children }: any) => {
@@ -36,6 +42,9 @@ const AppProvider = ({ children }: any) => {
   const [userInfo, setUserInfo] = useState<IUserInfo>({ nickname: '' });
   const [storedValue] = useLocalStorage(LOCAL_STORAGE_KEY.USER_INFO, null);
   const [courseIdSelected, setCourseIdSelected] = useState<number | null>(null);
+  const [studyProgramIdSelected, setStudyProgramIdSelected] = useState<
+    number | null
+  >(null);
 
   const optionsReactTableDefault = {
     enableGrouping: true,
@@ -73,6 +82,8 @@ const AppProvider = ({ children }: any) => {
     courseIdSelected,
     setCourseIdSelected,
     optionsReactTableDefault,
+    studyProgramIdSelected,
+    setStudyProgramIdSelected,
   };
 
   useEffect(() => {

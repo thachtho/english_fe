@@ -12,11 +12,14 @@ const DetailClass = lazy(
 const Course = lazy(() => import('../pages/AdminAgency/Course/index'));
 //teacher
 const ClassList = lazy(() => import('../pages/TeacherPage/ClassList/index'));
-const UnitLesson = lazy(
-  () => import('../pages/TeacherPage/English/UnitLesson/index'),
+const StudyProgramDetail = lazy(
+  () => import('../pages/TeacherPage/English/StudyProgramDetail/index'),
 );
 const StudyProgram = lazy(
   () => import('../pages/TeacherPage/English/StudyProgram/index'),
+);
+const Variable = lazy(
+  () => import('../pages/TeacherPage/English/Variable/index'),
 );
 
 const coreRoutes = [
@@ -71,14 +74,19 @@ const coreRoutes = [
     component: ClassList,
   },
   {
-    path: '/english/unit-lesson',
-    title: 'UnitLesson',
-    component: UnitLesson,
+    path: '/english/study-program/:id',
+    title: 'StudyProgramDetail',
+    component: StudyProgramDetail,
   },
   {
     path: '/english/study-program',
     title: 'StudyProgram',
     component: StudyProgram,
+  },
+  {
+    path: '/english/lesson/:id/variable',
+    title: 'Variable',
+    component: Variable,
   },
 ];
 

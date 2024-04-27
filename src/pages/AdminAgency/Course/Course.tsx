@@ -29,7 +29,7 @@ import ModalConfirm from '../../../components/Modal/Confirm';
 
 const Student = () => {
   const navigation = useNavigate();
-  const { height, setCourseIdSelected, optionsReactTableDefault } = useApp();
+  const { setCourseIdSelected, optionsReactTableDefault } = useApp();
   const { courses, renderCourses } = useFetchCourse();
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);

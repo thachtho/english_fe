@@ -61,16 +61,22 @@ interface ICourse extends IBase {
 
 interface IUnit extends IBase {
   name: string;
-  blockId: number;
   lessons: ILesson[];
 }
 
 interface ILesson extends IBase {
   name: string;
   unitId: number;
+  variables: IVariable[];
 }
 
 interface IStudyProgram extends IBase {
   name: string;
   blockId: number;
+}
+
+interface IVariable extends IBase {
+  name: string;
+  vi: string;
+  lessonId: number;
 }

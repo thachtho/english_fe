@@ -1,4 +1,5 @@
-import { Box, Button, IconButton, Stack, Tooltip } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
+import { Button as ButtonAntd } from 'antd';
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -6,14 +7,15 @@ import {
 } from 'material-react-table';
 import { useEffect, useMemo, useState } from 'react';
 
-import { DeleteIcon, EditIcon } from '../../../../components';
-import { useApp } from '../../../../context/app.context';
-import AddStudyProgram from './AddStudyProgram';
 import toast from 'react-hot-toast';
 import { getStudyPrograms } from '../../../../api/study.api';
+import { useApp } from '../../../../context/app.context';
+import AddStudyProgram from './AddStudyProgram';
+import { useNavigate } from 'react-router-dom';
 
 const StudyProgram = () => {
-  const { optionsReactTableDefault } = useApp();
+  const navigation = useNavigate();
+  const { optionsReactTableDefault, setStudyProgramIdSelected } = useApp();
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [studyPrograms, setStudyPrograms] = useState<IStudyProgram[]>([]);
 
@@ -24,6 +26,11 @@ const StudyProgram = () => {
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
     }
+  };
+
+  const navigationUnitLesson = (studyProgramId: number) => {
+    setStudyProgramIdSelected(studyProgramId);
+    navigation(`/english/study-program/${studyProgramId}`);
   };
 
   useEffect(() => {
@@ -51,17 +58,14 @@ const StudyProgram = () => {
       ...optionsReactTableDefault.initialState,
     },
     renderRowActions: ({ row }) => (
-      <Box sx={{ display: 'flex', gap: '1rem' }}>
-        <Tooltip title="Edit">
-          <IconButton>
-            <EditIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete">
-          <IconButton color="error">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+      <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <ButtonAntd
+          type="primary"
+          size={'small'}
+          onClick={() => navigationUnitLesson(row.original.id)}
+        >
+          Soạn giáo trình
+        </ButtonAntd>
       </Box>
     ),
     renderTopToolbarCustomActions: () => (
