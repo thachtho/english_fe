@@ -2,17 +2,19 @@ import { Button, Spin } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
+const apiDictionary = `https://api.freedictionary.dev/api/v1/entries/en`;
+const NOT_FOUND = 'Not found';
+
 interface ISource {
   audio: string;
   ipa: string;
 }
 
 function Source({ id, name }: { name: string; id: number }) {
+  const [notFound, setNotFound] = useState<boolean>(false);
   const [isLoadding, setIsloadding] = useState<boolean>(true);
-
   const [us, setUs] = useState<ISource | null>(null);
   const [uk, setUk] = useState<ISource | null>(null);
-
   const idAudioUs = `myAudio-${id}-us`;
   const idAudioUk = `myAudio-${id}-uk`;
   const playAudioUs = () => {
@@ -29,15 +31,18 @@ function Source({ id, name }: { name: string; id: number }) {
     (async () => {
       try {
         await getAudioFreedictionary();
-        setIsloadding(false);
-      } catch (error) {}
+        setNotFound(false);
+      } catch (error) {
+        setNotFound(true);
+      }
+      setIsloadding(false);
     })();
-  }, []);
+  }, [name]);
 
   const getAudioFreedictionary = async () => {
     const { data }: { data: any[] } = await axios({
-      method: 'get',
-      url: `https://api.freedictionary.dev/api/v1/entries/en/${name}`,
+      method: 'GET',
+      url: `${apiDictionary}/${name}`,
     });
 
     if (data.length > 0) {
@@ -63,32 +68,38 @@ function Source({ id, name }: { name: string; id: number }) {
     <>
       {!isLoadding && (
         <div className="flex flex-col">
-          {us && (
-            <div>
-              <Button
-                className="mb-2 mr-2"
-                type="primary"
-                onClick={playAudioUs}
-              >
-                US
-              </Button>
-              <span>{us.ipa}</span>
-              <audio id={idAudioUs}>
-                <source src={us.audio} type="audio/mpeg"></source>
-              </audio>
-            </div>
-          )}
+          {!notFound ? (
+            <>
+              {us && (
+                <div>
+                  <Button
+                    className="mb-2 mr-2"
+                    type="primary"
+                    onClick={playAudioUs}
+                  >
+                    US
+                  </Button>
+                  <span>{us.ipa}</span>
+                  <audio id={idAudioUs}>
+                    <source src={us.audio} type="audio/mpeg"></source>
+                  </audio>
+                </div>
+              )}
 
-          {uk && (
-            <div>
-              <Button type="primary" className="mr-2" onClick={playAudioUk}>
-                UK
-              </Button>
-              <span>{uk.ipa}</span>
-              <audio id={idAudioUk}>
-                <source src={uk.audio}></source>
-              </audio>
-            </div>
+              {uk && (
+                <div>
+                  <Button type="primary" className="mr-2" onClick={playAudioUk}>
+                    UK
+                  </Button>
+                  <span>{uk.ipa}</span>
+                  <audio id={idAudioUk}>
+                    <source src={uk.audio}></source>
+                  </audio>
+                </div>
+              )}
+            </>
+          ) : (
+            NOT_FOUND
           )}
         </div>
       )}

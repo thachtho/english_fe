@@ -6,20 +6,27 @@ import { getVariableByLessonId } from '../../../../api/lesson.api';
 interface VariableState {
   lessonId: String | undefined;
   variables: IVariable[];
+  isReload: boolean;
+  setIsReload: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const VariableContext = React.createContext<VariableState>({
   lessonId: undefined,
   variables: [],
+  isReload: false,
+  setIsReload: () => {},
 });
 
 const VariableProvider = ({ children }: any) => {
   const { id: lessonId } = useParams();
   const [variables, setVariables] = useState<IVariable[]>([]);
+  const [isReload, setIsReload] = useState<boolean>(false);
 
   const values = {
     lessonId,
     variables,
+    isReload,
+    setIsReload,
   };
 
   useEffect(() => {
@@ -31,7 +38,7 @@ const VariableProvider = ({ children }: any) => {
         toast.error(error?.response?.data?.message);
       }
     })();
-  }, []);
+  }, [isReload]);
 
   return (
     <VariableContext.Provider value={values}>

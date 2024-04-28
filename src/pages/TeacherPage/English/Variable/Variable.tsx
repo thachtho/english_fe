@@ -1,30 +1,74 @@
 import { Box, Button, IconButton, Stack, Tooltip } from '@mui/material';
 import {
-  MRT_TableOptions,
+  LiteralUnion,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from 'material-react-table';
 import { useMemo, useState } from 'react';
 
+import {
+  createVariable,
+  deleteVariable,
+  updateVariable,
+} from '../../../../api/variable.api';
 import { DeleteIcon, EditIcon } from '../../../../components';
+import ModalConfirm from '../../../../components/Modal/Confirm';
 import { useApp } from '../../../../context/app.context';
+import useHandleCreateUpdate from '../../../../hooks/handle/useHandleCreateUpdate';
 import useRenderCreateRowDialogContent from '../../../../hooks/handle/useRenderCreateRowDialogContent';
 import useRenderEditRowDialogContent from '../../../../hooks/handle/useRenderEditRowDialogContent';
-import { checkRequired } from '../../../../untils/validate';
-import { useVariable } from './Variable.context';
 import Source from './Source';
+import { useVariable } from './Variable.context';
+import { validateVariable } from './validate';
+
+interface IIputCreate extends Pick<IVariable, 'name' | 'vi' | 'lessonId'> {}
 
 const Variable = () => {
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string | undefined>
+  >({});
   const { optionsReactTableDefault } = useApp();
-  const { variables } = useVariable();
+  const { variables, lessonId, setIsReload, isReload } = useVariable();
+  const [idVariableSelected, setIdVariableSelected] = useState<null | number>(
+    null,
+  );
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const { renderEditRowDialogContent } =
     useRenderEditRowDialogContent('Edit từ vựng');
   const { renderCreateRowDialogContent } =
     useRenderCreateRowDialogContent('Add từ vựng');
-  const [validationErrors, setValidationErrors] = useState<
-    Record<string, string | undefined>
-  >({});
+
+  const { handleCreateUpdate: handleCreate } = useHandleCreateUpdate({
+    validate: validateVariable,
+    createOption: (values: Record<LiteralUnion<string, string>, any>) => {
+      return {
+        ...values,
+        lessonId: Number(lessonId),
+      };
+    },
+    handle: async ({ values }: { values: IIputCreate }) => {
+      await createVariable(values);
+      setIsReload(!isReload);
+    },
+    setValidationErrors,
+    isCreate: true,
+  });
+
+  const { handleCreateUpdate: handleUpdate } = useHandleCreateUpdate({
+    validate: validateVariable,
+    handle: async ({ values, id }) => {
+      updateVariable(Number(id), values);
+      setIsReload(!isReload);
+    },
+    setValidationErrors,
+    isEdit: true,
+  });
+
+  const handleDelete = () => {
+    deleteVariable(Number(idVariableSelected));
+    setIsReload(!isReload);
+  };
 
   const columns = useMemo<MRT_ColumnDef<IVariable>[]>(
     () => [
@@ -43,12 +87,6 @@ const Variable = () => {
         },
       },
       {
-        header: 'Âm thanh',
-        Cell: ({ row }) => {
-          return <Source name={row.original.name} id={row.original.id} />;
-        },
-      },
-      {
         header: 'VI',
         accessorKey: 'vi',
         muiEditTextFieldProps: {
@@ -62,37 +100,16 @@ const Variable = () => {
             }),
         },
       },
+      {
+        header: 'Âm thanh',
+        enableEditing: false,
+        Cell: ({ row }) => {
+          return <Source name={row.original.name} id={row.original.id} />;
+        },
+      },
     ],
     [validationErrors, variables.length],
   );
-
-  const handleCreateVariable: MRT_TableOptions<IVariable>['onCreatingRowSave'] =
-    async ({ values, table }) => {
-      const newValidationErrors = validateVariable(values);
-      if (Object.values(newValidationErrors).some((error) => error)) {
-        setValidationErrors(newValidationErrors);
-        return;
-      }
-      setValidationErrors({});
-      table.setCreatingRow(null); //exit creating mode
-    };
-  const handleEditVariable: MRT_TableOptions<IVariable>['onEditingRowSave'] =
-    async ({ values, table, row }) => {
-      const newValidationErrors = validateVariable(values);
-      if (Object.values(newValidationErrors).some((error) => error)) {
-        setValidationErrors(newValidationErrors);
-        return;
-      }
-      setValidationErrors({});
-      table.setEditingRow(null); //exit editing mode
-    };
-
-  function validateVariable(variable: IVariable) {
-    return {
-      name: !checkRequired(variable.name) ? 'Từ vựng không được để trống!' : '',
-      vi: !checkRequired(variable.vi) ? 'Nghĩa không được để trống' : '',
-    };
-  }
 
   const table = useMaterialReactTable({
     columns,
@@ -104,8 +121,8 @@ const Variable = () => {
     onCreatingRowCancel: () => setValidationErrors({}),
     onEditingRowCancel: () => setValidationErrors({}),
     enableEditing: true,
-    onCreatingRowSave: handleCreateVariable,
-    onEditingRowSave: handleEditVariable,
+    onCreatingRowSave: handleCreate,
+    onEditingRowSave: handleUpdate,
     renderCreateRowDialogContent,
     renderEditRowDialogContent,
     renderRowActions: ({ row }) => (
@@ -116,7 +133,13 @@ const Variable = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton color="error">
+          <IconButton
+            color="error"
+            onClick={() => {
+              setIsModalDeleteOpen(true);
+              setIdVariableSelected(row.original.id);
+            }}
+          >
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -132,8 +155,46 @@ const Variable = () => {
   return (
     <Stack gap="1rem">
       <MaterialReactTable table={table} />
+      {isModalDeleteOpen && (
+        <ModalConfirm
+          isOpen={isModalDeleteOpen}
+          setIsOpen={setIsModalDeleteOpen}
+          handle={handleDelete}
+          message={'Xác nhận xóa?'}
+        />
+      )}
     </Stack>
   );
 };
 
 export default Variable;
+
+const classObj = {
+  id: 1,
+  name: '8A',
+};
+
+const unit = {
+  id: 1,
+  name: 'Unit 1',
+};
+
+const lesson = {
+  id: 1,
+  name: 'Lesson 1',
+};
+
+const variable = {
+  id: 1,
+  name: 'Apple',
+};
+
+const classUnit = {
+  classId: 1,
+  unitId: 1,
+};
+
+const classUnitLesson = {
+  classUnitId: 1,
+  lessonId: 1,
+};
