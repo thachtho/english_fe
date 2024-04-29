@@ -16,6 +16,8 @@ const StudyProgramDetail = () => {
   const { studyProgramId } = useStudyProgramDetail();
   const [units, setUnits] = useState<IUnit[]>([]);
   const [unitIdSelected, setUnitIdSelected] = useState<number | null>(null);
+  const [isReloadUnit, setIsReloadUnit] = useState<boolean>(false);
+  const [isReloadLesson, setIsReloadLesson] = useState<boolean>(false);
 
   const commonTableProps: Partial<MRT_TableOptions<IUnit>> & {
     columns: MRT_ColumnDef<IUnit>[];
@@ -43,7 +45,7 @@ const StudyProgramDetail = () => {
     (async () => {
       await getDataUnits();
     })();
-  }, []);
+  }, [isReloadUnit]);
 
   return (
     <>
@@ -60,11 +62,15 @@ const StudyProgramDetail = () => {
           commonTableProps={commonTableProps}
           units={units}
           setUnitIdSelected={setUnitIdSelected}
+          setIsReloadUnit={setIsReloadUnit}
+          isReloadUnit={isReloadUnit}
         />
 
         <Lesson
           commonTableProps={commonTableProps}
           unitIdSelected={unitIdSelected}
+          isReloadLesson={isReloadLesson}
+          setIsReloadLesson={setIsReloadLesson}
         />
       </Box>
     </>

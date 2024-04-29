@@ -168,33 +168,3 @@ const Variable = () => {
 };
 
 export default Variable;
-
-const classObj = {
-  id: 1,
-  name: '8A',
-};
-
-const unit = {
-  id: 1,
-  name: 'Unit 1',
-};
-
-const lesson = {
-  id: 1,
-  name: 'Lesson 1',
-};
-
-const variable = {
-  id: 1,
-  name: 'Apple',
-};
-
-const classUnit = {
-  classId: 1,
-  unitId: 1,
-};
-
-const classUnitLesson = {
-  classUnitId: 1,
-  lessonId: 1,
-};

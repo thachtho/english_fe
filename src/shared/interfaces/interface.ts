@@ -61,6 +61,7 @@ interface ICourse extends IBase {
 
 interface IUnit extends IBase {
   name: string;
+  studyProgramId: number;
   lessons: ILesson[];
 }
 
