@@ -1,17 +1,18 @@
-import { Box, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import { Button } from 'antd';
 import {
-  MRT_ExpandAllButton,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from 'material-react-table';
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../../context/app.context';
 import { IResponseClassList } from '../../../untils';
 import { useClassList } from './ClassList.context';
 
 const ClassList = () => {
+  const navigation = useNavigate();
   const { optionsReactTableDefault } = useApp();
   const { classList } = useClassList();
   const columns = useMemo<MRT_ColumnDef<IResponseClassList>[]>(() => {
@@ -36,32 +37,6 @@ const ClassList = () => {
     ...optionsReactTableDefault,
     columns,
     data: classList,
-    displayColumnDefOptions: {
-      'mrt-row-expand': {
-        Header: () => (
-          <Stack direction="row" alignItems="center">
-            <MRT_ExpandAllButton table={table} />
-            <Box>Groups</Box>
-          </Stack>
-        ),
-        GroupedCell: ({ row, table }) => {
-          const { grouping } = table.getState();
-          return row.getValue(grouping[grouping.length - 1]);
-        },
-        enableResizing: true,
-        muiTableBodyCellProps: ({ row }) => ({
-          sx: (theme) => ({
-            color:
-              row.depth === 0
-                ? theme.palette.primary.main
-                : row.depth === 1
-                ? theme.palette.secondary.main
-                : undefined,
-          }),
-        }),
-        size: 200,
-      },
-    },
     groupedColumnMode: 'remove',
     initialState: {
       expanded: true, //expand all groups by default
@@ -71,7 +46,11 @@ const ClassList = () => {
 
     renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-        <Button type="primary" size={'small'} onClick={() => alert()}>
+        <Button
+          type="primary"
+          size={'small'}
+          onClick={() => navigation(`/class-manager/${row.original.id}`)}
+        >
           Quản lý
         </Button>
       </Box>

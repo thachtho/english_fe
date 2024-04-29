@@ -22,6 +22,10 @@ const Variable = lazy(
   () => import('../pages/TeacherPage/English/Variable/index'),
 );
 
+const ClassManager = lazy(
+  () => import('../pages/TeacherPage/ClassManager/index'),
+);
+
 const coreRoutes = [
   {
     path: '/calendar',
@@ -87,6 +91,11 @@ const coreRoutes = [
     path: '/english/lesson/:id/variable',
     title: 'Variable',
     component: Variable,
+  },
+  {
+    path: '/class-manager/:id',
+    title: 'ClassManager',
+    component: ClassManager,
   },
 ];
 

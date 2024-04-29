@@ -17,7 +17,7 @@ import AddStudentToClass from './AddStudentToClass';
 import ModalConfirm from '../../../../components/Modal/Confirm';
 
 const DetailClass = () => {
-  const { height, optionsReactTableDefault } = useApp();
+  const { optionsReactTableDefault } = useApp();
   const { id: classId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [students, setStudents] = useState<IUser[]>([]);
@@ -45,9 +45,9 @@ const DetailClass = () => {
       return item.user;
     });
 
-    setTeacherName(data.teacher.fullname as string);
+    setTeacherName(data?.teacher?.fullname as string);
     setStudents(students);
-    setClassName(data.name);
+    setClassName(data?.name);
   };
 
   const handleDelete = async () => {
@@ -79,7 +79,7 @@ const DetailClass = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: students,
+    data: [], //fix ở đây
     ...optionsReactTableDefault,
 
     renderRowActions: ({ row }) => (
