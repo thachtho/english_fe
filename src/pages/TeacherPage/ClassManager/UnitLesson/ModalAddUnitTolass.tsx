@@ -2,7 +2,7 @@ import { Modal } from 'antd';
 import { useState } from 'react';
 import { getAllUnitLessonByStudyProgramId } from '../../../../api/unit.api';
 import Dropdown from '../../../../components/Dropdown';
-import useGetDataStudyPrograms from './useGetDataStudyPrograms';
+import useGetDataStudyPrograms from './hooks/useGetDataStudyPrograms';
 import { validateAddUnitLesson } from './validate';
 import {
   renderDropdownStudyPrograms,

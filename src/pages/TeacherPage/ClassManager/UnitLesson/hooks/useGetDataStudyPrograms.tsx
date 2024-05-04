@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { getStudyProgramByBlockId } from '../../../../api/study.api';
+import { getStudyProgramByBlockId } from '../../../../../api/study.api';
 
 interface IProps {
   blockId: number;

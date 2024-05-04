@@ -17,12 +17,18 @@ import { useApp } from '../../../../context/app.context';
 import ListLesson from './ListLesson';
 import ModalAddUnitTolass, { IOptionState } from './ModalAddUnitTolass';
 import ModalAddLesson from './ModalAddLesson';
+import { createClassManagerLesson } from '../../../../api/class-manager-lesson.api';
 
 interface IDataTableState {
   id: number;
   unitName: string;
   unitId: number;
   lessons: ILesson[];
+}
+
+export interface IListLesson extends ILesson {
+  classManagerLessonId: number;
+  active: boolean;
 }
 
 const UnitLesson = () => {
@@ -64,20 +70,20 @@ const UnitLesson = () => {
     })();
   }, [classId, isReload]);
 
-  const handleAddLesson = (classManagerId: number) => {
-    setIdClassManagerSelected(classManagerId);
-    setIsModalAddLesson(true);
-  };
-
   const renderDataTable = () => {
     return unitLesson.map((item) => {
       const { id, unit, classManagerLessons } = item;
+
       return {
         id,
         unitName: unit.name,
         unitId: unit.id,
         lessons: classManagerLessons.map((item) => {
-          return item.lesson;
+          return {
+            ...item.lesson,
+            active: item.active,
+            classManagerLessonId: item.id,
+          };
         }),
       };
     });
@@ -93,14 +99,17 @@ const UnitLesson = () => {
     },
     enableEditing: false,
     renderDetailPanel: ({ row }) => {
-      const lessons: ILesson[] = row.original.lessons;
+      const lessons: IListLesson[] = row.original.lessons;
 
       return (
         <>
           <ListLesson lessons={lessons} />
           <Button
             variant="contained"
-            onClick={() => handleAddLesson(row.original.id)}
+            onClick={() => {
+              setIdClassManagerSelected(row.original.id);
+              setIsModalAddLesson(true);
+            }}
           >
             Add Lesson
           </Button>
@@ -132,9 +141,18 @@ const UnitLesson = () => {
     setIsModalAddUnit(false);
   };
 
+  const handleAddLesson = async (option: {
+    lessonId: number;
+    classManagerId: number;
+  }) => {
+    await createClassManagerLesson(option);
+    setIsReload(!isReload);
+    setIsModalAddLesson(false);
+  };
+
   return (
     <>
-      <MaterialReactTable table={table} />;
+      <MaterialReactTable table={table} />
       {isModalAddUnit && (
         <ModalAddUnitTolass
           isModalOpen={isModalAddUnit}
@@ -149,6 +167,7 @@ const UnitLesson = () => {
           setIsModalOpen={setIsModalAddLesson}
           idClassManagerSelected={idClassManagerSelected}
           classOption={classOption}
+          handle={handleAddLesson}
         />
       )}
     </>

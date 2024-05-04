@@ -66,9 +66,21 @@ const renderDropdownUnits = (units: IUnit[]) => {
   return dropdownUnits;
 };
 
+const renderDropdownLessons = (lessons: ILesson[]) => {
+  const dropdownLessons = lessons.map((item) => {
+    return {
+      label: item.name,
+      value: item.id,
+    };
+  });
+
+  return dropdownLessons;
+};
+
 export {
   getKeyTab,
   renderDataClassListWithTeacher,
   renderDropdownStudyPrograms,
   renderDropdownUnits,
+  renderDropdownLessons,
 };

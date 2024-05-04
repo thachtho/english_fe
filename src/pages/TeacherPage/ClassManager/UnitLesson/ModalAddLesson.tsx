@@ -1,19 +1,20 @@
 import { Modal } from 'antd';
+import { useState } from 'react';
 import Dropdown from '../../../../components/Dropdown';
-import useGetDataStudyPrograms from './useGetDataStudyPrograms';
-import {
-  renderDropdownStudyPrograms,
-  renderDropdownUnits,
-} from '../../../../untils';
-import { useEffect, useState } from 'react';
-import { getClassManager } from '../../../../api/class-manager.api';
-import { getAllUnitLessonByStudyProgramId } from '../../../../api/unit.api';
+import useFetchDataAddLesson from './hooks/useFetchDataAddLesson';
+import { validateAddLesson } from './validate';
 
 interface IPropsModal {
   setIsModalOpen: (isShow: boolean) => void;
   isModalOpen: boolean;
   idClassManagerSelected: number;
   classOption: IClass | null;
+  handle: (option: { lessonId: number; classManagerId: number }) => void;
+}
+
+interface IMessageError {
+  unit: string;
+  lesson: string;
 }
 
 function ModalAddLesson({
@@ -21,31 +22,66 @@ function ModalAddLesson({
   isModalOpen,
   idClassManagerSelected,
   classOption,
+  handle,
 }: IPropsModal) {
-  const { studyPrograms } = useGetDataStudyPrograms({
-    blockId: Number(classOption?.blockId),
+  const {
+    classManager,
+    dropdownLessons,
+    dropdownStudyPrograms,
+    dropdownUnits,
+    unitId,
+    setUnitId,
+  } = useFetchDataAddLesson(
+    idClassManagerSelected,
+    Number(classOption?.blockId),
+  );
+  const [messageError, setMessageError] = useState<IMessageError>({
+    unit: '',
+    lesson: '',
   });
-  const [classManager, setClassManager] = useState<null | IClassManager>(null);
-  const [units, setUnits] = useState<IUnit[]>([]);
-  const dropdownStudyPrograms = renderDropdownStudyPrograms(studyPrograms);
-  const dropdownUnits = renderDropdownUnits(units);
+  const [lessonId, setLessonId] = useState<null | number>(null);
 
-  useEffect(() => {
-    (async () => {
-      const { data } = await getClassManager(Number(idClassManagerSelected));
-      const { data: units } = await getAllUnitLessonByStudyProgramId(
-        data?.unit?.studyProgramId,
-      );
-      setUnits(units);
-      setClassManager(data);
-    })();
-  }, []);
+  const onOk = () => {
+    const newValidationErrors = validateAddLesson({
+      lessonId,
+      unitId,
+    });
+    if (Object.values(newValidationErrors).some((error) => error)) {
+      setMessageError(newValidationErrors);
+      return;
+    }
+    const input = {
+      classManagerId: Number(idClassManagerSelected),
+      lessonId: Number(lessonId),
+    };
+    return handle(input);
+  };
 
+  const handleChangeUnit = (unitId: number) => {
+    setMessageError((prev) => {
+      return {
+        ...prev,
+        unit: '',
+      };
+    });
+    setUnitId(unitId);
+  };
+
+  const handleChangeLesson = (lessonId: number) => {
+    setMessageError((prev) => {
+      return {
+        ...prev,
+        lesson: '',
+      };
+    });
+    setLessonId(lessonId);
+  };
   return (
     <Modal
       title={'Add'}
       open={isModalOpen}
       onCancel={() => setIsModalOpen(false)}
+      onOk={onOk}
     >
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-col gap-5.5 p-6.5">
@@ -56,8 +92,8 @@ function ModalAddLesson({
             <div className="relative z-20 bg-transparent dark:bg-form-input">
               <Dropdown
                 data={dropdownStudyPrograms}
-                handleChange={() => {}}
-                defaultValue={classManager?.unit.studyProgramId ?? ''}
+                defaultValue={classManager?.unit?.studyProgramId ?? ''}
+                setKey={true}
               />
             </div>
           </div>
@@ -68,10 +104,33 @@ function ModalAddLesson({
             <div className="relative z-20 bg-transparent dark:bg-form-input">
               <Dropdown
                 data={dropdownUnits}
-                handleChange={() => {}}
-                defaultValue={classManager?.unitId ?? ''}
+                handleChange={handleChangeUnit}
+                defaultValue={unitId ?? ''}
+                setKey={true}
               />
             </div>
+            {messageError.unit.length > 0 && (
+              <span className="text-meta-1">
+                <i>{messageError.unit}</i>
+              </span>
+            )}
+          </div>
+          <div>
+            <label className="mb-2.5 block text-black dark:text-white">
+              Lesson
+            </label>
+            <div className="relative z-20 bg-transparent dark:bg-form-input">
+              <Dropdown
+                data={dropdownLessons}
+                handleChange={handleChangeLesson}
+                defaultValue={lessonId || ''}
+              />
+            </div>
+            {messageError.lesson.length > 0 && (
+              <span className="text-meta-1">
+                <i>{messageError.lesson}</i>
+              </span>
+            )}
           </div>
         </div>
       </div>

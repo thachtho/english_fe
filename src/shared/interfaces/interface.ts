@@ -85,6 +85,7 @@ interface IClassManagerLesson {
   id: number;
   classManagerId: number;
   lessonId: number;
+  active: boolean;
   lesson: ILesson;
 }
 

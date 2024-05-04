@@ -1,24 +1,37 @@
-import { Box } from '@mui/material';
-import { Typography } from 'antd';
+import { Box, Switch } from '@mui/material';
+import { IListLesson } from './UnitLesson';
+import { activeClassManagerLesson } from '../../../../api/class-manager-lesson.api';
+import { useState } from 'react';
 
-interface IListLessonProps {
-  lessons: ILesson[];
-}
-function ListLesson({ lessons }: IListLessonProps) {
+function ListLesson({ lessons }: { lessons: IListLesson[] }) {
   const handleGetVariable = (lessonId: number) => {
     alert(lessonId);
+  };
+
+  const active = (active: boolean, classManagerLessonId: number) => {
+    return activeClassManagerLesson(classManagerLessonId, {
+      active,
+    });
   };
   return (
     <Box>
       {lessons.map((item, i) => {
         return (
-          <div key={i}>
-            <Typography
-              className="bg-meta-3 mb-3 p-2 cursor-pointer"
+          <div key={i} className="flex mb-3 justify-center items-center">
+            <div
+              className="flex-1 bg-meta-3 p-2  cursor-pointer "
               onClick={() => handleGetVariable(item.id)}
             >
               {item.name}
-            </Typography>
+            </div>
+            <div className="flex-1 ">
+              Active:{' '}
+              <SwitchCustom
+                handleChange={active}
+                active={item.active}
+                classManagerLessonId={item.classManagerLessonId}
+              />
+            </div>
           </div>
         );
       })}
@@ -27,3 +40,28 @@ function ListLesson({ lessons }: IListLessonProps) {
 }
 
 export default ListLesson;
+
+const SwitchCustom = ({
+  active,
+  handleChange,
+  classManagerLessonId,
+}: {
+  active: boolean;
+  classManagerLessonId: number;
+  handleChange: any;
+}) => {
+  const [isActive, setIsActive] = useState<boolean>(active);
+  const onChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    classManagerLessonId: number,
+  ) => {
+    setIsActive(e.target.checked);
+    handleChange(e.target.checked, classManagerLessonId);
+  };
+  return (
+    <Switch
+      defaultChecked={isActive}
+      onChange={(e) => onChange(e, classManagerLessonId)}
+    />
+  );
+};
