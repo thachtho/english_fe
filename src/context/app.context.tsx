@@ -47,6 +47,7 @@ const AppProvider = ({ children }: any) => {
   >(null);
 
   const optionsReactTableDefault = {
+    enableToolbarInternalActions: false,
     enableGrouping: true,
     enableBottomToolbar: false,
     enableStickyHeader: true,
@@ -55,6 +56,7 @@ const AppProvider = ({ children }: any) => {
     enableEditing: true,
     initialState: {
       columnPinning: { right: ['mrt-row-actions'] },
+      showGlobalFilter: true,
     },
     muiTableContainerProps: { sx: { maxHeight: `${height - 180}px` } },
   };
