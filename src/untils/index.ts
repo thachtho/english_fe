@@ -44,4 +44,31 @@ const renderDataClassListWithTeacher = (
   return list;
 };
 
-export { getKeyTab, renderDataClassListWithTeacher };
+const renderDropdownStudyPrograms = (studyPrograms: IStudyProgram[]) => {
+  const dropdownStudyPrograms = studyPrograms.map((item) => {
+    return {
+      label: item.name,
+      value: item.id,
+    };
+  });
+
+  return dropdownStudyPrograms;
+};
+
+const renderDropdownUnits = (units: IUnit[]) => {
+  const dropdownUnits = units.map((item) => {
+    return {
+      label: item.name,
+      value: item.id,
+    };
+  });
+
+  return dropdownUnits;
+};
+
+export {
+  getKeyTab,
+  renderDataClassListWithTeacher,
+  renderDropdownStudyPrograms,
+  renderDropdownUnits,
+};

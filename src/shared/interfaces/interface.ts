@@ -76,6 +76,25 @@ interface IStudyProgram extends IBase {
   blockId: number;
 }
 
+interface IStudyProgram extends IBase {
+  name: string;
+  blockId: number;
+}
+
+interface IClassManagerLesson {
+  id: number;
+  classManagerId: number;
+  lessonId: number;
+  lesson: ILesson;
+}
+
+interface IClassManager extends IBase {
+  classId: number;
+  unitId: number;
+  unit: IUnit;
+  classManagerLessons: IClassManagerLesson[];
+}
+
 interface IVariable extends IBase {
   name: string;
   vi: string;
