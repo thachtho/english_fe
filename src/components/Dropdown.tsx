@@ -39,6 +39,7 @@ const Dropdown = ({
       filterOption={filterOption}
       options={data}
       defaultValue={defaultValue}
+      key={Math.random() * 1000}
     />
   );
 };

@@ -1,9 +1,13 @@
 import { Modal } from 'antd';
 import Dropdown from '../../../../components/Dropdown';
 import useGetDataStudyPrograms from './useGetDataStudyPrograms';
-import { renderDropdownStudyPrograms } from '../../../../untils';
+import {
+  renderDropdownStudyPrograms,
+  renderDropdownUnits,
+} from '../../../../untils';
 import { useEffect, useState } from 'react';
 import { getClassManager } from '../../../../api/class-manager.api';
+import { getAllUnitLessonByStudyProgramId } from '../../../../api/unit.api';
 
 interface IPropsModal {
   setIsModalOpen: (isShow: boolean) => void;
@@ -22,11 +26,17 @@ function ModalAddLesson({
     blockId: Number(classOption?.blockId),
   });
   const [classManager, setClassManager] = useState<null | IClassManager>(null);
+  const [units, setUnits] = useState<IUnit[]>([]);
   const dropdownStudyPrograms = renderDropdownStudyPrograms(studyPrograms);
+  const dropdownUnits = renderDropdownUnits(units);
 
   useEffect(() => {
     (async () => {
       const { data } = await getClassManager(Number(idClassManagerSelected));
+      const { data: units } = await getAllUnitLessonByStudyProgramId(
+        data?.unit?.studyProgramId,
+      );
+      setUnits(units);
       setClassManager(data);
     })();
   }, []);
@@ -48,6 +58,18 @@ function ModalAddLesson({
                 data={dropdownStudyPrograms}
                 handleChange={() => {}}
                 defaultValue={classManager?.unit.studyProgramId ?? ''}
+              />
+            </div>
+          </div>
+          <div>
+            <label className="mb-2.5 block text-black dark:text-white">
+              Unit
+            </label>
+            <div className="relative z-20 bg-transparent dark:bg-form-input">
+              <Dropdown
+                data={dropdownUnits}
+                handleChange={() => {}}
+                defaultValue={classManager?.unitId ?? ''}
               />
             </div>
           </div>
