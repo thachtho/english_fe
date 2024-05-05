@@ -26,6 +26,9 @@ const ClassManager = lazy(
   () => import('../pages/TeacherPage/ClassManager/index'),
 );
 
+//studentPage
+const StudentClassPage = lazy(() => import('../pages/StudentPage/Class/Class'));
+
 const coreRoutes = [
   {
     path: '/calendar',
@@ -96,6 +99,11 @@ const coreRoutes = [
     path: '/class-manager/:id',
     title: 'ClassManager',
     component: ClassManager,
+  },
+  {
+    path: '/studentPage/class',
+    title: 'studentPage',
+    component: StudentClassPage,
   },
 ];
 

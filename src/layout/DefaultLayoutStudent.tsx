@@ -7,7 +7,7 @@ function DefaultLayoutStudent() {
       <div className="lg:w-230 w-full">
         <HeaderStudent />
         <div
-          className="overflow-y-auto overflow-x-hidden scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300 h-32 "
+          className="overflow-y-auto overflow-x-hidden scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300 h-32 mt-2 "
           style={{ height: '85vh' }}
         >
           <Outlet />
