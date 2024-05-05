@@ -2,16 +2,23 @@ import { Box, Switch } from '@mui/material';
 import { IListLesson } from './UnitLesson';
 import { activeClassManagerLesson } from '../../../../api/class-manager-lesson.api';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useClassManager } from '../ClassManager.context';
 
 function ListLesson({ lessons }: { lessons: IListLesson[] }) {
+  const { setLessonIdSelected } = useClassManager();
   const handleGetVariable = (lessonId: number) => {
-    alert(lessonId);
+    setLessonIdSelected(lessonId);
   };
 
   const active = (active: boolean, classManagerLessonId: number) => {
-    return activeClassManagerLesson(classManagerLessonId, {
-      active,
-    });
+    try {
+      return activeClassManagerLesson(classManagerLessonId, {
+        active,
+      });
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+    }
   };
   return (
     <Box>
@@ -24,7 +31,7 @@ function ListLesson({ lessons }: { lessons: IListLesson[] }) {
             >
               {item.name}
             </div>
-            <div className="flex-1 ">
+            <div className="flex-1 ml-2">
               Active:{' '}
               <SwitchCustom
                 handleChange={active}

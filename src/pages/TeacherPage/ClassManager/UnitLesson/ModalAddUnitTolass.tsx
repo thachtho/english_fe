@@ -130,19 +130,18 @@ const ModalAddUnitTolass = ({
                   <i>{messageError.studyProgram}</i>
                 </span>
               )}
-              {dropdownUnits.length > 0 && (
-                <div>
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Unit
-                  </label>
-                  <div className="relative z-20 bg-transparent dark:bg-form-input">
-                    <Dropdown
-                      data={dropdownUnits}
-                      handleChange={handleChangeUnit}
-                    />
-                  </div>
+
+              <div>
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Unit
+                </label>
+                <div className="relative z-20 bg-transparent dark:bg-form-input">
+                  <Dropdown
+                    data={dropdownUnits}
+                    handleChange={handleChangeUnit}
+                  />
                 </div>
-              )}
+              </div>
 
               {messageError.unit.length > 0 && (
                 <span className="text-meta-1">

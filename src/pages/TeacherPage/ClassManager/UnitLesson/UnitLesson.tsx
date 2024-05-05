@@ -145,9 +145,13 @@ const UnitLesson = () => {
     lessonId: number;
     classManagerId: number;
   }) => {
-    await createClassManagerLesson(option);
-    setIsReload(!isReload);
-    setIsModalAddLesson(false);
+    try {
+      await createClassManagerLesson(option);
+      setIsReload(!isReload);
+      setIsModalAddLesson(false);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+    }
   };
 
   return (

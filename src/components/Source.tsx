@@ -1,31 +1,26 @@
 import { Button, Spin } from 'antd';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const apiDictionary = `https://api.freedictionary.dev/api/v1/entries/en`;
 const NOT_FOUND = 'Not found';
 
-interface ISource {
+interface ISound {
   audio: string;
   ipa: string;
 }
 
-function Source({ id, name }: { name: string; id: number }) {
+function Sound({
+  name,
+  handleChangeSound,
+}: {
+  name: string;
+  handleChangeSound: (src: string) => void;
+}) {
   const [notFound, setNotFound] = useState<boolean>(false);
   const [isLoadding, setIsloadding] = useState<boolean>(true);
-  const [us, setUs] = useState<ISource | null>(null);
-  const [uk, setUk] = useState<ISource | null>(null);
-  const idAudioUs = `myAudio-${id}-us`;
-  const idAudioUk = `myAudio-${id}-uk`;
-  const playAudioUs = () => {
-    var audio = document.getElementById(idAudioUs);
-    (audio as any)?.play();
-  };
-
-  const playAudioUk = () => {
-    var audio = document.getElementById(idAudioUk);
-    (audio as any)?.play();
-  };
+  const [us, setUs] = useState<ISound | null>(null);
+  const [uk, setUk] = useState<ISound | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -75,26 +70,24 @@ function Source({ id, name }: { name: string; id: number }) {
                   <Button
                     className="mb-2 mr-2"
                     type="primary"
-                    onClick={playAudioUs}
+                    onClick={() => handleChangeSound(us.audio)}
                   >
                     US
                   </Button>
                   <span>{us.ipa}</span>
-                  <audio id={idAudioUs}>
-                    <source src={us.audio} type="audio/mpeg"></source>
-                  </audio>
                 </div>
               )}
 
               {uk && (
                 <div>
-                  <Button type="primary" className="mr-2" onClick={playAudioUk}>
+                  <Button
+                    type="primary"
+                    className="mr-2"
+                    onClick={() => handleChangeSound(uk.audio)}
+                  >
                     UK
                   </Button>
                   <span>{uk.ipa}</span>
-                  <audio id={idAudioUk}>
-                    <source src={uk.audio}></source>
-                  </audio>
                 </div>
               )}
             </>
@@ -107,4 +100,4 @@ function Source({ id, name }: { name: string; id: number }) {
   );
 }
 
-export default React.memo(Source);
+export default Sound;

@@ -18,9 +18,10 @@ import { useApp } from '../../../../context/app.context';
 import useHandleCreateUpdate from '../../../../hooks/handle/useHandleCreateUpdate';
 import useRenderCreateRowDialogContent from '../../../../hooks/handle/useRenderCreateRowDialogContent';
 import useRenderEditRowDialogContent from '../../../../hooks/handle/useRenderEditRowDialogContent';
-import Source from './Source';
 import { useVariable } from './Variable.context';
 import { validateVariable } from './validate';
+import useSound from '../../../../hooks/useSound';
+import Sound from '../../../../components/Source';
 
 interface IIputCreate extends Pick<IVariable, 'name' | 'vi' | 'lessonId'> {}
 
@@ -38,6 +39,7 @@ const Variable = () => {
     useRenderEditRowDialogContent('Edit từ vựng');
   const { renderCreateRowDialogContent } =
     useRenderCreateRowDialogContent('Add từ vựng');
+  const { audio, handleChangeSource, audioSrc, setIsPlaying } = useSound();
 
   const { handleCreateUpdate: handleCreate } = useHandleCreateUpdate({
     validate: validateVariable,
@@ -104,7 +106,12 @@ const Variable = () => {
         header: 'Âm thanh',
         enableEditing: false,
         Cell: ({ row }) => {
-          return <Source name={row.original.name} id={row.original.id} />;
+          return (
+            <Sound
+              handleChangeSound={handleChangeSource}
+              name={row.original.name}
+            />
+          );
         },
       },
     ],
@@ -163,6 +170,12 @@ const Variable = () => {
           message={'Xác nhận xóa?'}
         />
       )}
+      <audio
+        id="audio"
+        src={audioSrc || ''}
+        ref={audio}
+        onEnded={() => setIsPlaying(false)}
+      />
     </Stack>
   );
 };
