@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { useNavigate } from 'react-router-dom';
 import { LOCAL_STORAGE_KEY } from '../shared/enums/localstorage';
+import { ROLE } from '../shared/enums/role';
+import { getRole } from '../api/user/user.api';
 
 interface AppState {
   titleGlobal: string;
@@ -16,6 +18,7 @@ interface AppState {
   setStudyProgramIdSelected: React.Dispatch<
     React.SetStateAction<number | null>
   >;
+  role: number | null;
 }
 
 interface IUserInfo {
@@ -33,6 +36,7 @@ export const AppContext = React.createContext<AppState>({
   optionsReactTableDefault: {},
   studyProgramIdSelected: null,
   setStudyProgramIdSelected: () => {},
+  role: null,
 });
 
 const AppProvider = ({ children }: any) => {
@@ -45,6 +49,14 @@ const AppProvider = ({ children }: any) => {
   const [studyProgramIdSelected, setStudyProgramIdSelected] = useState<
     number | null
   >(null);
+  const [role, setRole] = useState<number | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await getRole();
+      setRole(data);
+    })();
+  }, []);
 
   const optionsReactTableDefault = {
     enableToolbarInternalActions: false,
@@ -86,6 +98,7 @@ const AppProvider = ({ children }: any) => {
     optionsReactTableDefault,
     studyProgramIdSelected,
     setStudyProgramIdSelected,
+    role,
   };
 
   useEffect(() => {
