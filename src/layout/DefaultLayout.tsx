@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import { Outlet } from 'react-router-dom';
-import TabsProvider from '../context/tabs.context';
-import AppProvider, { useApp } from '../context/app.context';
 import { AliveScope } from 'react-activation';
+import { Outlet } from 'react-router-dom';
+import Loader from '../common/Loader';
+import AppProvider, { useApp } from '../context/app.context';
+import TabsProvider from '../context/tabs.context';
 import { ROLE } from '../shared/enums/role';
 import DefaultLayoutStudent from './DefaultLayoutStudent';
-import { Spin } from 'antd';
-import Loader from '../common/Loader';
+import Header from './Header';
+import Sidebar from './Sidebar';
 
 const DefaultLayout = () => {
   return (
@@ -32,7 +31,7 @@ const MainScreen = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 3000);
+    setTimeout(() => setLoading(false), 1000);
   }, []);
 
   if (loading) {

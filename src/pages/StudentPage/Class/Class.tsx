@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getAllClassWithStudentId } from '../../../api/class.api';
 import toast from 'react-hot-toast';
+import Loader from '../../../common/Loader';
 
 function Class() {
   const [classList, setClassList] = useState<IClassStudent[]>([]);
@@ -15,6 +16,10 @@ function Class() {
       }
     })();
   }, []);
+
+  if (classList.length === 0) {
+    return '';
+  }
 
   return (
     <div className="student-container flex justify-center">
