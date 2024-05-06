@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { Outlet } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { AliveScope } from 'react-activation';
 import { ROLE } from '../shared/enums/role';
 import DefaultLayoutStudent from './DefaultLayoutStudent';
 import { Spin } from 'antd';
+import Loader from '../common/Loader';
 
 const DefaultLayout = () => {
   return (
@@ -28,9 +29,14 @@ const MainScreen = () => {
   const isStudent = role === ROLE.STUDENT;
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  if (role === null) {
-    return <Spin />;
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 3000);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
   }
   return (
     <>
