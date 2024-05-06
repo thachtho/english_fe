@@ -1,54 +1,73 @@
 .react-table {
-    font-size: 14px;
-    table, tr, td {
-      border: 1px solid lightgray;
-    }
-  
-    th, tr, td {
-      min-width: 200px;
-    }
-  
-    td {
-      padding: 5px;
-    }
-    
-    tbody {
-      border-bottom: 1px solid lightgray;
-    }
-    
-    th {
-      border-bottom: 1px solid lightgray;
-      border-right: 1px solid lightgray;
-      padding: 2px 4px;
-    }
-    
-    tfoot {
-      color: gray;
-    }
-    
-    tfoot th {
-      font-weight: normal;
-    }
+  font-size: 14px;
+  table,
+  tr,
+  td {
+    border: 1px solid lightgray;
+  }
+
+  th,
+  tr,
+  td {
+    min-width: 200px;
+  }
+
+  td {
+    padding: 5px;
+  }
+
+  tbody {
+    border-bottom: 1px solid lightgray;
+  }
+
+  th {
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    padding: 2px 4px;
+  }
+
+  tfoot {
+    color: gray;
+  }
+
+  tfoot th {
+    font-weight: normal;
+  }
 }
 
 .ant-tabs-tab-with-remove {
-  background-color: white !important; 
+  background-color: white !important;
   // border: 1px solid rgb(221, 218, 218) !important;
 }
 
 .ant-tabs-tab-active {
   background-color: rgb(241 245 249 / var(--tw-bg-opacity)) !important;
   border: 1px solid rgb(221, 218, 218) !important;
-  border-bottom: none !important
+  border-bottom: none !important;
 }
 .ant-tabs-nav {
   margin: 0 !important;
 }
 
-:where(.css-dev-only-do-not-override-1kuana8).ant-tabs-top >.ant-tabs-nav::before, :where(.css-dev-only-do-not-override-1kuana8).ant-tabs-bottom >.ant-tabs-nav::before, :where(.css-dev-only-do-not-override-1kuana8).ant-tabs-top >div>.ant-tabs-nav::before, :where(.css-dev-only-do-not-override-1kuana8).ant-tabs-bottom >div>.ant-tabs-nav::before{
-  border-bottom: 1px solid rgb(221, 218, 218) ;
+:where(.css-dev-only-do-not-override-1kuana8).ant-tabs-top
+  > .ant-tabs-nav::before,
+:where(.css-dev-only-do-not-override-1kuana8).ant-tabs-bottom
+  > .ant-tabs-nav::before,
+:where(.css-dev-only-do-not-override-1kuana8).ant-tabs-top
+  > div
+  > .ant-tabs-nav::before,
+:where(.css-dev-only-do-not-override-1kuana8).ant-tabs-bottom
+  > div
+  > .ant-tabs-nav::before {
+  border-bottom: 1px solid rgb(221, 218, 218);
 }
 
 .MuiAlert-message {
   display: none;
+}
+
+.student-container {
+  .student-wraper {
+    width: 400px;
+  }
 }

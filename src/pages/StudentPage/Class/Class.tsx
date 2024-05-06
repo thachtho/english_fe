@@ -1,29 +1,34 @@
-import { List, ListItem, ListItemText } from '@mui/material';
-import React from 'react';
-function generate(element: React.ReactElement) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    }),
-  );
-}
+import { useEffect, useState } from 'react';
+import { getAllClassWithStudentId } from '../../../api/class.api';
+import toast from 'react-hot-toast';
+
 function Class() {
-  const [dense, setDense] = React.useState(false);
-  const [secondary, setSecondary] = React.useState(false);
+  const [classList, setClassList] = useState<IClassStudent[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await getAllClassWithStudentId();
+        setClassList(data);
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message);
+      }
+    })();
+  }, []);
+
   return (
-    <div className="chapter-container">
+    <div className="student-container flex justify-center">
       <div
-        id="scrollableDiv"
+        className="student-wraper"
         style={{
           marginTop: '10px',
           height: 'auto',
           padding: '5px 10px',
           borderRadius: '0.75rem',
-          cursor: 'pointer',
         }}
       >
         <div
-          className="list-chapter"
+          className="list-class"
           style={{
             height: 'auto',
             padding: '5px 10px',
@@ -31,16 +36,17 @@ function Class() {
             borderRadius: '0.75rem',
           }}
         >
-          <List dense={dense}>
-            {generate(
-              <ListItem>
-                <ListItemText
-                  primary="Single-line item"
-                  secondary={secondary ? 'Secondary text' : null}
-                />
-              </ListItem>,
-            )}
-          </List>
+          {classList.length > 0 &&
+            classList.map((item, i) => {
+              return (
+                <div
+                  key={i}
+                  className="flex p-2 m-2 cursor-pointer rounded-lg bg-secondary text-black justify-center items-center"
+                >
+                  <p>Lớp {item.class.name}</p>
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>

@@ -96,6 +96,14 @@ interface IClassManager extends IBase {
   classManagerLessons: IClassManagerLesson[];
 }
 
+interface IClassStudent {
+  id: number;
+  classId: number;
+  userId: number;
+  class: IClass;
+  user: IUser;
+}
+
 interface IVariable extends IBase {
   name: string;
   vi: string;

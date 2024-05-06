@@ -104,15 +104,15 @@ const UnitLesson = () => {
       return (
         <>
           <ListLesson lessons={lessons} />
-          <Button
-            variant="contained"
+          <ButtonAtd
+            type="primary"
             onClick={() => {
               setIdClassManagerSelected(row.original.id);
               setIsModalAddLesson(true);
             }}
           >
             Add Lesson
-          </Button>
+          </ButtonAtd>
         </>
       );
     },
@@ -124,9 +124,9 @@ const UnitLesson = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: () => (
-      <Button variant="contained" onClick={() => setIsModalAddUnit(true)}>
+      <ButtonAtd type="primary" onClick={() => setIsModalAddUnit(true)}>
         Add Unit
-      </Button>
+      </ButtonAtd>
     ),
   });
 

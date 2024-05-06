@@ -1,5 +1,5 @@
 import { Header } from 'antd/es/layout/layout';
-import './header.scss';
+import './header-student.scss';
 import { useNavigate } from 'react-router-dom';
 import LogOut from '../components/Icon/LogOut';
 import { useTabs } from '../context/tabs.context';

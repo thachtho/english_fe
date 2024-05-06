@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';
 import { useNavigate } from 'react-router-dom';
-import { LOCAL_STORAGE_KEY } from '../shared/enums/localstorage';
-import { ROLE } from '../shared/enums/role';
 import { getRole } from '../api/user/user.api';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { LOCAL_STORAGE_KEY } from '../shared/enums/localstorage';
 
 interface AppState {
   titleGlobal: string;
