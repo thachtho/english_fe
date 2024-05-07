@@ -79,7 +79,7 @@ const DetailClass = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: [], //fix ở đây
+    data: students, //fix ở đây
     ...optionsReactTableDefault,
 
     renderRowActions: ({ row }) => (

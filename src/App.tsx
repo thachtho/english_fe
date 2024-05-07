@@ -1,15 +1,13 @@
-import React, { lazy, useEffect, useState } from 'react';
+import React, { lazy } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Route, Routes } from 'react-router-dom';
-
-import Loader from './common/Loader';
 
 import './app.scss';
 import SignIn from './pages/Authentication/SignIn/SignIn';
 import SignUp from './pages/Authentication/SignUp';
+import Error from './pages/Error';
 import Home from './pages/Home/index';
 import routes from './routes';
-import Error from './pages/Error';
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {

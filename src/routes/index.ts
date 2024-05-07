@@ -3,13 +3,17 @@ const Profile = lazy(() => import('../pages/Profile/index'));
 const Calendar = lazy(() => import('../pages/Calendar'));
 const Alerts = lazy(() => import('../components/UiElements/Alerts'));
 const Buttons = lazy(() => import('../components/UiElements/Buttons'));
-const Teacher = lazy(() => import('../pages/AdminAgency/Users/Teacher/index'));
-const Student = lazy(() => import('../pages/AdminAgency/Users/Student/index'));
-const Class = lazy(() => import('../pages/AdminAgency/Class/index'));
-const DetailClass = lazy(
-  () => import('../pages/AdminAgency/Class/Detail/index'),
+const Teacher = lazy(
+  () => import('../pages/AdminAgencyPage/Users/Teacher/index'),
 );
-const Course = lazy(() => import('../pages/AdminAgency/Course/index'));
+const Student = lazy(
+  () => import('../pages/AdminAgencyPage/Users/Student/index'),
+);
+const Class = lazy(() => import('../pages/AdminAgencyPage/Class/index'));
+const DetailClass = lazy(
+  () => import('../pages/AdminAgencyPage/Class/Detail/index'),
+);
+const Course = lazy(() => import('../pages/AdminAgencyPage/Course/index'));
 //teacher
 const ClassList = lazy(() => import('../pages/TeacherPage/ClassList/index'));
 const StudyProgramDetail = lazy(
@@ -28,6 +32,7 @@ const ClassManager = lazy(
 
 //studentPage
 const StudentClassPage = lazy(() => import('../pages/StudentPage/Class/Class'));
+const StudentUnitPage = lazy(() => import('../pages/StudentPage/Unit/Unit'));
 
 const coreRoutes = [
   {
@@ -104,6 +109,11 @@ const coreRoutes = [
     path: '/studentPage/class',
     title: 'studentPage',
     component: StudentClassPage,
+  },
+  {
+    path: '/studentPage/class/:id',
+    title: 'StudentClassPage',
+    component: StudentUnitPage,
   },
 ];
 

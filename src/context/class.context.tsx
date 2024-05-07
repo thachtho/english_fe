@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import useFetchCourse from '../pages/AdminAgency/Course/hooks/useFetchCourse';
-import useTeacher from '../pages/AdminAgency/Users/Teacher/hooks/useTeacher';
+import useFetchCourse from '../pages/AdminAgencyPage/Course/hooks/useFetchCourse';
+import useTeacher from '../pages/AdminAgencyPage/Users/Teacher/hooks/useTeacher';
 
 interface ClassState {
   teachers: IUser[];

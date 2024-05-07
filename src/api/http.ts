@@ -46,7 +46,7 @@ class Http {
           !error?.response?.data?.refresh
         ) {
           localStorage.clear();
-          window.location.href = 'auth/login';
+          window.location.href = '/auth/signin';
         }
 
         return Promise.reject(error);

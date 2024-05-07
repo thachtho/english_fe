@@ -22,7 +22,7 @@
   "include": [
     "src",
     "src/lib.d.ts",
-    "src/pages/AdminAgency/Class/Detail/DetailClass/.tsx"
+    "src/pages/AdminAgencyPage/Class/Detail/DetailClass/.tsx"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getAllClassWithStudentId } from '../../../api/class.api';
 import toast from 'react-hot-toast';
+import WraperLayoutStudent from '../../../layout/WraperLayoutStudent';
+import { useNavigate } from 'react-router-dom';
 import Loader from '../../../common/Loader';
 
 function Class() {
+  const navigation = useNavigate();
   const [classList, setClassList] = useState<IClassStudent[]>([]);
 
   useEffect(() => {
@@ -18,43 +21,24 @@ function Class() {
   }, []);
 
   if (classList.length === 0) {
-    return '';
+    return <Loader />;
   }
 
   return (
-    <div className="student-container flex justify-center">
-      <div
-        className="student-wraper"
-        style={{
-          marginTop: '10px',
-          height: 'auto',
-          padding: '5px 10px',
-          borderRadius: '0.75rem',
-        }}
-      >
-        <div
-          className="list-class"
-          style={{
-            height: 'auto',
-            padding: '5px 10px',
-            border: '2px solid rgba(140, 140, 140, 0.35)',
-            borderRadius: '0.75rem',
-          }}
-        >
-          {classList.length > 0 &&
-            classList.map((item, i) => {
-              return (
-                <div
-                  key={i}
-                  className="flex p-2 m-2 cursor-pointer rounded-lg bg-secondary text-black justify-center items-center"
-                >
-                  <p>Lớp {item.class.name}</p>
-                </div>
-              );
-            })}
-        </div>
-      </div>
-    </div>
+    <WraperLayoutStudent>
+      {classList.length > 0 &&
+        classList.map((item, i) => {
+          return (
+            <div
+              key={i}
+              className="flex p-2 m-2 cursor-pointer rounded-lg bg-secondary text-black justify-center items-center"
+              onClick={() => navigation(`/studentPage/class/${item.classId}`)}
+            >
+              <p>Lớp {item.class.name}</p>
+            </div>
+          );
+        })}
+    </WraperLayoutStudent>
   );
 }
 

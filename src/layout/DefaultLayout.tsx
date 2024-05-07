@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AliveScope } from 'react-activation';
 import { Outlet } from 'react-router-dom';
-import Loader from '../common/Loader';
 import AppProvider, { useApp } from '../context/app.context';
 import TabsProvider from '../context/tabs.context';
 import { ROLE } from '../shared/enums/role';
@@ -26,17 +25,8 @@ export default DefaultLayout;
 const MainScreen = () => {
   const { role } = useApp();
   const isStudent = role === ROLE.STUDENT;
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
-
-  if (loading) {
-    return <Loader />;
-  }
   return (
     <>
       {role !== null && (
