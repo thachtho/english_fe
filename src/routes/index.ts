@@ -32,7 +32,15 @@ const ClassManager = lazy(
 
 //studentPage
 const StudentClassPage = lazy(() => import('../pages/StudentPage/Class/Class'));
-const StudentUnitPage = lazy(() => import('../pages/StudentPage/Unit/Unit'));
+const StudentUnitLessonPage = lazy(
+  () => import('../pages/StudentPage/UnitLesson'),
+);
+const StudentVariablePage = lazy(
+  () => import('../pages/StudentPage/Variable/index'),
+);
+
+//HTTP
+const Forbidden = lazy(() => import('../pages/Error/Forbidden'));
 
 const coreRoutes = [
   {
@@ -112,8 +120,20 @@ const coreRoutes = [
   },
   {
     path: '/studentPage/class/:id',
-    title: 'StudentClassPage',
-    component: StudentUnitPage,
+    title: 'StudentUnitLessonPage',
+    component: StudentUnitLessonPage,
+  },
+  {
+    path: '/studentPage/variable',
+    title: 'StudentVariablePage',
+    component: StudentVariablePage,
+  },
+
+  //HTTP
+  {
+    path: '/error/403',
+    title: 'Forbidden',
+    component: Forbidden,
   },
 ];
 

@@ -29,7 +29,7 @@ function App() {
               path={path}
               key={index}
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<></>}>
                   <Component />
                 </React.Suspense>
               }

@@ -10,3 +10,8 @@ export const activeClassManagerLesson = (
     active: boolean;
   },
 ) => http.put<IClassManagerLesson>(`/class-manager-lesson/active/${id}`, data);
+
+export const checkPermisson = (classManagerLessonId: number) =>
+  http.get<boolean>(
+    `/class-manager-lesson/check-permisson/${classManagerLessonId}`,
+  );

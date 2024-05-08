@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../../common/Loader';
+import useQueryUrl from '../../../hooks/useQueryUrl';
 import WraperLayoutStudent from '../../../layout/WraperLayoutStudent';
-import useClass from './state';
-import { useFetchDataClass } from './hooks';
+import { useCheckPermisson } from './hooks';
 
-function Class() {
+function Variable() {
   const navigation = useNavigate();
-  const { classList } = useClass();
-  useFetchDataClass();
+  const classManagerLessonId = useQueryUrl('classManagerLessonId');
+  useCheckPermisson(classManagerLessonId);
+  const classList = [];
 
   if (classList.length === 0) {
     return <Loader />;
@@ -31,4 +32,4 @@ function Class() {
   );
 }
 
-export default Class;
+export default Variable;
