@@ -30,13 +30,16 @@ const useCheckPermisson = (classManagerLessonId: string | null) => {
 const useFetchDataByManagerLessonId = (classManagerLessonId: string | null) => {
   const { setClassManagerLesson, setVariables } = useVariable();
   useEffect(() => {
+    setVariables(null);
     const fetch = async () => {
-      const { data } = await getClassManagerLesson(
-        Number(classManagerLessonId),
-      );
-      const { data: lesson } = await getVariableByLessonId(data?.lessonId);
-      setClassManagerLesson(data);
-      setVariables(lesson.variables);
+      setTimeout(async () => {
+        const { data } = await getClassManagerLesson(
+          Number(classManagerLessonId),
+        );
+        const { data: lesson } = await getVariableByLessonId(data?.lessonId);
+        setClassManagerLesson(data);
+        setVariables(lesson.variables);
+      }, 500);
     };
     classManagerLessonId && classManagerLessonId && fetch();
   }, []);
