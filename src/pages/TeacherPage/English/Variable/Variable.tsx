@@ -110,6 +110,7 @@ const Variable = () => {
             <Sound
               handleChangeSound={handleChangeSource}
               name={row.original.name}
+              flex="col"
             />
           );
         },

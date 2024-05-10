@@ -1,5 +1,7 @@
 import http from './http';
 
+export const getClassManagerLesson = (id: number) =>
+  http.get<IClassManagerLesson>(`/class-manager-lesson/${id}`);
 export const createClassManagerLesson = (
   data: Pick<IClassManagerLesson, 'lessonId' | 'classManagerId'>,
 ) => http.post<IClassManagerLesson>(`/class-manager-lesson`, data);

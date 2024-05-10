@@ -1,7 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
-import { checkPermisson } from '../../../../api/class-manager-lesson.api';
+import {
+  checkPermisson,
+  getClassManagerLesson,
+} from '../../../../api/class-manager-lesson.api';
 import useNavigatePermissonDenied from '../../../../hooks/useNavigatePermissonDenied';
+import useVariable from '../state';
+import { getVariableByLessonId } from '../../../../api/lesson.api';
 
 const useCheckPermisson = (classManagerLessonId: string | null) => {
   const { navigationPermissonDenied } = useNavigatePermissonDenied();
@@ -22,4 +27,33 @@ const useCheckPermisson = (classManagerLessonId: string | null) => {
   }, []);
 };
 
-export { useCheckPermisson };
+const useFetchDataByManagerLessonId = (classManagerLessonId: string | null) => {
+  const { setClassManagerLesson, setVariables } = useVariable();
+  useEffect(() => {
+    const fetch = async () => {
+      const { data } = await getClassManagerLesson(
+        Number(classManagerLessonId),
+      );
+      const { data: lesson } = await getVariableByLessonId(data?.lessonId);
+      setClassManagerLesson(data);
+      setVariables(lesson.variables);
+    };
+    classManagerLessonId && classManagerLessonId && fetch();
+  }, []);
+};
+
+const useGetBreadCrumbs = () => {
+  const classOption = null;
+  const breadCrumbs = useMemo(() => {
+    return [
+      {
+        url: '/',
+        name: `Home`,
+      },
+    ];
+  }, [classOption]);
+
+  return breadCrumbs;
+};
+
+export { useCheckPermisson, useFetchDataByManagerLessonId, useGetBreadCrumbs };
