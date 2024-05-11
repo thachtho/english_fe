@@ -5,7 +5,7 @@ import useExercise from '../state';
 
 function InputFiledExercise() {
   const inputRef = useRef<any>(null);
-  const { setInputName, validationMessages, setValidationErrors } =
+  const { setInputName, validationMessages, setValidationErrors, inputName } =
     useExercise();
   useFocusInput(inputRef);
 
@@ -18,7 +18,26 @@ function InputFiledExercise() {
   const status = !!validationMessages?.name ? 'error' : '';
 
   return (
-    <Input ref={inputRef} onChange={(e) => handleChange(e)} status={status} />
+    <div className="flex justify-center items-center mt-2 mb-4">
+      <span>Nhập: </span>
+      <div className="flex relative">
+        <Input
+          ref={inputRef}
+          onChange={(e) => handleChange(e)}
+          status={status}
+          value={inputName}
+        />
+
+        {validationMessages?.name && (
+          <i
+            className="absolute text-danger text-xs"
+            style={{ bottom: '-20px' }}
+          >
+            *{validationMessages?.name}
+          </i>
+        )}
+      </div>
+    </div>
   );
 }
 

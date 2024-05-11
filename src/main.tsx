@@ -4,7 +4,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import App from './App';
 import './index.css';
-import './satoshi.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <Router>

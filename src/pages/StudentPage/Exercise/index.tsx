@@ -14,12 +14,12 @@ import { useCheckPermissonWithClassManagerLesson } from '../Variable/hooks';
 
 function Exercise() {
   const classManagerLessonId = useQueryUrl('classManagerLessonId');
-  const { restore, variable } = useExercise();
+  const { restore, variable, numberRepeat } = useExercise();
   useFetDataClassManagerLesson(classManagerLessonId);
-  useRestoreStateZustand(restore);
   useCheckPermissonWithClassManagerLesson(classManagerLessonId);
   useCreateExercise(classManagerLessonId);
   useGetExercise(classManagerLessonId);
+  useRestoreStateZustand(restore);
   const { handleSubmit } = useHandleExcercise();
 
   return (
@@ -33,12 +33,9 @@ function Exercise() {
         autoComplete="off"
       >
         <div className="flex flex-col justify-center items-center">
+          <span>{numberRepeat}</span>
           <b className="text-xl">{variable?.vi}</b>
-          <div className="flex justify-center items-center mt-2">
-            <span>Nhập: </span>
-            <InputFiledExercise />
-          </div>
-
+          <InputFiledExercise />
           <Button
             type="primary"
             className="mt-2"

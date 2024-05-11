@@ -87,6 +87,7 @@ interface IClassManagerLesson {
   lessonId: number;
   active: boolean;
   lesson: ILesson;
+  numberRepeat: number;
 }
 
 interface IClassManager extends IBase {
@@ -113,10 +114,10 @@ interface IVariable extends IBase {
 interface IExercise extends IBase {
   userId: number;
   classManagerLessonId: number;
-  exerciseVariables: IExerciseVariables[];
+  exerciseVariables?: IExerciseVariable[];
 }
 
-interface IExerciseVariables {
+interface IExerciseVariable {
   id: number;
   exerciseId: number;
   variableId: number;

@@ -15,8 +15,8 @@ function HeaderStudent() {
   };
   return (
     <Header
-      className="site-layout-sub-header-background"
-      style={{ background: '#5ac8fa' }}
+      className="site-layout-sub-header-background border-b-2 border-meta-3 border-opacity-20"
+      style={{ background: 'white' }}
     >
       <div className="header flex justify-center items-center">
         <button onClick={() => handleLogout()} className="logout">
