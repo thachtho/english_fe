@@ -8,7 +8,9 @@ import useNavigatePermissonDenied from '../../../../hooks/useNavigatePermissonDe
 import useVariable from '../state';
 import { getVariableByLessonId } from '../../../../api/lesson.api';
 
-const useCheckPermisson = (classManagerLessonId: string | null) => {
+const useCheckPermissonWithClassManagerLesson = (
+  classManagerLessonId: string | null,
+) => {
   const { navigationPermissonDenied } = useNavigatePermissonDenied();
   useEffect(() => {
     const fetch = async () => {
@@ -59,4 +61,8 @@ const useGetBreadCrumbs = () => {
   return breadCrumbs;
 };
 
-export { useCheckPermisson, useFetchDataByManagerLessonId, useGetBreadCrumbs };
+export {
+  useCheckPermissonWithClassManagerLesson,
+  useFetchDataByManagerLessonId,
+  useGetBreadCrumbs,
+};

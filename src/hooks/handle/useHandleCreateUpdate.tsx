@@ -20,7 +20,6 @@ function useHandleCreateUpdate({
   const handleCreateUpdate: MRT_TableOptions<any>['onCreatingRowSave'] =
     async ({ values, table, row }) => {
       const newValidationErrors = validate(values);
-      console.log(222222222222, newValidationErrors);
       if (Object.values(newValidationErrors).some((error) => error)) {
         setValidationErrors(newValidationErrors);
         return;

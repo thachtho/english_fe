@@ -39,6 +39,10 @@ const StudentVariablePage = lazy(
   () => import('../pages/StudentPage/Variable/index'),
 );
 
+const StudentExercisePage = lazy(
+  () => import('../pages/StudentPage/Exercise/index'),
+);
+
 //HTTP
 const Forbidden = lazy(() => import('../pages/Error/Forbidden'));
 
@@ -127,6 +131,11 @@ const coreRoutes = [
     path: '/studentPage/variable',
     title: 'StudentVariablePage',
     component: StudentVariablePage,
+  },
+  {
+    path: '/studentPage/exercise',
+    title: 'StudentExercisePage',
+    component: StudentExercisePage,
   },
 
   //HTTP

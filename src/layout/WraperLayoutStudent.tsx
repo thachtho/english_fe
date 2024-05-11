@@ -1,12 +1,23 @@
 import { ReactNode } from 'react';
 import Breadcrumb, { IBreadCrumb } from '../components/Breadcrumb';
+import { HomeOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 interface IProps {
   breadCrumb?: IBreadCrumb[];
   children?: ReactNode;
+  iconHome?: boolean;
+  RightComponent?: React.ReactNode;
 }
 
-function WraperLayoutStudent({ children, breadCrumb = [] }: IProps) {
+function WraperLayoutStudent({
+  children,
+  breadCrumb = [],
+  iconHome = false,
+  RightComponent,
+}: IProps) {
+  const navigation = useNavigate();
+
   return (
     <div className="student-container flex justify-center">
       <div
@@ -18,6 +29,18 @@ function WraperLayoutStudent({ children, breadCrumb = [] }: IProps) {
         }}
       >
         {breadCrumb.length > 0 && <Breadcrumb breadCrumb={breadCrumb} />}
+        <div className="flex justify-between cursor-pointer items-center mb-2">
+          {iconHome ? (
+            <div onClick={() => navigation('/')}>
+              <HomeOutlined className="text-2xl" />
+              <span className="ml-2">Home</span>
+            </div>
+          ) : (
+            <div></div>
+          )}
+
+          {RightComponent && RightComponent}
+        </div>
 
         <div
           className="list-class"

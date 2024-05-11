@@ -109,3 +109,17 @@ interface IVariable extends IBase {
   vi: string;
   lessonId: number;
 }
+
+interface IExercise extends IBase {
+  userId: number;
+  classManagerLessonId: number;
+  exerciseVariables: IExerciseVariables[];
+}
+
+interface IExerciseVariables {
+  id: number;
+  exerciseId: number;
+  variableId: number;
+  count: number;
+  variable: IVariable;
+}
