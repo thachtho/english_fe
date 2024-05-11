@@ -1,6 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import Loader from '../../../common/Loader';
+import Sound from '../../../components/Source';
 import useQueryUrl from '../../../hooks/useQueryUrl';
+import useRestoreStateZustand from '../../../hooks/useRestoreStateZustand';
+import useSound from '../../../hooks/useSound';
 import WraperLayoutStudent from '../../../layout/WraperLayoutStudent';
 import {
   useCheckPermisson,
@@ -8,23 +10,21 @@ import {
   useGetBreadCrumbs,
 } from './hooks';
 import useVariable from './state';
-import useSound from '../../../hooks/useSound';
-import Sound from '../../../components/Source';
 
 function Variable() {
-  const navigation = useNavigate();
   const classManagerLessonId = useQueryUrl('classManagerLessonId');
-  const { variables } = useVariable();
+  const { variables, classManagerLesson, restore } = useVariable();
   useCheckPermisson(classManagerLessonId);
   useFetchDataByManagerLessonId(classManagerLessonId);
+  useRestoreStateZustand(restore);
   const { audio, handleChangeSource, audioSrc, setIsPlaying } = useSound();
   const breadCrumbs = useGetBreadCrumbs();
+
+  console.log('=>>>>>>>>', classManagerLesson);
 
   if (!variables) {
     return <Loader />;
   }
-
-  console.log(22222222, breadCrumbs);
 
   return (
     <WraperLayoutStudent breadCrumb={breadCrumbs}>

@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../../common/Loader';
 import WraperLayoutStudent from '../../../layout/WraperLayoutStudent';
-import useClass from './state';
 import { useFetchDataClass } from './hooks';
+import useClass from './state';
 
 function Class() {
   const navigation = useNavigate();
