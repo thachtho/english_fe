@@ -14,7 +14,7 @@ import { useCheckPermissonWithClassManagerLesson } from '../Variable/hooks';
 
 function Exercise() {
   const classManagerLessonId = useQueryUrl('classManagerLessonId');
-  const { restore, variable, numberRepeat } = useExercise();
+  const { restore, variable, numberRepeat, classManagerLesson } = useExercise();
   useFetDataClassManagerLesson(classManagerLessonId);
   useCheckPermissonWithClassManagerLesson(classManagerLessonId);
   useCreateExercise(classManagerLessonId);
@@ -23,7 +23,10 @@ function Exercise() {
   const { handleSubmit } = useHandleExcercise();
 
   return (
-    <WraperLayoutStudent iconHome={true} RightComponent={<span>Lesson 3</span>}>
+    <WraperLayoutStudent
+      iconHome={true}
+      RightComponent={<span>{classManagerLesson?.lesson?.name}</span>}
+    >
       <Form
         name="basic"
         labelCol={{ span: 8 }}
