@@ -38,9 +38,14 @@ function Link() {
   const columns = useMemo<MRT_ColumnDef<ILink>[]>(
     () => [
       {
-        header: 'Nguồn',
-        accessorKey: 'linkName',
-        size: 200,
+        header: 'Url',
+        accessorKey: 'linkUrl',
+        size: 100,
+        Cell: (props) => {
+          const linkUrl = props.row.original.linkUrl
+          
+          return linkUrl && linkUrl.length > 100 ? `${(linkUrl??"").slice(0, 100)}...` : linkUrl??"Trống"
+        }
       },
       {
         header: 'Content',

@@ -35,6 +35,11 @@ const MENUS = [{
   path: "/token",
   name: "Token",
 },
+{
+  id: 6,
+  path: "/proxy",
+  name: "Proxy",
+},
 ]
 
 const TITLE_PATH = [
@@ -53,6 +58,10 @@ const TITLE_PATH = [
   {
     path: 'token',
     title: 'Token',
+  },
+  {
+    path: 'proxy',
+    title: 'Proxy',
   },
 ]
 

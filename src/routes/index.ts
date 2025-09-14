@@ -5,6 +5,7 @@ const LinkFB = lazy(() => import('../pages/facebook/Link/index'));
 const CommentFb = lazy(() => import('../pages/facebook/Comment/index'));
 const Forbidden = lazy(() => import('../pages/components/Error/Forbidden'));
 const Token = lazy(() => import('../pages/Token/index'));
+const Proxy = lazy(() => import('../pages/Proxy/index'));
 
 const coreRoutes = [
   {
@@ -28,6 +29,10 @@ const coreRoutes = [
   {
     path: '/token',
     component: Token,
+  },
+  {
+    path: '/proxy',
+    component: Proxy,
   },
   //HTTP
   {

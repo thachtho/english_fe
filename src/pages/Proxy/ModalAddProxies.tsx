@@ -5,35 +5,39 @@ import { toast } from "react-toastify";
 import { customErrorToast } from "../../common/utils/toast";
 import { createTokens } from "../../api/token.api";
 import { ETokenHandleType } from "../../shared/interfaces/token";
+import { createProxies } from "../../api/proxy.api";
 
-interface IPropsAddToken {
+interface IPropsAddProxies {
     setIsModalOpen: (open: boolean) => void;
     isModalOpen: boolean;
     isReload: boolean;
     setIsReload: (isReload: boolean) => void;
 }
 
-const ModalAddTokens = ({ setIsModalOpen, isModalOpen,isReload, setIsReload }: IPropsAddToken): JSX.Element => {
-    const [tokens, setTokens] = useState<string>('')
+const ModalAddProxies = ({ setIsModalOpen, isModalOpen,isReload, setIsReload }: IPropsAddProxies): JSX.Element => {
+    const [proxies, setProxies] = useState<string>('')
 
-    const handleAddTokens = async () => {
-        if (tokens.length === 0) {
+    const handleAddproxies = async () => {
+        if (proxies.length === 0) {
             toast.error('Nội dung không được trống!')
             return
         }
-        const tokensValid = tokens
+        if (proxies.length === 0) {
+        toast.error('Nội dung không được trống!')
+        return
+        }
+        const proxiesValid = proxies
         .split('\n')
-        .map((token) => token.trim())
-        .filter((token) => token.length > 0)
+        .map((proxie) => proxie.trim())
+        .filter((proxie) => proxie.length > 0)
         .map((item) => {
             return item
         })
 
         try {
-            setIsModalOpen(false)
-            toast("Token sẽ xuất hiện sau vài giây!")            
-            setTokens('')
-            const response = await createTokens({ tokens: tokensValid, type: ETokenHandleType.GET_INFO })
+            setIsModalOpen(false)        
+            setProxies('')
+            const response = await createProxies({ proxies: proxiesValid })
             setIsReload(!isReload)
             toast((response.data as any).message)            
         } catch (error) {
@@ -42,7 +46,7 @@ const ModalAddTokens = ({ setIsModalOpen, isModalOpen,isReload, setIsReload }: I
     }
 
     const handleOk = () => {
-        return handleAddTokens()
+        return handleAddproxies()
     }
     
     return (
@@ -55,10 +59,10 @@ const ModalAddTokens = ({ setIsModalOpen, isModalOpen,isReload, setIsReload }: I
         >
             <TextArea
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                    setTokens(e.target.value)
+                    setProxies(e.target.value)
                 }} rows={4} />
         </Modal>
     );
 };
 
-export default ModalAddTokens;
+export default ModalAddProxies;
