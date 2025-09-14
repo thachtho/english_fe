@@ -39,7 +39,7 @@ function Pagination({pageSize, setPage, setPageSize, totalCount, pageSizeOptions
     const onChangePagination = (page: number, pageSize: number) => {
         setPage(page)
         setPageSize(pageSize)
-        // setData(null)
+        setData(null)
     } 
     
     return (
@@ -48,7 +48,7 @@ function Pagination({pageSize, setPage, setPageSize, totalCount, pageSizeOptions
                 theme={{
                 components: {
                     Pagination: {
-                    colorTextDisabled: "red", // prev/next disabled
+                        colorTextDisabled: "red",
                     },
                 },
                 }}

@@ -29,7 +29,13 @@ const MENUS = [{
       name: "Comments",
     }
   ]
-}]
+},
+{
+  id: 5,
+  path: "/token",
+  name: "Token",
+},
+]
 
 const TITLE_PATH = [
   {
@@ -43,6 +49,10 @@ const TITLE_PATH = [
   {
     path: 'facebook-comment',
     title: 'Comment FB',
+  },
+  {
+    path: 'token',
+    title: 'Token',
   },
 ]
 

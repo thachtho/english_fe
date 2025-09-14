@@ -4,18 +4,17 @@ import {
   Stack,
   Tooltip
 } from '@mui/material';
+import { Button } from 'antd';
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
+import toast from 'react-hot-toast';
 import { deleteLink, getLinks } from "../../../api/link.api";
 import { useApp } from "../../../common/context/app.context";
 import { DeleteIcon, EditIcon } from "../../../components";
+import Pagination from '../../../components/Pagination/Pagination';
 import { ILink, LinkType } from "../../../shared/interfaces/link";
 import ModalAddLink from "./ModalAddLink";
-import Loader from '../../../common/Loader';
-import toast from 'react-hot-toast';
 import ModalEditLink from './ModalEditLink';
-import { Button } from 'antd';
-import Pagination from '../../../components/Pagination/Pagination';
 
 function Link() {
   const { optionsReactTableDefault } = useApp();
@@ -25,7 +24,7 @@ function Link() {
   const [linkEdit, setLinkEdit] = useState<ILink | null>(null);
   const [isReload, setIsReload] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0)
-  const [pageSize, setPageSize] = useState<number>(100)
+  const [pageSize, setPageSize] = useState<number>(50)
   const [totalCount, setTotalCount] = useState<number>(0)
 
   useEffect(() => {
@@ -92,6 +91,9 @@ function Link() {
     initialState: {
       ...optionsReactTableDefault.initialState,
     },
+    state: {
+       isLoading: links ? false : true
+    },
     renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', gap: '1rem' }}>
         <Button type='primary'>Xem</Button>
@@ -141,7 +143,7 @@ function Link() {
           setPage={setPage}
           setPageSize={setPageSize}
           totalCount={totalCount}
-          pageSizeOptions={['100', "200", "300"]}
+          pageSizeOptions={['50', '100', "200"]}
           setData={setLinks}
         />
       </Box>
@@ -149,18 +151,15 @@ function Link() {
   });
 
 
-  const handleDelele = (id: number) => {
+  const handleDelele = async (id: number) => {
     toast("Xóa thành công!")    
+    await deleteLink(id)
     setIsReload(!isReload)
-    return deleteLink(id)
   }
 
   return (
     <Stack gap="1rem">
-      {!links ? <Loader /> :
-        <MaterialReactTable table={table} />
-
-      }
+      <MaterialReactTable table={table} />
       {isModalAddOpen && (
         <ModalAddLink
           setIsModalOpen={setIsModalAddOpen}

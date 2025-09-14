@@ -8,10 +8,9 @@ import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from "materi
 import { useEffect, useMemo, useState } from "react";
 import { getComments, IGetCommentParams } from '../../../api/comment.api';
 import { useApp } from "../../../common/context/app.context";
-import Loader from '../../../common/Loader';
-import { IComment } from '../../../shared/interfaces/comment';
-import Pagination from '../../../components/Pagination/Pagination';
 import { timeAgo } from '../../../common/utils/time';
+import Pagination from '../../../components/Pagination/Pagination';
+import { IComment } from '../../../shared/interfaces/comment';
 
 function Comment() {
   const [form] = Form.useForm<IGetCommentParams>()
@@ -23,7 +22,7 @@ function Comment() {
   const { optionsReactTableDefault } = useApp();
   const [comments, setComments] = useState<IComment[] | null>(null);
   const [page, setPage] = useState<number>(0)
-  const [pageSize, setPageSize] = useState<number>(100)
+  const [pageSize, setPageSize] = useState<number>(50)
   const [totalCount, setTotalCount] = useState<number>(0)
 
   useEffect(() => {
@@ -72,6 +71,9 @@ function Comment() {
     initialState: {
       ...optionsReactTableDefault.initialState,
       showGlobalFilter: false,
+    },
+    state: {
+       isLoading: comments ? false : true
     },
     renderTopToolbarCustomActions: () => (
       <div className='flex'>
@@ -138,7 +140,7 @@ function Comment() {
           setPage={setPage}
           setPageSize={setPageSize}
           totalCount={totalCount}
-          pageSizeOptions={['100', "200", "300"]}
+          pageSizeOptions={['50', "100", "200"]}
           setData={setComments}
         />
       </Box>
@@ -146,6 +148,7 @@ function Comment() {
   });
 
   const onFinish = async () => {
+    setComments(null)
     return callApi(form.getFieldsValue())
   }
 
@@ -157,10 +160,7 @@ function Comment() {
 
   return (
     <Stack gap="1rem">
-      {!comments ? <Loader /> :
-        <MaterialReactTable table={table} />
-        
-      }
+      <MaterialReactTable table={table}/>
 
     </Stack>
   );

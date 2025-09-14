@@ -4,6 +4,7 @@ const Buttons = lazy(() => import('../components/UiElements/Buttons'));
 const LinkFB = lazy(() => import('../pages/facebook/Link/index'));
 const CommentFb = lazy(() => import('../pages/facebook/Comment/index'));
 const Forbidden = lazy(() => import('../pages/components/Error/Forbidden'));
+const Token = lazy(() => import('../pages/Token/index'));
 
 const coreRoutes = [
   {
@@ -24,7 +25,10 @@ const coreRoutes = [
     path: '/facebook-comment',
     component: CommentFb,
   },
-
+  {
+    path: '/token',
+    component: Token,
+  },
   //HTTP
   {
     path: '/error/403',

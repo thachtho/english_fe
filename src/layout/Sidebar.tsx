@@ -109,7 +109,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 className="cursor-pointer px-2"
                 onClick={() => handleLogout()}
               >
-                LogOut
+                Đăng xuất
               </button>
             </h3>
 
@@ -123,8 +123,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <li key={index}>
                       <NavLink
                         to={item.path}
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          pathname === `${path}` && 'bg-graydark dark:bg-meta-4'
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 
+                        'bg-graydark dark:bg-meta-4'
                         }`}
                       >
                         <svg
