@@ -5,8 +5,8 @@ import { Route, Routes } from 'react-router-dom';
 import './app.scss';
 import SignIn from './pages/Authentication/SignIn/SignIn';
 import SignUp from './pages/Authentication/SignUp';
-import Error from './pages/Error';
-import Home from './pages/Home/index';
+import Error from './pages/components/Error';
+import Home from './pages/components/Home';
 import routes from './routes';
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 

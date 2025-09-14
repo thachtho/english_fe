@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { matchRoutes, useLocation } from 'react-router-dom';
-import { getTitleByPath } from '../api/control.api';
-import { useTabs } from '../context/tabs.context';
 import routes from '../routes';
+import { TITLE_PATH } from '../shared/constants';
 import { getKeyTab } from '../untils';
+import { useTabs } from '../common/context/tabs.context';
 
 function useAddTab() {
   const { addTab } = useTabs();
@@ -27,11 +27,11 @@ function useAddTab() {
       if (path.charAt(0) === '/') {
         path = path.substring(1);
       }
-      const { data } = await getTitleByPath(path.length === 0 ? '/' : path);
+      const res = TITLE_PATH.find(item => item.path === (path.length === 0 ? '/' : path))
       const key = getKeyTab(location as any);
 
       return {
-        label: data.name,
+        label: res?.title??"",
         key: key,
         match,
       };

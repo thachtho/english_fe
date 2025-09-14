@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getTitleByPath } from '../api/control.api';
-import { useApp } from '../context/app.context';
 import toast from 'react-hot-toast';
+import { useApp } from '../common/context/app.context';
 
 function useTitle() {
     const { setTitleGlobal } = useApp()

@@ -9,8 +9,8 @@ import useValidator from "../../../hooks/validator";
 import LogoDark from '../../../images/logo/logo-dark.svg';
 import Logo from '../../../images/logo/logo.svg';
 import MobileImg from "./MobileImg";
-import { useApp } from "../../../context/app.context";
 import { LOCAL_STORAGE_KEY } from "../../../shared/enums/localstorage";
+import { useApp } from "../../../common/context/app.context";
 
 const SignIn = () => {
   const navigation = useNavigate();
@@ -22,8 +22,8 @@ const SignIn = () => {
     try {
       const { data: loginResponse } = await login(data)
       const userInfo = {
-        refreshToken: loginResponse?.refresh_token,
-        nickname: data.nickname
+        refreshToken: loginResponse?.token.refreshToken,
+        username: data.username
       }
       localStorage.setItem(LOCAL_STORAGE_KEY.USER_INFO, JSON.stringify(userInfo))
       setUserInfo(userInfo);
@@ -74,18 +74,18 @@ const SignIn = () => {
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">
                       <label className="mb-2.5 block font-medium text-black dark:text-white">
-                        Nickname
+                      Username
                       </label>
                       <div className="relative">
                         <input
-                          {...register("nickname", { required: true, maxLength: 20, minLength: 2 })}
+                          {...register("username", { required: true, maxLength: 20, minLength: 2 })}
                           type="text"
-                          placeholder="Nhập nickname"
+                          placeholder="Nhập username"
                           className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                         />
                         <MessageIcon />
                       </div>
-                      {errors.nickname ? validator(errors) : ''}
+                      {errors.username ? validator(errors) : ''}
                     </div>
 
                     <div className="mb-6">
@@ -94,7 +94,7 @@ const SignIn = () => {
                       </label>
                       <div className="relative">
                         <input
-                          {...register("password", { required: true, maxLength: 20, minLength: 4 })}
+                          {...register("password", { required: true, maxLength: 20, minLength: 1 })}
                           type="password"
                           placeholder="Nhập mật khẩu"
                           className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"

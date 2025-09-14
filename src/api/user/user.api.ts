@@ -11,4 +11,4 @@ export const updateUser = (
   id: number,
   data: { fullname: string; nickname: string },
 ) => http.put(`/users/${id}`, data);
-export const getRole = () => http.get<number>(`/users/get-role`);
+export const getRole = () => http.get<IUser>(`/users/info`);

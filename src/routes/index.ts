@@ -1,62 +1,11 @@
 import { lazy } from 'react';
-const Profile = lazy(() => import('../pages/Profile/index'));
-const Calendar = lazy(() => import('../pages/Calendar'));
 const Alerts = lazy(() => import('../components/UiElements/Alerts'));
 const Buttons = lazy(() => import('../components/UiElements/Buttons'));
-const Teacher = lazy(
-  () => import('../pages/AdminAgencyPage/Users/Teacher/index'),
-);
-const Student = lazy(
-  () => import('../pages/AdminAgencyPage/Users/Student/index'),
-);
-const Class = lazy(() => import('../pages/AdminAgencyPage/Class/index'));
-const DetailClass = lazy(
-  () => import('../pages/AdminAgencyPage/Class/Detail/index'),
-);
-const Course = lazy(() => import('../pages/AdminAgencyPage/Course/index'));
-//teacher
-const ClassList = lazy(() => import('../pages/TeacherPage/ClassList/index'));
-const StudyProgramDetail = lazy(
-  () => import('../pages/TeacherPage/English/StudyProgramDetail/index'),
-);
-const StudyProgram = lazy(
-  () => import('../pages/TeacherPage/English/StudyProgram/index'),
-);
-const Variable = lazy(
-  () => import('../pages/TeacherPage/English/Variable/index'),
-);
-
-const ClassManager = lazy(
-  () => import('../pages/TeacherPage/ClassManager/index'),
-);
-
-//studentPage
-const StudentClassPage = lazy(() => import('../pages/StudentPage/Class/Class'));
-const StudentUnitLessonPage = lazy(
-  () => import('../pages/StudentPage/UnitLesson'),
-);
-const StudentVariablePage = lazy(
-  () => import('../pages/StudentPage/Variable/index'),
-);
-
-const StudentExercisePage = lazy(
-  () => import('../pages/StudentPage/Exercise/index'),
-);
-
-//HTTP
-const Forbidden = lazy(() => import('../pages/Error/Forbidden'));
+const LinkFB = lazy(() => import('../pages/facebook/Link/index'));
+const CommentFb = lazy(() => import('../pages/facebook/Comment/index'));
+const Forbidden = lazy(() => import('../pages/components/Error/Forbidden'));
 
 const coreRoutes = [
-  {
-    path: '/calendar',
-    title: 'Calender',
-    component: Calendar,
-  },
-  {
-    path: '/profile',
-    title: 'Profile',
-    component: Profile,
-  },
   {
     path: '/ui/alerts',
     title: 'Alerts',
@@ -68,74 +17,12 @@ const coreRoutes = [
     component: Buttons,
   },
   {
-    path: '/user/teacher',
-    title: 'Teacher',
-    component: Teacher,
+    path: '/facebook-link',
+    component: LinkFB,
   },
   {
-    path: '/user/student',
-    title: 'Student',
-    component: Student,
-  },
-  {
-    path: '/class',
-    title: 'Class',
-    component: Class,
-  },
-  {
-    path: '/class/:id',
-    title: 'Detail',
-    component: DetailClass,
-  },
-  {
-    path: '/khoa-hoc',
-    title: 'Course',
-    component: Course,
-  },
-  {
-    path: 'class-list',
-    title: 'CLassList',
-    component: ClassList,
-  },
-  {
-    path: '/english/study-program/:id',
-    title: 'StudyProgramDetail',
-    component: StudyProgramDetail,
-  },
-  {
-    path: '/english/study-program',
-    title: 'StudyProgram',
-    component: StudyProgram,
-  },
-  {
-    path: '/english/lesson/:id/variable',
-    title: 'Variable',
-    component: Variable,
-  },
-  {
-    path: '/class-manager/:id',
-    title: 'ClassManager',
-    component: ClassManager,
-  },
-  {
-    path: '/studentPage/class',
-    title: 'studentPage',
-    component: StudentClassPage,
-  },
-  {
-    path: '/studentPage/class/:id',
-    title: 'StudentUnitLessonPage',
-    component: StudentUnitLessonPage,
-  },
-  {
-    path: '/studentPage/variable',
-    title: 'StudentVariablePage',
-    component: StudentVariablePage,
-  },
-  {
-    path: '/studentPage/exercise',
-    title: 'StudentExercisePage',
-    component: StudentExercisePage,
+    path: '/facebook-comment',
+    component: CommentFb,
   },
 
   //HTTP

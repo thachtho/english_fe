@@ -4,7 +4,7 @@ interface IPropsDropdown {
 }
 
 interface ILogin {
-  nickname: string;
+  username: string;
   password: string;
 }
 
@@ -15,24 +15,29 @@ interface IBaseSize {
 
 interface IBase {
   id: number;
-  deletedAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  createdBy: number;
+  deletedAt?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  createdBy?: number;
 }
 
 interface IControl extends IBase {
   path: string;
   name: string;
-  controlChildrens: IControl[];
+  controlChildrens?: IControl[];
 }
 
-interface IUser extends IBase {
-  fullname: string | null;
-  nickname: string;
-  password?: string;
-  role: number;
-  agencyId: number;
+interface IUser {
+  id: number
+  username: string
+  expiredAt: string
+  linkOnLimit?: number
+  linkOffLimit?: number
+  linkOnHideLimit?: number
+  linkOffHideLimit?: number
+  password?: string
+  level: number
+  createdAt: string
 }
 
 interface IClass extends IBase {

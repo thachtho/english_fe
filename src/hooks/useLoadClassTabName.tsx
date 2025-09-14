@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import { getClass } from '../api/class.api';
-import { useTabs } from '../context/tabs.context';
 import { getKeyTab } from '../untils';
+import { useTabs } from '../common/context/tabs.context';
 
 function useLoadClassTabName() {
   const { setTitleCurrentTab } = useTabs();

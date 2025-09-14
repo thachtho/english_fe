@@ -33,7 +33,7 @@ function WraperLayoutStudent({
           {iconHome ? (
             <div onClick={() => navigation('/')}>
               <HomeOutlined className="text-2xl" />
-              <span className="ml-2">Home</span>
+              <span className="ml-2">Trang chủ</span>
             </div>
           ) : (
             <div></div>

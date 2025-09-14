@@ -8,4 +8,42 @@ const BLOCKS = [
   { value: 12, label: 'Khối 12' },
 ];
 
-export { BLOCKS };
+const MENUS = [{
+  id: 1,
+  path: "/",
+  name: "Trang chủ",
+},
+{
+  id: 2,
+  path: "",
+  name: "Facebook",
+  controlChildrens: [
+    {
+      id: 3,
+      path: "/facebook-link",
+      name: "Links",
+    },
+    {
+      id: 4,
+      path: "/facebook-comment",
+      name: "Comments",
+    }
+  ]
+}]
+
+const TITLE_PATH = [
+  {
+    path: '/',
+    title: 'Trang chủ',
+  },
+  {
+    path: 'facebook-link',
+    title: 'Link FB',
+  },
+  {
+    path: 'facebook-comment',
+    title: 'Comment FB',
+  },
+]
+
+export { BLOCKS, MENUS, TITLE_PATH };

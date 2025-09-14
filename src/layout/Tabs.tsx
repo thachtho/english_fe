@@ -1,16 +1,16 @@
 import { Tabs } from 'antd';
 import React from 'react';
-import { useTabs } from '../context/tabs.context';
+import { useTabs } from '../common/context/tabs.context';
 
 
 const TabsLayout: React.FC = () => {
   const { activeKey, items, onEditTab, onChangeTab } = useTabs();
-  let newItems = items
+  let newItems: any = items
 
   if (items.length === 1) {
     newItems[0].closable = false;
   } else {
-    newItems = newItems.map((item) => {
+    newItems = newItems.map((item: any) => {
       const { closable, ...props } = item;
       return { ...props }
     })

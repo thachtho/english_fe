@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../images/logo/logo.svg';
 
-import ButtonCollapse from './ButtonCollapse';
-import { getMenuControls } from '../api/control.api';
-import SidebarLinkGroup from '../components/SidebarLinkGroup';
 import LogOut from '../components/Icon/LogOut';
+import SidebarLinkGroup from '../components/SidebarLinkGroup';
+import { MENUS } from '../shared/constants';
+import ButtonCollapse from './ButtonCollapse';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -68,12 +68,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await getMenuControls();
-      const menus = data.map((item) => {
-        return item.control;
-      });
+      // const { data } = await getMenuControls();
+      // const menus = data.map((item) => {
+      //   return item.control;
+      // });
 
-      setMenus(menus);
+      setMenus(MENUS);
     })();
   }, []);
 
@@ -115,7 +115,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
             <ul className="mb-6 flex flex-col gap-1.5">
               {menus.map((item, index) => {
-                const { name, path, controlChildrens } = item;
+                const { name, path, controlChildrens = [] } = item;
                 const isGroup = controlChildrens.length > 0;
 
                 if (!isGroup) {

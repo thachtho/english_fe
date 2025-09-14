@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { AliveScope } from 'react-activation';
 import { Outlet } from 'react-router-dom';
-import AppProvider, { useApp } from '../context/app.context';
-import TabsProvider from '../context/tabs.context';
+
 import { ROLE } from '../shared/enums/role';
-import DefaultLayoutStudent from './DefaultLayoutStudent';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import TabsProvider from '../common/context/tabs.context';
+import AppProvider, { useApp } from '../common/context/app.context';
 
 const DefaultLayout = () => {
   return (
@@ -29,7 +29,6 @@ const MainScreen = () => {
 
   return (
     <>
-      {role !== null && (
         <div className="dark:bg-boxdark-2 dark:text-bodydark">
           <div className="flex h-screen overflow-hidden">
             {!isStudent && (
@@ -39,7 +38,6 @@ const MainScreen = () => {
               />
             )}
             <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-              {!isStudent ? (
                 <>
                   <Header
                     sidebarOpen={sidebarOpen}
@@ -59,13 +57,9 @@ const MainScreen = () => {
                     </div>
                   </main>
                 </>
-              ) : (
-                <DefaultLayoutStudent />
-              )}
             </div>
           </div>
         </div>
-      )}
     </>
   );
 };
